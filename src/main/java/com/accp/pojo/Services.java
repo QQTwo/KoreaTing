@@ -74,8 +74,20 @@ public class Services {
     private Integer auditstatus;
 
     private String adminopinion;
+    
+    private Integer orderByNum;//排序（0 1 2）
+    
+    
 
-    public Integer getServiceid() {
+    public Integer getOrderByNum() {
+		return orderByNum;
+	}
+
+	public void setOrderByNum(Integer orderByNum) {
+		this.orderByNum = orderByNum;
+	}
+
+	public Integer getServiceid() {
         return serviceid;
     }
 

@@ -8,102 +8,38 @@ layui.config({
 
 	//加载页面数据
 	var linksData = '';
-	$.ajax({
-		url : "../../json2/serviceType.json",
-		type : "get",
-		dataType : "json",
-		success : function(data){
-			linksData = data;
-			if(window.sessionStorage.getItem("addLinks")){
-				var addLinks = window.sessionStorage.getItem("addLinks");
-				linksData = JSON.parse(addLinks).concat(linksData);
-			}
-			//执行加载数据的方法
-			linksList();
-		}
-	})
+	ReimburseVoFun();
+	loadInfo(linksData);
 //查询
 	$(".search_btn").click(function(){
+		ReimburseVoFun();
 		var newArray = [];
-		if($(".search_input").val() != ''){
-			var index = layer.msg('更新中，请稍候',{icon: 16,time:false,shade:0.8});
-            setTimeout(function(){
-            	$.ajax({
-					url : "../../json2/serviceType.json",
-					type : "get",
-					dataType : "json",
-					success : function(data){
-						if(window.sessionStorage.getItem("addLinks")){
-							var addLinks = window.sessionStorage.getItem("addLinks");
-							linksData = JSON.parse(addLinks).concat(data);
-						}else{
-							linksData = data;
-						}
-						for(var i=0;i<linksData.length;i++){
-							var linksStr = linksData[i];
-							var selectStr = $(".search_input").val();
-		            		function changeStr(data){
-		            			var dataStr = '';
-		            			var showNum = data.split(eval("/"+selectStr+"/ig")).length - 1;
-		            			if(showNum > 1){
-									for (var j=0;j<showNum;j++) {
-		            					dataStr += data.split(eval("/"+selectStr+"/ig"))[j] + "<i style='color:#03c339;font-weight:bold;'>" + selectStr + "</i>";
-		            				}
-		            				dataStr += data.split(eval("/"+selectStr+"/ig"))[showNum];
-		            				return dataStr;
-		            			}else{
-		            				dataStr = data.split(eval("/"+selectStr+"/ig"))[0] + "<i style='color:#03c339;font-weight:bold;'>" + selectStr + "</i>" + data.split(eval("/"+selectStr+"/ig"))[1];
-		            				return dataStr;
-		            			}
-		            		}
-		            		//网站名称
-		            		if(linksStr.linksName.indexOf(selectStr) > -1){
-			            		linksStr["linksName"] = changeStr(linksStr.linksName);
-		            		}
-		            		//网站地址
-		            		if(linksStr.linksUrl.indexOf(selectStr) > -1){
-			            		linksStr["linksUrl"] = changeStr(linksStr.linksUrl);
-		            		}
-		            		//
-		            		if(linksStr.showAddress.indexOf(selectStr) > -1){
-			            		linksStr["showAddress"] = changeStr(linksStr.showAddress);
-		            		}
-		            		if(linksStr.linksName.indexOf(selectStr)>-1 || linksStr.linksUrl.indexOf(selectStr)>-1 || linksStr.showAddress.indexOf(selectStr)>-1){
-		            			newArray.push(linksStr);
-		            		}
-		            	}
-		            	linksData = newArray;
-		            	linksList(linksData);
+		
+		var index = layer.msg('更新中，请稍候',{icon: 16,time:false,shade:0.8});
+        setTimeout(function(){
+        	$.ajax({
+				url : "/c/lzh/service/reimburseInfo",
+				type : "post",
+				dataType : "json",
+				contentType:"application/json",
+				data:JSON.stringify(layui.data('ReimburseVo')),
+				success : function(data){
+					if(window.sessionStorage.getItem("addLinks")){
+						var addLinks = window.sessionStorage.getItem("addLinks");
+						linksData = JSON.parse(addLinks).concat(data);
+					}else{
+						linksData = data;
 					}
-				})
-            	
-                layer.close(index);
-            },2000);
-		}else{
-			layer.msg("请输入需要查询的内容");
-		}
+	            	linksList(linksData);
+				}
+			})
+        	
+            layer.close(index);
+        },1000);
+		
 	})
 
-	//添加友情链接
-	$(".linksAdd_btn").click(function(){
-		var index = layui.layer.open({
-			title : "添加友情链接",
-			type : 2,
-			content : "linksAdd.html",
-			success : function(layero, index){
-				setTimeout(function(){
-					layui.layer.tips('点击此处返回友链列表', '.layui-layer-setwin .layui-layer-close', {
-						tips: 3
-					});
-				},500)
-			}
-		})
-		//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
-		$(window).resize(function(){
-			layui.layer.full(index);
-		})
-		layui.layer.full(index);
-	})
+	
 
 	//批量删除
 	$(".batchDel").click(function(){
@@ -126,7 +62,7 @@ layui.config({
 	            	form.render();
 	                layer.close(index);
 					layer.msg("删除成功");
-	            },2000);
+	            },1000);
 	        })
 		}else{
 			layer.msg("请选择需要删除的文章");
@@ -154,27 +90,56 @@ layui.config({
 		}
 		form.render('checkbox');
 	})
- 
-	//操作
+	
+	
+	//条件查询
+	function ReimburseVoFun(){
+		layui.data('ReimburseVo', {
+			  key: 'refundid'
+			  ,value: $("#refundid").val().trim()
+		});
+		layui.data('ReimburseVo', {
+			  key: 'username'
+			  ,value: $("#username").val().trim()
+		});
+		layui.data('ReimburseVo', {
+			  key: 'refundstatus'
+			  ,value: $("#refundstatus").val().trim()
+		});
+		layui.data('ReimburseVo', {
+			  key: 'dateStart'
+			  ,value: $("#dateStart").val().trim()
+		});
+		layui.data('ReimburseVo', {
+			  key: 'dateEnd'
+			  ,value: $("#dateEnd").val().trim()
+		});
+	}
+	//查看
 	$("body").on("click",".links_edit",function(){  //编辑
-		
+		window.sessionStorage.setItem("orderId",$(this).parents("tr").find(".links_del").attr("data-id"));
 		window.location.href="../service/returnMoneyDetail.html";
 	})
 
-	$("body").on("click",".links_del",function(){  //删除
-		var _this = $(this);
-		layer.confirm('确定删除此信息？',{icon:3, title:'提示信息'},function(index){
-			//_this.parents("tr").remove();
-			for(var i=0;i<linksData.length;i++){
-				if(linksData[i].linksId == _this.attr("data-id")){
-					linksData.splice(i,1);
-					linksList(linksData);
+	//加载数据
+	function loadInfo(linksData){
+		$.ajax({
+			url : "/c/lzh/service/reimburseInfo",
+			type : "post",
+			dataType : "json",
+			contentType:"application/json",
+			data:JSON.stringify(layui.data('ReimburseVo')),
+			success : function(data){
+				linksData = data;
+				if(window.sessionStorage.getItem("addLinks")){
+					var addLinks = window.sessionStorage.getItem("addLinks");
+					linksData = JSON.parse(addLinks).concat(linksData);
 				}
+				//执行加载数据的方法
+				linksList(linksData);
 			}
-			layer.close(index);
-		});
-	})
-
+		})
+	}
 	function linksList(that){
 		//渲染数据
 		function renderDate(data,curr){
@@ -189,28 +154,27 @@ layui.config({
 				for(var i=0;i<currData.length;i++){
 					dataHtml += '<tr>'
 			    	+'<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>'
-			    	+'<td>'+currData[i].linksId+'</td>'
-			    	+'<td align="center" valign="middle"><a href="/index.php/Admincp/order/info/id/100818/continue/aHR0cDovL3lwaHRpbmcuemdseGtqLmNvbS9pbmRleC5waHAvQWRtaW5jcC9PcmRlci9pbmRleC5odG1s.html">15480555551865</a></td>'
-			    	+'<td>2019-01-21 13:12</td>'
-			    	+'<td> 净说笑7544 </td>'
-			    	+'<td>快到碗里来</td>'
-			    	+'<td>20 </td>'
-			    	+'<td>退款完成   </td>'
-			    	+'<td>未处理</td>'
-			    	+'<td> </td>'
+			    	+'<td>'+currData[i].refundid+'</td>'
+			    	+'<td align="center" valign="middle"><a href="/index.php/Admincp/order/info/id/100818/continue/aHR0cDovL3lwaHRpbmcuemdseGtqLmNvbS9pbmRleC5waHAvQWRtaW5jcC9PcmRlci9pbmRleC5odG1s.html">'+currData[i].orderid+'</a></td>'
+			    	+'<td>'+currData[i].applicationtime+'</td>'
+			    	+'<td>'+currData[i].username+'</td>'
+			    	+'<td>'+currData[i].servicetitle+'</td>'
+			    	+'<td>'+currData[i].applyrefundmoney+'</td>'
+			    	+'<td style="color:'+(currData[i].refundstatus==3?'red':'')+';">'+(currData[i].refundstatus==1?'退款申请':currData[i].refundstatus==2?'不同意':currData[i].refundstatus==3?'申请管理员介入':currData[i].refundstatus==4?'管理员拒绝':currData[i].refundstatus==5?'退款完成':currData[i].refundstatus==6?'退款取消':'')+'  </td>'
+			    	+'<td>'+(currData[i].audittime==null?"":currData[i].audittime)+'</td>'
 			    	+'<td>'
-					+  '<a class="layui-btn layui-btn-mini links_edit" data-id="'+data[i].linksId+'"><i class="iconfont icon-edit"></i> 查看</a>'
+					+  '<a class="layui-btn layui-btn-mini links_edit links_del" data-id="'+data[i].orderid+'"><i class="iconfont icon-edit"></i> 查看</a>'
 			        +'</td>'
 			    	+'</tr>';
 				}
 			}else{
-				dataHtml = '<tr><td colspan="7">暂无数据</td></tr>';
+				dataHtml = '<tr><td colspan="10">暂无数据</td></tr>';
 			}
 		    return dataHtml;
 		}
 
 		//分页
-		var nums = 13; //每页出现的数据量
+		var nums = 20; //每页出现的数据量
 		if(that){
 			linksData = that;
 		}

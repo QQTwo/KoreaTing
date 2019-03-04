@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.accp.dao.lzh.IServicesDao">
+	<!-- 查询服务vo -->
+	<select id="findAllServiceVo" resultType="com.accp.vo.lzh.ServiceVo">
+		SELECT `serviceID`,s.`stid` AS stid,`stName`,s.`userID` AS userID,`userName`,`serviceTitle`,s.`auditStatus` AS auditStatus,`shopName`,`shelfState`,`orderByNum`,`recommendBool`,`releaseTime` FROM `services` s
+		LEFT JOIN `servicetype` se ON s.`stid` = se.`stid`
+		LEFT JOIN `user` u ON s.`userID` = u.`userID`
+		<where>
+			<if test="stid != 0 ">
+				and s.`stid` = #{stid}
+			</if>
+			<if test="auditStatus != 0 ">
+				and s.`auditStatus` = #{auditStatus}
+			</if>
+			<if test="serviceTitle != null and serviceTitle != ''">
+				and serviceTitle like '%${serviceTitle}%'
+			</if>
+			<if test="releaseTimeP != null and releaseTimeP != ''">
+				and releaseTime &gt;=#{releaseTimeP}
+			</if>
+			<if test="releaseTimeM != null and releaseTimeM != ''">
+				and releaseTime &lt;= #{releaseTimeM}
+			</if>
+		</where>
+		ORDER BY releaseTime DESC
+	</select>
+	
+	<!-- 修改服务状态 -->
+	<update id="updateadminstatus">
+		update Services
+		<set>
+			<if test="tuijian != 0">
+				recommendbool=#{tuijian},
+			</if>
+			<if test="shenhe != 0">
+				auditstatus=#{shenhe},
+			</if>
+			<if test="yingye != 0">
+				shelfState=#{yingye},
+			</if>
+			<if test="adminopinion != 0">
+				adminopinion=#{adminopinion}
+			</if>
+		</set>
+		where serviceid=#{serviceid};
+		<if test="status != 3">
+			insert into news (addRessee,content,sendingTime,newsType,readState)
+			 VALUE((select userid from Services where serviceID=#{serviceid}),
+			 <if test="status == 2 and  shenhe==2">
+				 	'恭喜您的服务通过审核',
+			</if>
+			<if test="status == 2 and  shenhe==3">
+				 	'很遗憾，您的服务未通过审核',
+			</if>
+			 <if test="status == 1 and tuijian==1">
+			 	'恭喜您的服务已推荐',
+			 </if>
+			 <if test="status == 1 and tuijian==2">
+			 	'很遗憾，您的服务未被推荐',
+			 </if>
+			 now(),
+			 1,1
+			 )
+		 </if>
+	</update>
+	
+	<select id="queryreimburse" resultType="com.accp.vo.lzh.ReimburseVo">
+		SELECT * FROM (SELECT
+		a.refundID,a.orderID,a.applicationTime,b.userName,
+		a.`applyRefundMoney`,d.`serviceTitle`,c.`orderStatus`,c.`remarks`,
+		a.`auditTime`,c.`refundstatus` FROM `refund` a JOIN `user` b ON a.userID=b.`userID`
+		JOIN `orders` c ON a.`orderID`=c.`orderID` JOIN `services` d ON
+		c.`serviceID`=d.`serviceID`
+		WHERE c.orderStatus=8)v
+		<where>
+			<if test="username!= null and username != ''">
+				AND v.userName like '%${username}%'
+			</if>
+			<if test="refundid!= null and refundid != 0">
+				AND v.refundID=#{refundid}
+			</if>
+			<if test="datestart!=null and datestart != ''">
+				AND v.applicationTime>=#{datestart}
+			</if>
+			<if test="dateend!=null and dateend != ''">
+				AND v.applicationTime&lt;=#{dateend}
+			</if>
+			<if test="status != null and status != 0">
+				AND v.refundstatus=#{status}
+			</if>
+		</where>
+	</select>
+	<!-- 查询退款byid -->
+	<select id="queryRefundByID" resultType="com.accp.vo.lzh.RefundVo">
+		SELECT u.userID,u.`userName`,o.`orderID`,f.`applyRefundMoney`,f.`refundReason`,f.applicationTime,
+		o.refundstatus,f.businessRemarks,f.auditTime,f.ActualRefundMoney,f.adminStatus,f.adminRemarks,
+		f.refundImg,o.totalPrice FROM orders AS o 
+		JOIN `user` AS u ON u.`userID`=o.`userID`
+		JOIN refund AS f ON f.`orderID`=o.`orderID`
+		WHERE o.orderID='${orderID}'
+	</select>
+	<!-- 查询审核 -->
+	<select id="querybyid" resultType="com.accp.vo.lzh.AuditVo">
+		SELECT b.`stName`,
+		`serviceID`,c.`username`,
+		`serviceTitle`,
+		`servicePrice`,
+		`releaseTime`,
+		`serviceCoverImg`,
+		`serviceCostTypeID`,
+		`serviceCostInclude` ,
+		`recommendBool`,`shelfState`,a.`auditStatus`,`shopName`,serviceIntro,
+		`serviceImgUrlOne`,`serviceImgUrlTwo`,`serviceImgUrlThree`,`serviceImgUrlFour`,adminOpinion
+		FROM `services` a
+		 JOIN `servicetype` b
+		  ON a.`stid`=b.`stid`
+		  JOIN `user` c 
+		  ON a.userid=c.userid
+		  where serviceID=#{serviceid}
+	</select>
+	
+	<select id="queryComlaintVo" resultType="com.accp.vo.lzh.ComplaintVo">
+		 SELECT `cid`,`userName`,`ctName`,`isClear`,`TimeOfComplaint`,`type`,`serviceTitle` FROM `complaint` c
+		 LEFT JOIN `user` u ON u.`userID` = c.`userID`
+		 LEFT JOIN `complainttype` ct ON ct.`ctID` = c.ctID
+		 LEFT JOIN `services` s ON s.`serviceID` = c.`pcID`
+		 <where>
+		 	<if test="1==1">
+		 		isClear in (1,2)
+		 	</if>
+		 	<if test="title != null and title != ''">
+		 		serviceTitle = #{title}
+		 	</if>
+		 </where>
+		 ORDER BY TimeOfComplaint DESC
+	</select>
+	
+	<select id="modifyComlaint">
+		update complaint set isClear = 3
+		where cid = #{cid}
+	</select>
+</mapper>
