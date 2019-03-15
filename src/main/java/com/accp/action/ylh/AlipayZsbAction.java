@@ -1,4 +1,4 @@
-/*package com.accp.action.ylh;
+package com.accp.action.ylh;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -293,4 +293,3 @@ public class AlipayZsbAction {// response
 		return "notify_url";
 	}
 }
-*/
