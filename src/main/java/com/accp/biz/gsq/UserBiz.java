@@ -1,5 +1,6 @@
 package com.accp.biz.gsq;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.accp.dao.gsq.IUserDao;
+import com.accp.dao.ylh.GoldnotesDao;
+import com.accp.pojo.Integralrecord;
 import com.accp.pojo.News;
 import com.accp.pojo.Sharea;
 import com.accp.pojo.User;
@@ -23,6 +26,8 @@ import com.github.pagehelper.PageInfo;
 public class UserBiz {
 	@Autowired
 	private IUserDao dao;
+	@Autowired
+    private GoldnotesDao Gdao;
 	
 	public boolean queryEmail(String email) {
 		/**
@@ -46,6 +51,7 @@ public class UserBiz {
 	 */
 	public User login(String email,String password) {
 		return dao.login(email, password);
+		
 	}
 	/**
 	 * 修改密码
@@ -204,5 +210,44 @@ public class UserBiz {
 	 */
 	public boolean saveXtxx(Integer userID,String content) {
 		return dao.saveXtxx(userID, content)>0;
+	}
+	
+	/**
+	 * 新增系统消息
+	 * @param userID 用户ID
+	 */
+	public void updateUserRecentEntry(Integer userID) {
+		dao.updateUserRecentEntry(userID);
+	}
+	/**
+	 * 根据编号获取用户
+	 * 
+	 * @param userid
+	 *            用户编号
+	 * @return
+	 */
+	public User queryUserById(int userid) {
+		return dao.queryUserById(userid);
+	}
+	/**
+	 * 
+	    * @Title: updateUsersign
+	    * @Description: 用户签到
+	    * @param @param userid
+	    * @param @return    参数
+	    * @return User    返回类型
+	    * @throws
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, readOnly = false)
+	public int updateUserSign(int userid) {
+		//添加积分流记录表
+		Integralrecord Integralrecord=new Integralrecord();
+		Integralrecord.setUserid(userid);
+		Integralrecord.setIrdate(new Date());
+		Integralrecord.setIrdescribe("签到送积分");
+		Integralrecord.setAuditstatus(4);
+		Integralrecord.setRecordinandout(+20);
+	    Gdao.addIntegralRecord(Integralrecord);
+		return dao.updateUserSign(userid, 20);
 	}
 }
