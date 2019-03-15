@@ -9,7 +9,7 @@ layui.config({
 	//加载页面数据
 	var linksData = '';
 	$.ajax({
-		url : "../../json2/serviceType.json",
+		url : "/cmservice/querytype",
 		type : "get",
 		dataType : "json",
 		success : function(data){

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商家入驻</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				width: 1366px;
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="" id="listVm">
+			<blockquote class="back">
+			  <p style="font-weight: bold;padding-top: 10px;">商家入驻</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户昵称：<input type="text" value="" placeholder="" name="nickname">
+					&nbsp;
+					会员组：
+					<select name="huiyuangroup">
+			    		<option value="0">所有</option>
+	                    <option value="1">大陆商家用户</option>
+	                    <option value="2">海外商家用户</option>   
+		    		</select>
+		    		&nbsp;
+		    		审核状态:
+		    		<select name="checkstatus" id="checkstatus">
+	                    <option value="0">所有</option>
+	                    <option value="1">审核中</option>
+	                    <option value="3">未通过</option>
+	                    <option value="2">成功</option>                  
+		    		</select>
+
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search(1,10)">
+						查询</button>
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;">导出</button>
+
+			    </div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<thead style="background-color:#f2f2f2;">
+  						<tr>
+							<th>序号</th>
+		                    <TH>用户昵称</TH>
+		                    <TH>店铺名称</TH>
+		                    <TH>邮箱</TH>
+		                    <TH>真实姓名</TH>
+		                    <TH>QQ</TH>
+		                    <TH>微信</TH>
+		                    <TH>身份证</TH>
+		                    <TH>申请类别</TH>
+		                    <TH >状态</TH>
+			                <TH>申请时间</TH>
+			                <TH>操作</TH>
+						</tr> 
+  					</thead> 
+  					 <tbody>
+  						<tr v-for="(temp,index) in membersPageInfo.list">
+					    	<td v-text="(index+1)">1</td>	
+					    	<td v-text="temp.username">ok</td>	
+					    	<td v-text="temp.shopname">普通会员</td>	
+					    	<td v-text="temp.merchantemail">1017009456@qq.com</td>	
+					    	<td v-text="temp.userrealname">0</td>	
+					    	<td v-text="temp.qq">100</td>	
+					    	<td v-text="temp.wechat" style="color:#f00">未验证</td>	
+					    	<td v-text="temp.identitynumder">18596230152</td>	
+					    	<td v-if="temp.merchanttype==1">大陆商家用户</td>	
+					    	<td v-if="temp.merchanttype==2">海外商家用户</td>	
+					    	<td v-if="temp.auditstatus==1">待审核</td>	
+					    	<td v-if="temp.auditstatus==2">已通过</td>	
+					    	<td v-if="temp.auditstatus==3">未通过</td>	
+					    		<td v-text="temp.userregistrationtime">18596230152</td>	
+					    		<td>
+					    		<a class="btn btn-default btn-xs  memberCheck_edit" @click="memberEdit(temp.userid)"><span class="glyphicon glyphicon-edit"></span> 查看</a>
+					    	</td>	
+					    </tr>
+  					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	var listVm = new Vue({
+		el: "#listVm",
+		data: {
+			//会员信息
+			membersPageInfo: {},
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				var username="@*";
+				var merchanttype=0;
+				var auditstatus=0;
+				$.getJSON("/sj/users/" + n + "/" + s +"/"+auditstatus+"/"+merchanttype+"/"+username, function(pageData) {
+					listVm.membersPageInfo = pageData;
+				}); 
+			},
+		 	//搜索
+			search:function(n, s,auditstatus,merchanttype,username){
+				var username=$("[name=nickname]").val();
+				var merchanttype=$("[name=huiyuangroup]").val();
+				var auditstatus=$("[name=checkstatus]").val();
+				alert("nicheng:"+username)
+				$.getJSON("/sj/users/" + n + "/" + s +"/"+auditstatus+"/"+merchanttype+"/"+username, function(pageData) {
+					listVm.membersPageInfo = pageData;
+					console.log(pageData.list)
+				});
+			},
+			memberEdit:function(userid){
+				window.sessionStorage.setItem("userid", userid);
+				window.location.href="shopperRuzhu_detail.html";
+			}
+			/* //编辑
+			memberEdit:function(userid){
+				window.sessionStorage.setItem("userid", userid);
+				window.location.href="memberCheck_update.html";
+			},
+			command:function(userid){
+				window.sessionStorage.setItem("userid", userid);
+				window.location.href="memberCheck_commend.html";
+			},
+			sum:function(nickname){
+				$.ajax("/c/cmmember/users/sum/"+nickname, {
+					type: "get",
+					dataType: "json",
+					success: function(data) {
+						listVm.jinbi=data.jinbi;
+						listVm.jifen=data.jifen;
+					}
+				});
+			} */
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+			
+			//加载金币数和积分
+		}
+	});
+</script>
+</html>

@@ -1,128 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-	<meta charset="utf-8">
-	<title>服务审核管理</title>
-	<meta name="renderer" content="webkit">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="format-detection" content="telephone=no">
-	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
-	<link rel="stylesheet" href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" />
-	<link rel="stylesheet" href="../../css/news.css" media="all" />
+<meta charset="UTF-8">
+<title>服务审核管理</title>
+<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.back {
+	font-size: 14px;
+	border-radius: 0 2px 2px 0;
+	background-color: #f2f2f2;
+	padding: 2px 10px;
+	border-left: 5px solid rgb(25, 159, 147);
+	height:35px;
+}
+
+table thead tr>th, tr>td {
+	text-align: center;
+}
+</style>
 </head>
-<body class="childrenBody">
-	<blockquote class="layui-elem-quote news_search">
-		<div class="layui-inline" style="font-weight: bolder;">服务审核管理：
+<body>
+	<div class="" id="sellistVm1">
+		<blockquote class="back">
+			<p style="font-weight: bold; padding-top: 10px;">服务审核管理：</p>
+		</blockquote>
+		<div class="col-md-12 col-xs-12"></div>
+		<div>
+			<table class="table table-bordered">
+				<thead style="background-color: #f2f2f2;">
+					<tr>
+						<th>ID</th>
+						<th style="width:9%">栏目名称</th>
+						<th style="width:10%">未操作时间</th>
+						<th style="width:10%">自动确认时间</th>
+						<th style="width:10%">服务违约天数</th>
+						<th style="width:10%">违约金比例</th>
+						<th style="width:12%">是否审核</th>
+						<th style="width:20%">广告</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				
+				
+				<tr v-for="(temp,index) in membersPageInfo.list">
+					<td v-text="temp.stid">1</td>
+					<td v-text="temp.stname">15389827632133</td>
+					<td><input type="text" v-model="temp.operationtime" style="width:25%;"/> 天</td>
+					<td><input type="text" v-model="temp.confirmtime" style="width:25%"/> 小时</td>
+					<td><input type="text" v-model="temp.violatednumber" style="width:25%"/> 天</td>
+					<td><input type="text" v-model="temp.proportion" style="width:25%"/> %</td>
+
+					<td><input name="toexamine" v-model="temp.toexamine"
+								type="radio" value="true" />需要 <input name="toexamine"
+								v-model="temp.toexamine" type="radio" value="false" />不需要</td>
+
+					<td align=center><img :src="temp.advertisement"></td>
+					<td><a href="javascript:void(0)" @click="memberShow(temp.stid)">查看</a></td>
+				</tr>
+				</tbody>
+				<tfoot>
+					
+					<tr>
+						<td colspan="9">
+							<ul class="pager">
+								<li>
+									<!--@click="goToPage(1,emailsPageInfo.pageSize)"--> <a
+									href="javascript:void(0)"
+									@click="goToPage(1,membersPageInfo.pageSize)"> 首页 </a>
+								</li>
+								<li v-if="membersPageInfo.hasPreviousPage==true"><a
+									href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+										上一页 </a></li>
+								<li v-if="membersPageInfo.hasNextPage==true"><a
+									href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+										下一页 </a></li>
+								<li><a href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+										尾页 </a></li>
+								<li>第<span style="border: none; padding: 0 2px;"
+									v-text="membersPageInfo.pageNum">1</span>页， 共<span
+									style="border: none; padding: 0 2px;"
+									v-text="membersPageInfo.pages">5</span>页
+								</li>
+							</ul>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
 		</div>
-	</blockquote>
-	<div class="layui-form links_list">
-	  	<table class="layui-table">
-		    <colgroup>
-				<col width="50">
-				<col width="10%">
-				<col width="15%">
-				<col width="15%">
-				<col width="15%">
-				<col width="15%">
-				<col width="15%">
-				<col width="40%">
-				<col width="15%"/>
-				<col width="13%"/>
-		    </colgroup>
-		    <thead>
-				<tr>
-					<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose" id="allChoose"></th>
-					<th>ID</th>
-					<th>栏目名称</th>
-					<th>未操作时间</th>
-					<th>自动确认时间</th>
-					<th>服务违约天数</th>
-					<th>违约金比例</th>
-					<th>是否审核</th>
-					<th>广告</th>
-					<th>操作</th>
-				</tr> 
-		    </thead>
-		    <tbody class="links_content">
-		    	<!--<tr>
-		    		<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-		    		<td>4</td>
-    				<td  nowrap>
-    					微整形    <input type="text" name="catname[4]" id="catname4" value="微整形" class="validate[required]" style="display:none" />
-    				</td>
-    				<td  nowrap><input name="sort[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort4" value="1" size="8" /></td>
-					<td  nowrap>显示</td>
-    				<td nowrap>
-        				<a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        				<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-    				</td>
-		    	</tr>
-		    	<tr id="data-row-165">
-		    		<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-        <td nowrap  >165</td>
-        <td  nowrap>—眼部整形          <input name="catname[165]" type="text" class="validate[required]" id="catname165" value="眼部整形" size="12" style="display:none" />
-        </td>
-        <td  nowrap>—
-            <input name="sort[165]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort165" value="1" size="8" />
-        </td>
-        <td  nowrap>显示</td>
-        <td nowrap>
-            <a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        				<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-        </td>
-      </tr>
-      <tr id="data-row-209">
-      	<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-        <td nowrap  >209</td>
-        <td  nowrap>—qwe          <input name="catname[209]" type="text" class="validate[required]" id="catname209" value="qwe" size="12" style="display:none" />
-        </td>
-        <td  nowrap>—
-            <input name="sort[209]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort209" value="1" size="8" />
-        </td>
-        <td  nowrap>不显示</td>
-        <td nowrap>
-            <a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        	<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-        </td>
-      </tr>
-      <tr id="data-row-161">
-      	<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-        <td nowrap  >161</td>
-        <td  nowrap>—鼻部整形          <input name="catname[161]" type="text" class="validate[required]" id="catname161" value="鼻部整形" size="12" style="display:none" />
-        </td>
-        <td  nowrap>—
-            <input name="sort[161]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort161" value="2" size="8" />
-        </td>
-        <td nowrap>显示</td>
-        <td nowrap>
-           <a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        	<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-        </td>
-      </tr>
-      <tr id="data-row-166">
-      	<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-        <td nowrap  >166</td>
-        <td  nowrap>—脸部轮廓整形          <input name="catname[166]" type="text" class="validate[required]" id="catname166" value="脸部轮廓整形" size="12" style="display:none" />
-        </td>
-        <td  nowrap>—
-            <input name="sort[166]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort166" value="3" size="8" />
-        </td>
-        <td  nowrap>显示</td>
-        <td nowrap>
-            <a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        	<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-        </td>
-      </tr>-->
-		    </tbody>
-		</table>
 	</div>
-	<div id="page"></div>
-	<div><a class="layui-btn search_btn">更新</a>
-	<script type="text/javascript" src="../../layui/layui.js"></script>
-	<script type="text/javascript" src="../service/serviceCheck.js"></script>
-	<!--<script type="text/javascript" src="../service/serviceCheckUpdate.js"></script>-->
 </body>
+<script src="../../js/jquery-1.12.4.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/vue.js"></script>
+<script type="text/javascript">
+
+	var listVm = new Vue({
+		el: "#sellistVm1",
+		data: {
+			//预约信息
+			membersPageInfo: {}
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				$.ajax({
+					url : "/c/cmservice/queryaudit",
+					type : "get",
+					dataType : "json",
+					data:{
+						PageNum:n,
+            			PageSize:s
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						console.log(listVm.membersPageInfo)
+					}
+				})
+			},
+			//查看
+			memberShow:function(stid){
+				window.sessionStorage.setItem("stid", stid);
+				window.location.href="../service/serviceCheckUpdate.html";
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+			
+		}
+	});
+</script>
 </html>

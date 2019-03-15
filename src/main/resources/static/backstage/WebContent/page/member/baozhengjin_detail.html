@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>查看保证金--提现申请</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.back{
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			.tdd>select{
+				width: 12.5%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="">
+			<div class="col-lg-12 col-xs-12 back" style="background-color: #f2f2f2;">
+			  <p style="font-weight: bold;padding-top: 10px;">提现申请</p>
+			</div>
+			<div class="col-xs-12" style="margin-bottom: 5px;"></div>
+			<form class="form-inline">
+				<table class="table table-hover table-condensed table-bordered">
+					<TBODY>
+			          <TR>
+			            <TD width="89" align=right noWrap><strong>会员:</strong></TD>
+			            <TD width="300" >魅力。解释一切♀</TD>
+			            <TD align=right>&nbsp;</TD>
+			            <TD >&nbsp;</TD>
+			          </TR>
+					  	<TR>
+			            <TD align=right noWrap>申请日期：</TD>
+			            <TD >2019-03-09 11:23:52</TD>
+			            <TD align=right>保证金：</TD>
+			            <TD >500.00元</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>店铺名称：</TD>
+			            <TD >店铺</TD>
+			            <TD align=right>状态：</TD>
+			            <TD>
+						交易成功   </TD>
+			          </TR>
+			            
+			          <TR>
+			            <TD align=right>备注：</TD>
+			            <TD colspan="3"><textarea name="remarks"  rows='3' cols='160' placeholder="请填入拒绝原因"></textarea></TD>
+			          </TR>
+			          <TR>
+			           <TD><input type="hidden" name="userid" value="490"></TD>
+			            <td colspan="1"></td>
+			            <TD colspan="1" style="text-align: right;">
+			            	<!--如果状态为申请成功，则不需要显示提交按钮-->
+			            	<button type="button"  class="btn btn-success" style="display: none;">提交</button>
+			            </TD>
+			            <TD colspan="1" >
+			            	<button type="button"  class="btn btn-default" onClick="history.go(-1)">返回</button>
+			            </TD>
+			          </TR>
+			        </tbody>
+				</table>
+			</form>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+</html>

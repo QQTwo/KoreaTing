@@ -20,6 +20,28 @@ serviceVoFun();
 var linksData = '';
 loadInfo(linksData);
 
+//服务类别("[name=serviceID]")
+$.ajax({
+	url:"/c/lzh/service/primaryServiceType",
+	type:"get",
+	async:false,
+	success:function(data){
+		for (var i = 0; i < data.length; i++) {
+			$("[name=serviceID]").append("<option value="+data[i].stid+">"+data[i].stname+"</option>");
+			$.ajax({
+				url:"/c/lzh/service/primaryServiceType/" +data[i].stid,
+				type:"get",
+				async:false,
+				success:function(json){
+					for (var i = 0; i < json.length; i++) {
+						$("[name=serviceID]").append("<option value="+json[i].stid+">——"+json[i].stname+"</option>");
+					}
+				}
+			})
+		}
+	}
+})
+
 //查询
 $(".search_btn").click(function(){
 	serviceVoFun();
@@ -234,11 +256,11 @@ function linksList(that){
 		    	+'<td align="center" valign="middle">'+currData[i].stName+'</td>'
 		    	+'<td>'+currData[i].serviceTitle+'</td>'
 		    	+'<td>'+currData[i].userName+'</td>'
-		    	+'<td style="color:'+(currData[i].auditStatus==1 ? 'red' : currData[i].auditStatus==2 ? 'blue':'red')+';">'+(currData[i].auditStatus==1 ? '待审核' : currData[i].auditStatus==2 ? '审核成功':'未通过')+'</td>'
+		    	+'<td style="color:'+(currData[i].auditStatus==1 ? 'blue' : currData[i].auditStatus==2 ? 'black':'red')+';">'+(currData[i].auditStatus==1 ? '待审核' : currData[i].auditStatus==2 ? '审核成功':'未通过')+'</td>'
 		    	+'<td>'+(currData[i].shelfState==1 ? '上架' :'下架')+' </td>'
 		    	+'<td>'+currData[i].releaseTime+'</td>'
 		    	+'<td>'+(currData[i].recommendBool!=1?'不推荐':'推荐')+'</td>'
-		    	+'<td>'+(currData[i].orderByNum!=1?'':currData[i].orderByNum)+'</td>'
+		    	+'<td>'+(currData[i].orderByNum)+'</td>'
 		    	+'<td>'
 				+  '<a class="layui-btn layui-btn-mini links_edit links_del" data-id="'+currData[i].serviceID+'"><i class="iconfont icon-edit"></i> 修改</a>'
 		        +'</td>'

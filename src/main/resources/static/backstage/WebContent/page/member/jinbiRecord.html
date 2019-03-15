@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>金币记录</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container {
+				font-size: 14px;
+			}
+			
+			.back {
+				width: 1386px;
+				font-size: 14px;
+				border-radius: 0 2px 2px 0;
+				background-color: #f2f2f2;
+				padding: 2px 10px;
+				border-left: 5px solid rgb(25, 159, 147);
+			}
+			
+			table thead tr>th,
+			tr>td {
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="" id="listVm">
+			<blockquote class="back">
+				<p style="font-weight: bold;padding-top: 10px;">金币管理</p>
+				<div style="padding:0px 0px 12px 15px;font-size: 14px;">
+					用户名：<input type="text" value="" placeholder="" name="username"> &nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search()">
+						查询</button>
+				</div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<THEAD style="background-color:#f2f2f2;">
+						<TR>
+							<th>序号</th>
+							<TH>用户</TH>
+							<TH>类型</TH>
+							<TH>获取方式</TH>
+							<TH>消费</TH>
+							<TH>状态</TH>
+							<TH>备注</TH>
+							<TH>消费时间</TH>
+						</TR>
+					</THEAD>
+					<!--
+                    	作者：1017009135@qq.com
+                    	时间：2019-03-10
+                    	描述：tbody 判断用户编号
+                    -->
+                     <tbody>
+  						<tr v-for="(temp,index) in user.list">
+					    	<td v-text="(index+1)">1</td>	
+					    	<td v-text="temp.userName">ok</td>	
+					    	<td >金币</td>	
+					    	<td v-if="temp.acquisitionMode==1">预定服务</td>	
+					    	<td v-if="temp.acquisitionMode==2">服务收益</td>	
+					    	<td v-if="temp.acquisitionMode==3">取消物流订单</td>
+					    	<td v-if="temp.acquisitionMode==4">其他</td>	
+					    	<td v-if="temp.acquisitionMode==5">充值</td>	
+					    	<td v-if="temp.acquisitionMode==6">线下充值</td>
+					    	<td v-if="temp.acquisitionMode==7">退款</td>	
+					    	<td v-if="temp.acquisitionMode==8">提现</td>	
+					    	<td v-text="temp.recordInAndOut">0</td>	
+					    	<td v-if="temp.auditStatus==1"><span></span>待审核</td>	
+					    	<td v-if="temp.auditStatus==2">已通过</td>	
+					    	<td v-if="temp.auditStatus==3">未通过</td>
+					    	<td v-text="temp.recordDescribe">100</td>	
+					    	<td v-text="temp.recordDate">100</td>	
+					    </tr>
+  					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="13">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+										<a href="javascript:void(0)">
+											首页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)">
+											上一页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)">
+											下一页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)">
+											尾页
+										</a>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	var username = null;
+	var listVm = new Vue({
+		el: "#listVm",
+		data: {
+			//会员信息
+			user: {},
+		},
+
+		//方法
+		methods: {
+			goToPage: function(p, s) {
+				username = "@*";
+				$.getJSON("/tz/getGoldList/"+ p + "/" + s +"/"+username, function(pageData) {
+					listVm.user = pageData;
+					console.log(pageData.list)
+				});
+			},
+			search:function(){
+				var username=$("[name=username]").val();
+				var p = 1;
+				var s = 10;
+				$.getJSON("/tz/getGoldList/" + p + "/" + s +"/" +username, function(pageData) {
+					listVm.user = pageData;
+					console.log(pageData)
+				}); 
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+			//加载金币数和积分
+		}
+	});
+	</script>
+</html>

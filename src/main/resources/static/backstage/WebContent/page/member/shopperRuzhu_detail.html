@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商家入驻--查看</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.back{
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			.tdd>select{
+				width: 12.5%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="" id="listVm">
+			<form class="form-inline">
+				<table class="table table-hover table-condensed table-bordered">
+					<TBODY>
+			          <TR>
+			            <TD width="13%" align=right noWrap>会员:</TD>
+			            <TD  v-text="User.username" colspan="3" >
+			            </TD>
+			          </TR>
+			          <TR>
+			            <TD noWrap align=right width="13%">商家类别:</TD>
+			           <td width="300" v-if="User.merchanttype==1">大陆商家用户</td>	
+					    <td width="300" v-if="User.merchanttype==2">海外商家用户</td>	
+			            <TD align="right" width="130">服务类别:</TD>
+			            <TD ><span v-text="User.stname1" ></span>&nbsp;&nbsp;<span v-text="User.stname2" ></span>&nbsp;&nbsp;</TD>
+			          </TR>
+			          <TR>
+			            <TD width="13%" align="right">店铺名称:</TD>
+			            <TD v-text="User.shopname" >学习</TD>
+			            <TD noWrap align=right>真实姓名:</TD>
+			            <TD v-text="User.userrealname"  >茜茜</TD>
+			          </TR>			
+			          <TR>
+			            <TD align="right">签名:</TD>
+			            <TD colspan="3"  v-text="User.selfintroduction" >666            </TD>
+			          </tr>
+			                      <TR>
+			              <TD align="right" >外国登入证号码:</TD>
+			              <TD colspan="3" v-text="User.identitynumder" >123456789123456789              </TD>
+			            </tr>
+			            <TR>
+			              <TD align="right">登入证姓名:</TD>
+			              <TD colspan="3" v-text="User.identityrealname" >qwe</TD>
+			            </tr>          <TR>
+			            <TD align="right"><span class="mopa">商家店铺图片</span>:</TD>
+			            <TD align="left"><a href="http://yphting.zglxkj.com/Uploads/image/2019-01/20190102105003-54026.jpg" target="_blank">
+			            	<img src="http://yphting.zglxkj.com/Uploads/image/2019-01/20190102105003-54026.jpg" width="120" height="80" /></a></TD>
+			            <TD align="right"><span class="mopa">身份证正面</span>:</TD>
+			            <TD align="left"><a :href="User.identitypositiveimg" target="_blank">
+			            	<img src="" width="120" height="80" /></a></TD>
+			          </tr>
+			          <TR>
+			            <TD align="right"><span class="mopa">身份证背面</span>:</TD>
+			            <TD align="left"><a href="" target="_blank"><img src="" width="120" height="80" /></a>
+			            </TD>
+			            <TD align="right"><span class="mopa">身份证手持</span>:</TD>
+			            <TD align="left" ><a href="" target="_blank"><img src="" width="120" height="80" /></a>
+			            </TD>
+			          </tr>
+			          <TR>
+			            <TD align="right">身份住址:</TD>
+			            <TD align="left"><span v-text="User.mergername" ></span><span v-text="User.addetail" ></span></TD>
+			            <TD align="right">服务语言:</TD>
+			            <TD align="left"  v-text="User.languagenametext" >
+			            					韩语,意大利语,            </TD>
+			          </tr>
+			          <TR>
+			            <TD align="right">擅长专业:</TD>
+			            <TD align="left" v-text="User.majornametext">
+			            					人口学,国语国文,电子信息学,            </TD>
+			            					<TD align="right">所在城市:</TD>
+			            <TD align="left"  v-text="User.name">首尔特别市            </TD>
+			          </tr>
+			          <TR>
+			            <TD align="right">邮箱地址:</TD>
+			            <TD align="left"  v-text="User.merchantemail">958331502@qq.com            </TD>
+			            <TD align="right">联系电话:</TD>
+			            <TD align="left" v-text="User.merchantphone">2345678945            </TD>
+			          </tr>
+			          <TR>
+			            <TD align="right">QQ:</TD>
+			            <TD  align="left" v-text="User.qq">123456789</TD>
+			            <TD align="right">微信:</TD>
+			            <TD  align="left" v-text="User.wechat">123456</TD>
+			          </tr>
+			          <TR>
+			            <TD align="right">职业:</TD>
+			            <TD  align="left" v-text="User.profession" >技术  </TD>
+			            <TD align="right">身高:</TD>
+			            <TD  align="left" v-text="User.height">188CM
+			            </TD>
+			          </tr>
+			          <TR>
+			            <TD align="right">星座:</TD>
+			            <TD  align="left" v-text="User.constellation">金牛座  </TD>
+			            <TD align="right">年龄:</TD>
+			            <TD  align="left"  v-text="User.age">22</TD>
+			          </tr>
+			          <TR>
+			            <TD align="right">自我介绍:</TD>
+			            <TD colspan="3" v-text="User.selfIntroduction">大啊啊啊啊啊啊啊啊啊啊爱的            </TD>
+			          </tr>
+			          <TR>
+			            <TD align="right">店铺免费体验:</TD>
+			            <!--<td ><INPUT  type="radio" name="SHOP_FREE_STATUS" class="input-heigt" value="1"  >是-->
+			              <!--&nbsp;&nbsp;&nbsp;<INPUT type="radio" name="SHOP_FREE_STATUS" class="input-heigt" value="0" checked >否-->
+			            <!--</td>-->
+			            <td >否            </td>
+			            <td align="right" noWrap>店铺免费体验月数：</td>
+			            <td  >
+			              <select id="free_time"  type="text" name="free_time" class="input-heigt">
+			                <option value="1"> 1</option>
+			                <option value="2"> 2</option>
+			                <option value="3"> 3</option>
+			                <option value="4"> 4</option>
+			                <option value="5"> 5</option>
+			                <option value="6"> 6</option>
+			                <option value="7"> 7</option>
+			                <option value="8"> 8</option>
+			                <option value="9"> 9</option>
+			                <option value="10"> 10</option>
+			                <option value="11"> 11</option>
+			                <option value="12"> 12</option>
+			              </select>
+			            </td>
+			          </tr>
+					          <TR>
+			            <TD colspan="2">
+			            <input name="shop_check_time" type="hidden" id="shop_check_time" value="1545314588">
+			
+						<input name="userid" type="hidden" id="userid" value="398">
+						<input name="id" type="hidden" id="id" value="398">
+			            <input name="continue" type="hidden" id="continue" value="aHR0cDovL3lwaHRpbmcuemdseGtqLmNvbS9pbmRleC5waHAvQWRtaW5jcC9GZWVkYmFjay9hcHBseS5odG1s">
+			            <input name="continueurl" type="hidden" id="continueurl" value="http://yphting.zglxkj.com/index.php/Admincp/Feedback/apply.html">
+			            </TD>
+			            <TD colspan="1" style="text-align: right;">
+			            	<button type="button"  class="btn btn-success">保存</button>
+			            </TD>
+			            <TD colspan="1" >
+			            	<button type="button"  class="btn btn-default" onClick="history.go(-1)">返回</button>
+			            </TD>
+			          </tr>
+			        </tbody>
+
+				</table>
+			</form>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	var listVm = new Vue({
+		el: "#listVm",
+		data: {
+			//会员信息
+			User: {},
+		},
+
+		//方法
+		methods: {
+			goToPage: function() {
+				var userid = window.sessionStorage.getItem("userid");
+				alert(userid)
+				$.getJSON("/sj/users/" + userid, function(Data) {
+					listVm.User = Data;
+					console.log(Data)
+				}); 
+			}
+		/*  	//搜索
+			search:function(n, s,auditstatus,merchanttype,username){
+				var username=$("[name=nickname]").val();
+				var merchanttype=$("[name=huiyuangroup]").val();
+				var auditstatus=$("[name=checkstatus]").val();
+				alert("nicheng:"+username)
+				$.getJSON("/sj/users/" + n + "/" + s +"/"+auditstatus+"/"+merchanttype+"/"+username, function(pageData) {
+					listVm.membersPageInfo = pageData;
+					console.log(pageData)
+				});
+			},
+			memberEdit:function(userid){
+				window.sessionStorage.setItem("userid", userid);
+				window.location.href="shopperRuzhu_detail.html";
+			} */
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage();
+			
+			//加载金币数和积分
+		}
+	});
+	</script>
+</html>

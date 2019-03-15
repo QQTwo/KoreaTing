@@ -8,33 +8,17 @@ layui.config({
 
 	//加载页面数据
 	var newsData = '';
-	$.get("../../json/newsList.json", function(data){
-		var newArray = [];
-		//单击首页“待审核文章”加载的信息
-		if($(".top_tab li.layui-this cite",parent.document).text() == "待审核文章"){
-			if(window.sessionStorage.getItem("addNews")){
-				var addNews = window.sessionStorage.getItem("addNews");
-				newsData = JSON.parse(addNews).concat(data);
-			}else{
-				newsData = data;
-			}
-			for(var i=0;i<newsData.length;i++){
-        		if(newsData[i].newsStatus == "待审核"){
-					newArray.push(newsData[i]);
-        		}
-        	}
-        	newsData = newArray;
-        	newsList(newsData);
-		}else{    //正常加载信息
-			newsData = data;
-			if(window.sessionStorage.getItem("addNews")){
-				var addNews = window.sessionStorage.getItem("addNews");
-				newsData = JSON.parse(addNews).concat(newsData);
-			}
-			//执行加载数据的方法
-			newsList();
+	$.ajax({
+		url : "/tz/getgllist",
+		type : "get",
+		dataType : "json",
+		success:function(data){
+			console.log(data)
+			newsData = newsList(data);
+			$("#li").append(newsData);
 		}
-	})
+	});
+	
 
 	//查询
 	$(".search_btn").click(function(){
@@ -225,8 +209,27 @@ layui.config({
 	})
  
 	//操作
-	$("body").on("click",".news_edit",function(){  //编辑
-		layer.alert('您点击了文章编辑按钮，由于是纯静态页面，所以暂时不存在编辑内容，后期会添加，敬请谅解。。。',{icon:6, title:'文章编辑'});
+	$("body").on("click",".links_del",function(){  //删除
+			layer.confirm('确定删除选中的信息？',{icon:3, title:'提示信息'},function(index){
+				var index = layer.msg('删除中，请稍候',{icon: 16,time:false,shade:0.8});
+	            setTimeout(function(){
+	            	//删除数据
+	            		var id=$(this).find("id").html();
+	            		console.log(id)
+	            		/*$.ajax({
+	            			url : "/tz/delete",
+	            			type : "get",
+	            			dataType : "json",
+	            			data:{postid:id},
+	            			success:function(data){
+	            			}
+	            		});*/
+	            	$('.news_list thead input[type="checkbox"]').prop("checked",false);
+	            	form.render();
+	                layer.close(index);
+					layer.msg("删除成功");
+	            },2000);
+	        })
 	})
 
 	$("body").on("click",".news_collect",function(){  //收藏.
@@ -253,32 +256,31 @@ layui.config({
 		});
 	})
 
-	function newsList(that){
+	function newsList(data){
 		//渲染数据
-		function renderDate(data,curr){
+		
 			var dataHtml = '';
-			if(!that){
-				currData = newsData.concat().splice(curr*nums-nums, nums);
-			}else{
-				currData = that.concat().splice(curr*nums-nums, nums);
-			}
-			if(currData.length != 0){
-				for(var i=0;i<currData.length;i++){
+			if(data.length != 0){
+				for(var i=0;i<data.list.length;i++){
 					dataHtml += '<tr>'
-			    	+'<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>'
-			    	+'<td>'+currData[i].newsAuthor+'</td>'
-			    	+'<td>'+currData[i].newsAuthor+'</td>';
-			    	if(currData[i].newsStatus == "待审核"){
-			    		dataHtml += '<td style="color:#f00">'+currData[i].newsStatus+'</td>';
+			    	+'<td><input type="checkbox" name="checked"  id="'+data.list[i].postid+'" lay-skin="primary" lay-filter="choose"></td>'
+			    	+'<td>'+data.list[i].postid+'</td>'
+			    	+'<td>'+data.list[i].signType+'</td>'
+			    	+'<td>'+data.list[i].fmname+'</td>';
+			    	if(data.list[i].auditstatus == 1){
+			    		dataHtml += '<td>'+"未审核"+'</td>';
+			    	}else if(data.list[i].auditstatus == 2){
+			    		dataHtml += '<td>'+"已审核"+'</td>';
 			    	}else{
-			    		dataHtml += '<td>'+currData[i].newsStatus+'</td>';
+			    		dataHtml += '<td style="color:#f00">'+"未通过"+'</td>';	
 			    	}
-			    	dataHtml += '<td>'+currData[i].newsLook+'</td>'
-			    	+'<td><input type="checkbox" name="show" lay-skin="switch" lay-text="是|否" lay-filter="isShow"'+currData[i].isShow+'></td>'
-			    	+'<td>'+currData[i].newsTime+'</td>'
-			    	+'<td>'
-					+  '<a class="layui-btn layui-btn-mini news_edit"><i class="iconfont icon-edit"></i>修 改</a>'
-					+'<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="1"><i class="layui-icon"></i> 删除</a>'
+			    	if(data.list[i].giftIntegral == 1){
+			    		dataHtml += '<td>'+"赠送"+'</td>';
+			    	}else if(data.list[i].giftIntegral == 2){
+			    		dataHtml += '<td>'+"不增送"+'</td>';
+			    	}
+			    	dataHtml += '<td>'+data.list[i].userrealname+'</td>'
+					+'<td><a class="layui-btn layui-btn-mini news_edit"><i class="iconfont icon-edit"></i>修 改</a>	<a style="font-size: 16px;" class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="1"  id="'+data.list[i].postid+'"><i class="layui-icon"></i> 删除</a>'
 			        +'</td>'
 			    	+'</tr>';
 				}
@@ -286,10 +288,10 @@ layui.config({
 				dataHtml = '<tr><td colspan="8">暂无数据</td></tr>';
 			}
 		    return dataHtml;
-		}
+		
 
 		//分页
-		var nums = 13; //每页出现的数据量
+		/*var nums = 13; //每页出现的数据量
 		if(that){
 			newsData = that;
 		}
@@ -301,6 +303,6 @@ layui.config({
 				$('.news_list thead input[type="checkbox"]').prop("checked",false);
 		    	form.render();
 			}
-		})
+		})*/
 	}
 })

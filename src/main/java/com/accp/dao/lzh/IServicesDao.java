@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.accp.vo.lzh.ServiceVo;
+import com.accp.pojo.Servicetype;
 import com.accp.vo.lzh.AuditVo;
 import com.accp.vo.lzh.ComplaintVo;
 import com.accp.vo.lzh.RefundVo;
@@ -59,4 +60,17 @@ public interface IServicesDao {
 	 * 删除
 	 */
 	public void modifyComlaint(@Param("cid")Integer cid);
+	
+	/**
+	 * 
+	 * @Name selectPrimary
+	 * @description 服务一级菜单
+	 */
+	public List<Servicetype> selectPrimaryServiceType();
+	
+	public List<Servicetype> selectSecondServiceType(@Param("stid")String stid);
+	
+	public boolean updateRefund(@Param("vo")RefundVo vo,@Param("money")float money,@Param("shopID")int shopID);
+	
+	public int queryShopUserID(@Param("orderID")String orderID);
 }

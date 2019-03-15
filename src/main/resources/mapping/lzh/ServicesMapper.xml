@@ -7,7 +7,7 @@
 <mapper namespace="com.accp.dao.lzh.IServicesDao">
 	<!-- 查询服务vo -->
 	<select id="findAllServiceVo" resultType="com.accp.vo.lzh.ServiceVo">
-		SELECT `serviceID`,s.`stid` AS stid,`stName`,s.`userID` AS userID,`userName`,`serviceTitle`,s.`auditStatus` AS auditStatus,`shopName`,`shelfState`,`orderByNum`,`recommendBool`,`releaseTime` FROM `services` s
+		SELECT `serviceID`,s.`stid` AS stid,`stName`,s.`userID` AS userID,`userName`,`serviceTitle`,s.`auditStatus` AS auditStatus,`shopName`,`shelfState`,`orderByNum`,`recommendBool`,`releaseTime`,adminOpinion FROM `services` s
 		LEFT JOIN `servicetype` se ON s.`stid` = se.`stid`
 		LEFT JOIN `user` u ON s.`userID` = u.`userID`
 		<where>
@@ -43,9 +43,9 @@
 			<if test="yingye != 0">
 				shelfState=#{yingye},
 			</if>
-			<if test="adminopinion != 0">
+			
 				adminopinion=#{adminopinion}
-			</if>
+			
 		</set>
 		where serviceid=#{serviceid};
 		<if test="status != 3">
@@ -143,5 +143,46 @@
 	<select id="modifyComlaint">
 		update complaint set isClear = 3
 		where cid = #{cid}
+	</select>
+	
+	<!-- 一级菜单 -->
+	<select id="selectPrimaryServiceType" resultType="Servicetype">
+		SELECT stid,stpid,stName FROM servicetype
+		WHERE stpid IS NULL
+	</select>
+	<!-- 二级菜单 -->
+	<select id="selectSecondServiceType" resultType="Servicetype">
+		SELECT stid,stpid,stName FROM servicetype
+		WHERE stpid = #{stid}
+	</select>
+	
+	<!-- 退款 -->
+	<update id="updateRefund">
+		UPDATE `refund` SET 
+		ActualRefundMoney=#{vo.actualRefundMoney},
+		adminStatus=#{vo.adminStatus},adminRemarks=#{vo.adminRemarks} 
+		WHERE orderID=#{vo.orderID};
+		
+		<if test="vo.adminStatus==2">
+		INSERT INTO `news`(addRessee,content,sendingTime,readState,newsType)VALUES('${vo.userID}','您的退款申请已通过审核',NOW(),0,1);
+		update `user` set userMoney=userMoney+#{money} where userid=#{vo.userID};
+		update `user` set userMoney=userMoney-#{money} where userid=#{shopID};
+		update `orders` set refundstatus = 5 where orderID=#{vo.orderID};
+		insert into goldnotes (userID,acquisitionMode,recordDate,recordDescribe,recordInAndOut)
+		value(#{shopID},8,now(),'退款成功','-${money}');
+		insert into goldnotes (userID,acquisitionMode,recordDate,recordDescribe,recordInAndOut)
+		value(#{vo.userID},8,now(),'退款成功',#{money});
+		</if>
+		<if test="vo.adminStatus==3">
+		INSERT INTO `news`(addRessee,content,sendingTime,readState,newsType)VALUES('${vo.userID}','您的退款申请未通过审核',NOW(),0,1);	
+		update `orders` set refundstatus = 4 where orderID=#{vo.orderID};
+		</if>
+	</update>
+	
+	<select id="queryShopUserID" resultType="int">
+			SELECT s.userID FROM `refund` AS f
+			JOIN orders AS o ON f.`orderID`=o.`orderID`
+			JOIN `services` AS s ON o.`serviceID`=s.`serviceID`
+			WHERE f.`orderID`='${orderID}'
 	</select>
 </mapper>

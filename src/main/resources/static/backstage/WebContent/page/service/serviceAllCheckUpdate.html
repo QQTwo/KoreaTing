@@ -10,7 +10,8 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
-	
+	<link rel="stylesheet" href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" />
+	<link rel="stylesheet" href="../../css/news.css" media="all" />
 	<style>
 		.tableline {
 	
@@ -41,6 +42,7 @@ TABLE.tablesorter checkbox {
     border-width: 0;
 }
 	</style>
+	
 </head>
 <body class="childrenBody">
 	<blockquote class="layui-elem-quote news_search">
@@ -137,13 +139,17 @@ TABLE.tablesorter checkbox {
           </tr>
           <TR >
               <TD noWrap align=right>排序:</TD>
-              <TD ><INPUT v-text="auditVo.sort" name="sortid" type="text" id="sortid" value="" size="8" maxlength="9" class="validate[required,custom[number]]">数字
+              <TD ><INPUT v-text="auditVo.sort" name="sortid" type="number" id="sortid" value="" size="8" maxlength="9" required  >数字
               </TD>
           </TR>
           <TR >
               <TD align="right">服务推荐:</TD>
-              <TD >
-                  <input v-model="auditVo.recommendbool" type="radio" name="is_recommend" value="1" > 推荐　
+              <TD v-if="auditVo.recommendbool != null">
+                  <input v-model="auditVo.recommendbool" type="radio" name="is_recommend" value="1" checked> 推荐　
+                  <input v-model="auditVo.recommendbool" type="radio" name="is_recommend" value="2"> 不推荐　
+              </TD>
+               <TD v-else>
+                  <input v-model="auditVo.recommendbool" type="radio" name="is_recommend" value="1" checked> 推荐　
                   <input v-model="auditVo.recommendbool" type="radio" name="is_recommend" value="2"> 不推荐　
               </TD>
           </tr>
@@ -172,9 +178,19 @@ TABLE.tablesorter checkbox {
         </tbody>
       </table>
      <script type="text/javascript" src="../../layui/layui.js"></script>
+     <script type="text/javascript" src="../../layui/lay/modules/layer.js"></script>
+     <script type="text/javascript" src="../../js/jquery-2.1.4.js"></script>
 	<script type="text/javascript" src="../../vue/vue.js"></script>
-	<script type="text/javascript" src="../../js/jquery-2.1.4.js"></script>
 	<script type="text/javascript">
+	layui.config({
+		base : "js/"
+	}).use(['form','layer','jquery','laypage','laydate'],function(){
+		var form = layui.form(),
+		layer = parent.layer === undefined ? layui.layer : parent.layer,
+		laypage = layui.laypage,
+		laydate = layui.laydate,
+		$ = layui.jquery;
+		
 		var sCheckVm = new Vue({
 			el:"#servicecheck",
 			data:{
@@ -182,20 +198,23 @@ TABLE.tablesorter checkbox {
 			},
 			methods:{
 				checkService:function(){
-					if(sCheckVm.auditVo.auditstatus == 1){
-						$.ajax({
-							url : "" ,
-							type : "get",
-							dataType : "json",
-							contentType:"application/json",
-							data:JSON.stringify(sCheckVm.auditVo),
-							success : function(data){
-								alert("审核成功");
-								history.go(-1);
-							}
-						})
+					var _auditVo = sCheckVm.auditVo;
+					if(jQuery("[name=admin_reason]").val()==''){
+						layer.msg("请填写管理员意见");
 					}else{
-						alert("您的服务已审核");
+						var index = layer.msg('更新中，请稍候',{icon: 16,time:false,shade:0.8});
+						window.setTimeout(function(){
+							$.ajax({
+								url : "/c/lzh/service/modifyServicesInfo/"+_auditVo.recommendbool+"/"+_auditVo.auditstatus+"/"+_auditVo.shelfstate+"/"+jQuery("[name=admin_reason]").val()+"/"+_auditVo.serviceid+"/2" ,
+								type : "get",
+								dataType : "json",
+								success : function(data){
+									layer.close(index);
+									layer.msg("更新成功");
+									history.go(-1);
+								}
+							})
+						},1000);
 					}
 				}
 			},
@@ -213,6 +232,8 @@ TABLE.tablesorter checkbox {
 				}
 			}
 		})
+	});
+		
 	</script>
 </body>
 </html>

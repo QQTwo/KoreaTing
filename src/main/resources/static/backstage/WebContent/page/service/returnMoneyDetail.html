@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>预约订单查看</title>
+	<title>退款详情</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -15,7 +15,7 @@
 	BACKGROUND-COLOR: #7E8888; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; COLOR: #000000; FONT-SIZE: 14px; TEXT-DECORATION: none;
 }
 TABLE.tablesorter {
-	BACKGROUND-COLOR: #cdcdcd; MARGIN: 10px 0pt 15px; WIDTH: 100%; FONT-FAMILY: Verdana; FONT-SIZE: 10pt
+	BACKGROUND-COLOR: ; MARGIN: 10px 0pt 15px; WIDTH: 100%; FONT-FAMILY: Verdana; FONT-SIZE: 10pt
 }
 TABLE.tablesorter THEAD TR TH {
 	BORDER-BOTTOM: #fff 1px solid; BORDER-LEFT: #fff 1px solid; PADDING-BOTTOM: 4px; BACKGROUND-COLOR: #FEFCEC; PADDING-LEFT: 4px; PADDING-RIGHT: 4px; FONT-SIZE: 10pt; BORDER-TOP: #fff 1px solid; BORDER-RIGHT: #fff 1px solid; PADDING-TOP: 4px;text-align: center;
@@ -73,7 +73,7 @@ TABLE.tablesorter checkbox {
             <TD width="13%" align="right">申请日期:</TD>
             <TD v-text="refundVo.applicationTime">2019-01-17 10:03</TD>
             <TD noWrap align=right>处理状态:</TD>
-            <TD >{{['退款申请中','不同意','申请管理员介入','管理员拒绝','退款完成','退款取消'][refundVo.refundstatus]}}</TD>
+            <TD >{{['未处理','退款申请中','不同意','申请管理员介入','管理员拒绝','退款完成','退款取消'][refundVo.refundstatus]}}</TD>
           </TR>			
           <TR>
             <TD align="right">商家处理:</TD>
@@ -94,32 +94,26 @@ TABLE.tablesorter checkbox {
 		<TR>
             <TD align="right">操作:</TD>
             <TD colspan="3" >
-            <span v-if="refundVo.adminStatus == 1">
-            	<label><input type="radio" v-model="refundVo.adminStatus" name="adminStatus" value="3" checked />管理员介入　</label>
-				<label><input type="radio" v-model="refundVo.adminStatus" name="adminStatus" value="3" />不退款　</label>
+            <span v-if="refundVo.refundstatus == 3">
+            	<!-- <label><input type="radio" v-model="refundVo.adminStatus" name="adminStatus" value="3" checked />管理员介入　</label> -->
 				<label><input type="radio" v-model="refundVo.adminStatus" name="adminStatus" value="2" />退款　</label>
-            </span>
-             <span v-if="refundVo.adminStatus == 2">
-            	退款成功 <input type="hidden" v-model="refundVo.adminStatus" name="adminStatus" value="2">
-            </span>
-			<span v-if="refundVo.adminStatus == 3">
-            	退款成失败<input type="hidden" v-model="refundVo.adminStatus" name="adminStatus" value="3">
+				<label><input type="radio" v-model="refundVo.adminStatus" name="adminStatus" value="3" />不退款　</label>
             </span>
 			</TD>
           </tr>
-          <TR>
+          <TR><!-- checkNumber(this.value) -->
             <TD align="right">退款金额:</TD>
-            <TD colspan="3" ><input type="text" v-model="refundVo.actualRefundMoney" name="money_back" value="0" id="money_back" />
+            <TD colspan="3" ><input type="text" v-model="refundVo.actualRefundMoney" name="money_back"  id="money_back" onkeyup="value=value.replace( /[^\d]/g,'')" @blur="checkNumber(refundVo.actualRefundMoney)"/>
             </TD>
           </tr>
-          <TR>
-           <span v-if="refundVo.refundstatus == 3" >
+          <TR v-if="refundVo.refundstatus == 3">
+          
 	            <TD align="right">管理员处理:</TD>
 	            <TD colspan="3" ><textarea name="admin_reason" cols="70" rows="5" id="admin_reason" v-model="refundVo.adminRemarks"></textarea>
 	            </TD>
-            </span> 
+           
           </tr>
-          <TR v-if="refundVo.refundstatus == 3">
+         <!--  <TR v-if="refundVo.refundstatus == 3">
             <TD align="right">上传凭证:</TD>
             <TD colspan="3" >
             <div class="sel_file_d"><a href="javascript:void(0);" class="sel_file_a" id="filebt">上传文件</a></div>
@@ -127,33 +121,66 @@ TABLE.tablesorter checkbox {
               <div id="pics"></div>
               <div id="picss"></div>
             </TD>
-          </tr>          <TR>
-            <TD>
-			<input name="orderid" type="hidden" id="orderid" value="100136">
-			<input name="id" type="hidden" id="id" value="100136">
-            <input name="continue" type="hidden" id="continue" value="aHR0cDovL3lwaHRpbmcuemdseGtqLmNvbS9pbmRleC5waHAvQWRtaW5jcC9PcmRlci9yZWZ1bmRzLmh0bWw">
-            <input name="continueurl" type="hidden" id="continueurl" value="http://yphting.zglxkj.com/index.php/Admincp/Order/refunds.html">
-            </TD>
-            <TD colspan="3" >
-            <span v-if="refundVo.refundstatus == 3">
-	            <button class="layui-btn" lay-submit="" lay-filter="addNews">
-	            		设置  
-	            </button>    
-              </span>      
-           <input type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.go(-1)" value="返回">
+          </tr>    -->      
+           <TR>
+            <TD colspan="7" >
+            	<span v-if="refundVo.refundstatus == 3">
+		            <button class="layui-btn" @click="updateRefound">保存</button>    
+           		 </span>      
+          		 <input type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.go(-1)" value="返回">
               </TD>
           </tr>
+          
         </tbody>
       </table>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+     <script type="text/javascript" src="../../layui/lay/modules/layer.js"></script>
+     <script type="text/javascript" src="../../js/jquery-2.1.4.js"></script>
 	<script type="text/javascript" src="../../vue/vue.js"></script>
-	<script type="text/javascript" src="../../js/jquery-2.1.4.js"></script>
 	<script type="text/javascript">
+	layui.config({
+		base : "js/"
+	}).use(['form','layer','jquery','laypage','laydate'],function(){
+		var form = layui.form(),
+		layer = parent.layer === undefined ? layui.layer : parent.layer,
+		laypage = layui.laypage,
+		laydate = layui.laydate,
+		$ = layui.jquery;
+		
+		
 		var refMoney = new Vue({
 			el:"#refundMoney",
 			data:{
 				refundVo:{}
 			},
-			methods:{},
+			methods:{
+				checkNumber:function(value){
+					if(value>refMoney.refundVo.applyRefundMoney){
+						layer.msg("请勿自己赔钱");
+					}
+				},
+				updateRefound:function(){
+					if(refMoney.refundVo.adminRemarks){
+						var index = layer.msg('更新中，请稍候',{icon: 16,time:false,shade:0.8});
+						window.setTimeout(function(){
+							$.ajax({
+								url:"/c/lzh/service/modifyRefund",
+								type:"put",
+								dataType:"json",
+								contentType:"application/json",
+								data:JSON.stringify(refMoney.refundVo),
+								success:function(data){
+									layer.close(index);
+									layer.msg("更新成功");
+									history.go(-1);
+								}
+							})
+						},1000)
+						
+					}else
+						layer.msg("请填写管理员意见")
+				}
+			},
 			created:function(){
 				var orderId = window.sessionStorage.getItem("orderId");
 				if(orderId){
@@ -168,6 +195,7 @@ TABLE.tablesorter checkbox {
 				}
 			}
 		})
+	});
 	</script>
 
 </body>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>会员管理--商家管理模块</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				width: 1366px;
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="">
+			<blockquote class="back">
+			  <p style="font-weight: bold;padding-top: 10px;">商家管理</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户昵称：<input type="text" value="" placeholder="" name="nickname">
+					&nbsp;
+					店铺名称：<input type="text" value="" placeholder="" name="nickname">
+					&nbsp;
+					会员组：
+					<select name="huiyuangroup" style="height:2rem;">
+			    		<option value="0">所有</option>
+	                    <option value="2">大陆商家用户</option>
+	                    <option value="3">海外商家用户</option>   
+		    		</select>
+		    		&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search()">
+						查询</button>
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;">导出</button>
+
+			    </div>
+			</blockquote>
+			
+			<div id="shopManangeContent">
+				<table class="table table-bordered" style="width:1366px;">
+					<thead style="background-color:#f2f2f2;">
+  						<tr>
+							<th style="width: 5rem;">序号</th>
+		                    <TH style="width: 7rem;">用户昵称</TH>
+							<TH>商铺名称</TH>                    
+							<TH>会员组</TH>
+		                    <TH>邮箱</TH>
+		                    <TH>积分</TH>
+		                    <TH>金币</TH>
+		                    <TH style="width: 8rem;" >邮箱验证</TH>
+		                    <TH>审核</TH>
+		                    <TH>状态</TH>
+		                    <TH style="width: 8rem;">电话</TH>
+		                  	<TH >最后登录时间</TH>
+		                  <!--   <TH>浏览量</TH> -->
+		                  	<TH style="width: 25rem;">操作</TH>
+						</tr> 
+  					</thead>
+  					<tbody v-if="pageInfo.list != null">
+  						  <tr v-for="(temp,index) in pageInfo.list">
+						<!--
+                        <td align="center"><input  value="487" type="checkbox" name="userid[]"></td>
+						-->
+                        <td align="center" bgcolor="#ffffff" v-text="index"></td>
+                        <td align="center" nowrap v-text="temp.userName">巨蟹boy4650</td>
+						<td align="center" nowrap v-text="temp.shopName">나는 너를 사랑해.</td>                       
+						<td align="center" nowrap >
+						<span v-if="temp.merchantType==0">普通会员</span>
+						<span v-if="temp.merchantType==1">大陆商家用户</span> 
+						<span v-if="temp.merchantType==2">海外商家用户</span></td></td>
+                        <td align="center" nowrap v-text="temp.merchantEmail">12390718111@qq.com</td>
+                        <td align="center" nowrap v-text="temp.userIntegral">50</td>
+                        <td align="center" nowrap v-text="temp.userMoney">4999.80</td>
+                        <td align="center" nowrap>
+                       			 <span v-if="temp.mailboxVerification==true" style="color:green">已验证</span>
+								<span v-if="temp.mailboxVerification==false">未验证</span>
+						</td>
+                        <td align="center" nowrap >
+	                        <span v-if="temp.auditStatus==1">待审核</span>
+							<span v-if="temp.auditStatus==2" style="color:green">已通过</span> 
+							<span v-if="temp.auditStatus==3" style="color:red">未通过</span>
+						</td>
+                        <td align="center" nowrap >
+                           <span v-if="temp.businessState==1" style="color:green">营业</span>
+								<span v-if="temp.businessState==2">暂停</span> 
+								<span v-if="temp.businessState==3" style="color:red">关闭</span>                        </td>
+                        <td align="center" nowrap v-text="temp.userPhone">17603093935</td>
+                        <td align="center" nowrap v-text="temp.recentEntry">2019-03-05 16:35</td>
+                       <!--  <td align="center" nowrap v-text="temp.">0</td> -->
+                        <td >
+	                        <a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">修改</a>　
+	                        <a href="javascript:void(0)" onclick="location.href='../service/serviceOrder.html'">积分记录</a>　
+	                        <a href="javascript:void(0)" onclick="location.href='jiandingApply.html'">鉴定申请</a>　
+	                        <a href="javascript:void(0)" onclick="location.href='memberCheck_commend.html'">评论</a>　　
+                        </td>
+                    </tr>
+  					</tbody>
+  					<tbody v-if="pageInfo.list == null">
+  						<tr><td colspan="13">暂无数据</td></tr>
+  					</tbody>
+  					<tfoot>
+  						<tr>
+  							<td colspan="15">
+  								合计  金币 <span>111111</span> 个，积分 <span> 4889943213</span>
+  							</td>
+  						</tr>
+						<tr>
+							<td colspan="15">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+								      <a href="javascript:void(0)" >
+								        	首页
+								      </a>
+								    </li>
+						    		<li>
+								      <a href="javascript:void(0)" >
+								        	上一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)" >
+								        	下一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)">
+								       		 尾页
+								      </a>
+								    </li>
+								</ul>
+							</td>
+						</tr>				
+  					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+     <script type="text/javascript" src="../../layui/lay/modules/layer.js"></script>
+     <script type="text/javascript" src="../../js/jquery-2.1.4.js"></script>
+	<script type="text/javascript" src="../../vue/vue.js"></script>
+	<script type="text/javascript">
+	layui.config({
+		base : "js/"
+	}).use(['form','layer','jquery','laypage','laydate'],function(){
+		var form = layui.form(),
+		layer = parent.layer === undefined ? layui.layer : parent.layer,
+		laypage = layui.laypage,
+		laydate = layui.laydate,
+		$ = layui.jquery;
+		
+		var vMshopM = new Vue({
+			el:"#shopManangeContent",
+			data:{
+				pageInfo:{}
+			},
+			methods:{
+				getPageinfo:function(userName,shopName,merchantType,index){
+					if(userName == null || userName=='') userName = '@*';
+					if(shopName == null || shopName=='') shopName = '@*';
+					if(merchantType == null || merchantType=='') merchantType = '@*';
+					if(index == null || index=='') index = 1;
+					$.ajax({
+						url:"/c/lzh/member/userShop/"+userName+"/"+shopName+"/"+merchantType+"/"+index,
+						type:"get",
+						success:function(data){
+							vMshopM.pageInfo = data;
+						}
+					})
+				}
+			},
+			created:function(){
+				this.getPageinfo(null,null,null,1);
+			}
+			
+		});
+	});
+	</script>
+</html>

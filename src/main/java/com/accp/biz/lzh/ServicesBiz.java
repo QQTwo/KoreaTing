@@ -2,6 +2,7 @@ package com.accp.biz.lzh;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.accp.dao.lzh.IServicesDao;
+import com.accp.pojo.Servicetype;
 import com.accp.vo.lzh.ServiceVo;
 import com.accp.vo.lzh.AuditVo;
 import com.accp.vo.lzh.ComplaintVo;
@@ -38,7 +40,7 @@ public class ServicesBiz {
 	 * @description 修改服务
 	 */
 	@Transactional(propagation=Propagation.REQUIRED,isolation=Isolation.READ_COMMITTED,readOnly=false)
-	public int modifyServicesSta(int serviceid,int shenhe,String adminopinion,int tuijian,int yingye,int status) {
+	public int modifyServicesSta(int serviceid,String adminopinion,int tuijian,int shenhe,int yingye,int status) {
 		return dao.updateadminstatus(serviceid, adminopinion, tuijian, shenhe, yingye,status);
 	}
 	
@@ -67,5 +69,19 @@ public class ServicesBiz {
 	
 	public void modifyComlaint(Integer cid) {
 		 dao.modifyComlaint(cid);
+	}
+	/**
+	 * 查询服务菜单
+	 */
+	public List<Servicetype> findPrimaryServicetype(){
+		return dao.selectPrimaryServiceType();
+	}
+	public  List<Servicetype> findSecondServictype(String stid){
+		return dao.selectSecondServiceType(stid);
+	}
+	
+	public void modifyRefound(RefundVo vo,float money) {
+		int shopID= dao.queryShopUserID(vo.getOrderID());
+		dao.updateRefund(vo, money, shopID);
 	}
 }

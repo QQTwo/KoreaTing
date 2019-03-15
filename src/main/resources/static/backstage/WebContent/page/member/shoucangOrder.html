@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>收藏排行</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container {
+				font-size: 14px;
+			}
+			
+			.back {
+				width: 1386px;
+				font-size: 14px;
+				border-radius: 0 2px 2px 0;
+				background-color: #f2f2f2;
+				padding: 2px 10px;
+				border-left: 5px solid rgb(25, 159, 147);
+			}
+			
+			table thead tr>th,
+			tr>td {
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="">
+			<blockquote class="back">
+				<p style="font-weight: bold;padding-top: 10px;">收藏排行</p>
+				<div style="padding:0px 0px 12px 15px;font-size: 14px;">
+					分类:
+					<select name="type">
+						<option value="0">所有的</option>
+						<option value="1">服务</option>
+						<option value="2">商家</option>
+						<option value="3">帖子</option>
+					</select>
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search()">
+						查询</button>
+				</div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<thead style="background-color:#f2f2f2;">
+						<th>序号</th>
+						<TH>类别</TH>
+						<TH>收藏次数</TH>
+						<TH>名称</TH>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="center">
+								1 </td>
+							<td align="center" nowrap>商家</td>
+							<td align="center" nowrap>10</td>
+							<td nowrap>■ˉ苏〃筱萌◇◆ </td>
+						</tr>
+						<tr>
+							<td align="center">
+								2 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>10</td>
+							<td nowrap>北村韩屋村</td>
+						</tr>
+						<tr>
+							<td align="center">
+								3 </td>
+							<td align="center" nowrap>商家</td>
+							<td align="center" nowrap>7</td>
+							<td nowrap>姬菇凉的店铺</td>
+						</tr>
+						<tr>
+							<td align="center">
+								4 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>5</td>
+							<td nowrap>泰迪熊珍藏馆/테디베어팜</td>
+						</tr>
+						<tr>
+							<td align="center">
+								5 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>5</td>
+							<td nowrap>首尔釜山自驾游</td>
+						</tr>
+						<tr>
+							<td align="center">
+								6 </td>
+							<td align="center" nowrap>帖子</td>
+							<td align="center" nowrap>5</td>
+							<td nowrap>和韩国哈哈</td>
+						</tr>
+						<tr>
+							<td align="center">
+								7 </td>
+							<td align="center" nowrap>商家</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>暖暖哒</td>
+						</tr>
+						<tr>
+							<td align="center">
+								8 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>爱爱爱</td>
+						</tr>
+						<tr>
+							<td align="center">
+								9 </td>
+							<td align="center" nowrap>商家</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>校园资源共享</td>
+						</tr>
+						<tr>
+							<td align="center">
+								10 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>吃货一日游</td>
+						</tr>
+						<tr>
+							<td align="center">
+								11 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>镇海军港祭 ——伴随春风，踏上樱花之旅</td>
+						</tr>
+						<tr>
+							<td align="center">
+								12 </td>
+							<td align="center" nowrap>商家</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>紫陌″de店铺</td>
+						</tr>
+						<tr>
+							<td align="center">
+								13 </td>
+							<td align="center" nowrap>帖子</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>SWEET &amp; ELEGANT PROM MAKEUP</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+										<a href="javascript:void(0)">
+											首页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)">
+											上一页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)">
+											下一页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)">
+											尾页
+										</a>
+									</li>
+									<li>
+										第<span style="border: none;padding: 0 2px;">1</span>页，
+										共<span style="border: none;padding: 0 2px;">5</span>页
+									</li>
+								</ul>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+
+</html>

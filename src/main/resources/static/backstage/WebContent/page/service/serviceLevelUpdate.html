@@ -14,37 +14,138 @@
 <body class="childrenBody">
 	<blockquote class="layui-elem-quote news_search" style="font-weight: bolder;">编辑服务级别
 	</blockquote>
-	<form class="">
+	<form class="" id="serLevel">
 		<div class="layui-form-item">
 			<div class="layui-inline">
 				<label class="layui-form-label">服务类型:</label>
 				<div class="layui-input-inline" style="margin-top: 7px;">
-					<select name="catid" id="catid" style="width: 130%;">
-                <option value="4">微整形</option><option value="5">留学中介</option><option value="6">韩语翻译</option><option value="7">学习资源</option><option value="217">sxd</option><option value="229">qwe</option><option value="3">自驾游</option>            </select>
-
+					<select  name="stid" id="stid" >
+		    		<option value="0">所有的</option>
+		    			<option v-for="temp in selType" v-if="temp.stid==serviceLevelObj.stid" selected="selected" v-bind:value="temp.stid">
+						{{temp.stname}}</option>
+                   	<option v-for="temp in selType" v-bind:value="temp.stid">
+						{{temp.stname}}</option>
+		    		</select>
 				</div>
 			</div>
 		</div>
 		<div class="layui-form-item">
+			<INPUT id="level_name" size=40 type="hidden" name="level_name" value="铜牌商家" style="width: 21%;" :value="serviceLevelObj.serlevelid" v-model="serviceLevelObj.serlevelid">
+		</div>
+		<div class="layui-form-item">
 			<label class="layui-form-label">级别名称:</label>
-			<INPUT id="level_name" size=40 type="text" name="level_name" value="铜牌商家" style="width: 21%;">
+			<INPUT id="level_name" size=40 type="text" name="level_name" value="铜牌商家" style="width: 21%;" :value="serviceLevelObj.serlevelname" v-model="serviceLevelObj.serlevelname">
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">交易金额:</label>
 			<div class="">
 				
-				<input name="minmoney" type="text" id="minmoney" value="10000" size="10">
+				<input name="minmoney" type="text" id="minmoney" value="10000" size="10" :value="serviceLevelObj.serviceintegralmin" v-model="serviceLevelObj.serviceintegralmin">
               ——
-              <input name="maxmoney" type="text" id="maxmoney" value="166600" size="10">
+              <input name="maxmoney" type="text" id="maxmoney" value="166600" size="10" :value="serviceLevelObj.serviceintegralmax" v-model="serviceLevelObj.serviceintegralmax">
               
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button class="layui-btn" lay-submit="" lay-filter="addNews">保存</button>
+				<button class="layui-btn"  @click="saveLevel($event)">保存</button>
 				<input type="button" class="layui-btn layui-btn-primary" onclick="javascript:history.go(-1)" value="返回">
 		    </div>
 		</div>
 	</form>
 </body>
-</html
+<script type="text/javascript" src="../../js/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="../../js/vue.js"></script>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript">
+		var serlevelid=window.sessionStorage.getItem("serlevelid");
+		var vmCnt = new Vue({
+			el: "#serLevel",
+			data: {
+				serviceLevelObj:{
+					/* stid:"",
+					stpid:"",
+					stname:"",
+					sort:"",
+					display:"" */
+				},
+				selType:[]
+			},
+
+			//方法
+			methods: {
+				saveLevel:function(e){
+					this.serviceLevelObj.stid=$("[name=stid]").val();
+					var _serviceLevelObj=this.serviceLevelObj;
+					$.ajax({
+						url:"/c/cmservice/updatesellevel",
+						type:"put",
+						dataType:"json",
+						contentType:"application/json",
+						data:JSON.stringify(_serviceLevelObj),
+						success:function(json){
+							if(json.code==200){
+								window.location.href="../service/serviceLevel.html";
+							}else{
+								showAlertDialog("更新失败");
+							}
+						}
+					});
+					
+					
+				}
+				/*send:function(obj){
+					var _eemail=this.email;
+					if(obj=="发送"){
+						_eemail.emailstatus = 1;
+					}else{
+						_eemail.emailstatus = 0;
+					}
+					
+					if(!_eemail.imgObj1.name) {
+						alert("请选择图片");
+						return;
+					}
+					$.ajax({
+							type:"post",
+							url:"http://127.0.0.1:8080/emails/eemail",
+							contentType:"application/json",
+							data:JSON.stringify( _eemail),
+							dataType:"json",
+							success:function(json){
+								if(json.code==200){
+									showAlertDialog('发送成功');
+									closeWindowDialog();
+								}else{
+									showAlertDialog('发送失败');
+								}
+							}
+						});
+				}*/
+			},
+
+		//组件创建
+		created: function() {
+			var serlevelid=window.sessionStorage.getItem("serlevelid");
+			$.ajax({
+				url : "/c/cmservice/loadsellevelByid",
+				type : "get",
+				data:{"serlevelid":serlevelid},
+				dataType : "json",
+				success : function(obj){
+					vmCnt.serviceLevelObj = obj; 
+				}
+			});
+			$.ajax({
+				url : "/c/cmservice/selType",
+				type : "get",
+				dataType : "json",
+				success : function(data){
+					vmCnt.selType=data;
+				}
+			});
+		} 
+ 
+	});
+	</script>
+</html>

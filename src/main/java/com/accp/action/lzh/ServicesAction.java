@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.accp.biz.lzh.ServicesBiz;
+import com.accp.pojo.Servicetype;
 import com.accp.vo.lzh.AuditVo;
 import com.accp.vo.lzh.ComplaintVo;
 import com.accp.vo.lzh.RefundVo;
@@ -43,7 +44,7 @@ public class ServicesAction {
 	 */
 	@GetMapping("/modifyServicesInfo/{tuijian}/{shenhe}/{yingye}/{adminopinion}/{serviceid}/{status}")
 	public String modifyServicesStatus(@PathVariable int tuijian,@PathVariable int shenhe,@PathVariable int yingye,@PathVariable String adminopinion,@PathVariable int serviceid,@PathVariable int status) {
-		biz.modifyServicesSta(serviceid, shenhe, adminopinion, tuijian, yingye,status);
+		biz.modifyServicesSta(serviceid, adminopinion, tuijian, shenhe, yingye,status);
 		return "ok";
 	}
 	
@@ -84,4 +85,20 @@ public class ServicesAction {
 		biz.modifyComlaint(cid);
 		return "ok";
 	}
+	
+	@GetMapping("/primaryServiceType")
+	public List<Servicetype> findPrimaryServiceType(){
+		return biz.findPrimaryServicetype();
+	}
+	@GetMapping("/primaryServiceType/{stid}")
+	public List<Servicetype> findSecondServiceType(@PathVariable String stid){
+		return biz.findSecondServictype(stid);
+	}
+	
+	@PutMapping("/modifyRefund")
+	public String  modifyRefund(@RequestBody RefundVo vo) {
+		biz.modifyRefound(vo, vo.getActualRefundMoney());
+		return "ok";
+	}
+	
 }

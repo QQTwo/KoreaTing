@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accp.dao.cm.serviceTypeIDao">
+	<!-- 查询服务类别所有名称 -->
+	<select id="querystname" resultType="com.accp.vo.cm.serviceVo">
+		SELECT `stName` FROM
+		`servicetype` WHERE `stPid`is null
+	</select>
+	<!-- 查询所有服务类别【包括条件查询】 -->
+	<select id="querytype" resultType="Servicetype">
+		SELECT * FROM servicetype
+		<where>
+			<if test="stid!=null and stid!=0">
+				AND stid=#{stid} OR stPid=#{stid}
+			</if>
+		</where>
+	</select>
+	<select id="queryNtype" resultType="Servicetype">
+		SELECT * FROM servicetype WHERE stPid=#{stpid}
+	</select>
+	<!-- 查询所有以及服务类别至下拉列表 -->
+	<select id="selType" resultType="Servicetype">
+		SELECT * FROM servicetype WHERE stPid is null
+	</select>
+	<!-- 查询所有服务等级 -->
+	<select id="querylevel" resultType="com.accp.vo.cm.levelVo">
+		SELECT * FROM servicelevel a
+		JOIN servicetype b ON a.stid=b.stid 
+		<where>
+			<if test="stid!=null and stid!=0">
+				AND a.stid=#{stid}
+			</if>
+		</where>
+	</select>
+	<!-- 根据编号查询出服务类别对象 -->
+	<select id="querytypebyid" resultType="Servicetype">
+		SELECT * FROM servicetype
+		where stid=#{stid}
+	</select>
+	<!-- 新增服务类别 -->
+	<insert id="addseltype">
+		INSERT  INTO `servicetype`
+		(`stPid`,`stName`,`sort`,`display`,`operationTime`,`confirmTime`,`violatedNumber`,`proportion`,`toExamine`,`advertisement`) 
+		VALUES (#{seltype.stpid},#{seltype.stname},#{seltype.sort},#{seltype.display},NULL,NULL,NULL,NULL,NULL,NULL)
+	</insert>
+	<delete id="deletetype">
+		DELETE FROM `servicetype` WHERE stid=#{stid}
+	</delete>
+	<!-- 修改服务类别【排序，显示等】 -->	
+	<update id="updateseltype">
+		update servicetype set sort=#{seltype,sort} ,display=#{seltype.display} 
+		<if test="seltype.stname!=null">
+			,stName=#{seltype.stname}
+		</if>
+		 where stid=#{seltype.stid}
+	</update>
+	<!-- 删除服务类别，即修改为不显示 -->
+	<update id="delseltype">
+		UPDATE servicetype SET display=0 WHERE stid=#{stid}
+	</update>
+	<!-- 新增服务级别 -->
+	<insert id="addsellevel">
+		INSERT INTO servicelevel(serlevelName,stid,serviceIntegralMin,serviceIntegralMax)
+		VALUES(#{sellevel.serlevelname},#{sellevel.stid},#{sellevel.serviceintegralmin},#{sellevel.serviceintegralmax})
+	</insert>
+	<!-- 查询要加载的服务级别对象 -->
+	<select id="loadsellevelByid" resultType="servicelevel">
+		SELECT * FROM servicelevel WHERE serlevelID=#{serlevelid}
+	</select>
+	<!-- 修改服务级别 -->
+	<update id="updatesellevel">
+		UPDATE servicelevel SET 
+		serlevelName=#{sellevel.serlevelname},stid=#{sellevel.stid},serviceIntegralMin=#{sellevel.serviceintegralmin},serviceIntegralMax=#{sellevel.serviceintegralmax}
+		WHERE serlevelID=#{sellevel.serlevelid}
+	</update>
+	<!-- 删除服务级别 -->
+	<delete id="delsellevel">
+		DELETE FROM servicelevel WHERE serlevelID=#{serlevelid}
+	</delete>
+	<!-- 查询后台所有服务类型预约 -->
+	<select id="queryallorder"
+		resultType="com.accp.vo.cm.serviceVo">
+		select * from(
+		SELECT a.`orderID`,a.`userID`,b.`userName`,
+		b.`shopName`,
+		d.`stName`,
+		`serviceTitle`,`integral`,`orderTime`,`paymentTime`,`receiptTime`,`provideServicesTime`,
+		`completeTime`,`remarks`,`orderStatus`,`totalPrice`,`serviceCoverImg`
+		FROM orders a
+		JOIN `user` b ON a.`userID`=b.`userID`
+		JOIN `services` c
+		ON a.`serviceID`=c.`serviceID`
+		JOIN `servicetype` d ON
+		c.`stid`=d.`stid`
+		WHERE a.orderStatus=1 OR a.orderStatus=2 OR
+		a.orderStatus=3 OR a.orderStatus=4 OR a.orderStatus=5 OR
+		a.orderStatus=6
+		OR a.orderStatus=12 ) g
+		<where>
+		<if test="stname!='不限'">
+				AND g.stName=#{stname}
+			</if>
+			<if test="status != null and status != 0">
+				AND orderStatus=#{status}
+			</if>
+			<if test="san!=null">
+				AND g.userName like '%${san}%' OR g.shopName like
+				'%${san}%' OR
+				g.orderID like '%${san}%'
+			</if>
+			
+			
+			<if test="datestart!=null and datestart != ''">
+				AND orderTime>=#{datestart}
+			</if>
+			<if test="dateend!=null and dateend != ''">
+				AND orderTime&lt;=#{dateend}
+			</if>
+		</where>
+		order by orderTime desc
+	</select>
+	<!-- 服务预约部分总订单数 -->
+	<select id="countdingdan" resultType="int">
+		SELECT COUNT(orderID) AS dingdan from(
+		SELECT a.`orderID`,a.`userID`,b.`userName`,
+		b.`shopName`,
+		d.`stName`,
+		`serviceTitle`,`integral`,`orderTime`,`paymentTime`,`receiptTime`,`provideServicesTime`,
+		`completeTime`,`remarks`,`orderStatus`,`totalPrice`,`serviceCoverImg`
+		FROM orders a
+		JOIN `user` b ON a.`userID`=b.`userID`
+		JOIN `services` c
+		ON a.`serviceID`=c.`serviceID`
+		JOIN `servicetype` d ON
+		c.`stid`=d.`stid`
+		WHERE a.orderStatus=1 OR a.orderStatus=2 OR
+		a.orderStatus=3 OR a.orderStatus=4 OR a.orderStatus=5 OR
+		a.orderStatus=6
+		OR a.orderStatus=12 ) g
+		<where>
+		<if test="stname!='不限'">
+				AND g.stName=#{stname}
+			</if>
+			<if test="status != null and status != 0">
+				AND orderStatus=#{status}
+			</if>
+			<if test="san!=null">
+				AND g.userName like '%${san}%' OR g.shopName like
+				'%${san}%' OR
+				g.orderID like '%${san}%'
+			</if>
+			
+			
+			<if test="datestart!=null and datestart != ''">
+				AND orderTime>=#{datestart}
+			</if>
+			<if test="dateend!=null and dateend != ''">
+				AND orderTime&lt;=#{dateend}
+			</if>
+		</where>
+	</select>
+	<!-- 服务预约部分总金币数 -->
+	<select id="countjinbi" resultType="java.lang.Float">
+		SELECT SUM(totalprice) AS jinbi from(
+		SELECT a.`orderID`,a.`userID`,b.`userName`,
+		b.`shopName`,
+		d.`stName`,
+		`serviceTitle`,`integral`,`orderTime`,`paymentTime`,`receiptTime`,`provideServicesTime`,
+		`completeTime`,`remarks`,`orderStatus`,`totalPrice`,`serviceCoverImg`
+		FROM orders a
+		JOIN `user` b ON a.`userID`=b.`userID`
+		JOIN `services` c
+		ON a.`serviceID`=c.`serviceID`
+		JOIN `servicetype` d ON
+		c.`stid`=d.`stid`
+		WHERE a.orderStatus=1 OR a.orderStatus=2 OR
+		a.orderStatus=3 OR a.orderStatus=4 OR a.orderStatus=5 OR
+		a.orderStatus=6
+		OR a.orderStatus=12 ) g
+		<where>
+		<if test="stname!='不限'">
+				AND g.stName=#{stname}
+			</if>
+			<if test="status != null and status != 0">
+				AND orderStatus=#{status}
+			</if>
+			<if test="san!=null">
+				AND g.userName like '%${san}%' OR g.shopName like
+				'%${san}%' OR
+				g.orderID like '%${san}%'
+			</if>
+			
+			
+			<if test="datestart!=null and datestart != ''">
+				AND orderTime>=#{datestart}
+			</if>
+			<if test="dateend!=null and dateend != ''">
+				AND orderTime&lt;=#{dateend}
+			</if>
+		</where>
+	</select>
+	<!--  查看服务预约-->
+	<select id="queryorderDetail" resultType="com.accp.vo.cm.serviceVo">
+		SELECT * FROM(
+		SELECT a.`orderID`,a.`userID`,b.`userName`,
+		b.`shopName`,
+		d.`stName`,d.stid,
+		`serviceTitle`,`integral`,`orderTime`,`paymentTime`,`receiptTime`,`provideServicesTime`,
+		`completeTime`,`remarks`,`orderStatus`,`totalPrice`,`serviceCoverImg`
+		FROM orders a
+		JOIN `user` b ON a.`userID`=b.`userID`
+		JOIN `services` c
+		ON a.`serviceID`=c.`serviceID`
+		JOIN `servicetype` d ON
+		c.`stid`=d.`stid`
+		WHERE d.stid=1 AND  a.orderStatus=1 OR a.orderStatus=2 OR
+		a.orderStatus=3 OR a.orderStatus=4 OR a.orderStatus=5 OR
+		a.orderStatus=6
+		OR a.orderStatus=12 ) g
+		WHERE g.`orderID`=#{orderid}	
+	</select>
+	<!-- 服务审核 -->
+	<select id="queryaudit" resultType="servicetype">
+		SELECT * FROM servicetype where stPid is null
+	</select>
+</mapper>
