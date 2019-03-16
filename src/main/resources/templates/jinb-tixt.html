@@ -264,6 +264,10 @@
 					alert("提现金额不能为空")
 					return false;
 				}
+				if (money == 0) {
+					alert("提现金额不能为0")
+					return false;
+				}
 				if (money>usermoney) {
 					alert("提现金额不能不能大于用户余额")
 					return false;

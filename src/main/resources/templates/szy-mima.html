@@ -74,7 +74,7 @@
 								<input type="button" name="fasong" class="login_abtn" value="发送密码"  />
 							</li>
 							<li class="forget_reg pt1">
-								<a href="-login.html" class="fr">又想起来了，返回»</a>
+								<a href="szy-login.html" class="fr">又想起来了，返回»</a>
 							</li>
 						</ul>
 					</form>
@@ -120,9 +120,9 @@ $("[name=fasong]").click(function(){
 		$.post("/c/gsq/user/updatePwd",{"email":email},function(data){
 			if(data.code=="200"){
 				layer.msg("您的密码重置成功，请进入邮箱查看");
-				settimeout(function(){
+				setTimeout(function(){
 					location.href="szy-login.html";
-				},5000)
+				},3000)
 			}else{
 				layer.msg("密码重置失败");
 			}

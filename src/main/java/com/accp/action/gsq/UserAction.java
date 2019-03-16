@@ -91,7 +91,9 @@ public class UserAction {
 			e.printStackTrace();
 			System.out.println("====================\n发送失败\n====================\n");
 		}
-		return "redirect:/szy-login.html";
+		String tl =  email.substring(email.indexOf("@")+1);
+		model.addAttribute("url", tl);
+		return "/gsq-goEamil";
 	}
 	/**
 	 * 激活邮箱
