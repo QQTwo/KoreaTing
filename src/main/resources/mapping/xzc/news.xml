@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   <mapper namespace="com.accp.dao.xzc.INewsDao">
+   	<select id="queryname" resultType="com.accp.pojo.User">
+		SELECT userid FROM `user` 
+		<where>
+				<if test="userrealName==null">
+					 userrealName = #{userrealName}
+				</if>
+		</where>
+	</select>
+   
+   
+   	<select id="querynewsall" resultType="com.accp.vo.xzc.newsVo">
+		SELECT * FROM news n JOIN `user` u ON n.theSender=u.userid
+		<where>
+				<if test="userid!=null">
+					AND userid=#{userid}
+				</if>
+		</where>
+	</select>
+	
+	<insert id="addNews">
+		INSERT INTO
+		`news`(`theSender`,`addRessee`,`content`,`sendingTime`,`readState`,`newsType`,`messageGroup`)
+		VALUES
+		<foreach collection="ids" item="wdSolr" index="index"
+			separator=",">
+			(#{userid},#{wdSolr},#{content},NOW(),0,2,1)
+		</foreach>
+	</insert>
+	
+	<select id="queryAllUserLike" resultType="com.accp.pojo.User">
+		SELECT userID,userName
+		FROM user WHERE
+		userName like '%${userName}%'
+	</select>
+	
+   </mapper>

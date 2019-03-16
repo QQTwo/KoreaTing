@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商家推荐修改</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.back {
+				font-size: 14px;
+				border-radius: 0 2px 2px 0;
+				background-color: #f2f2f2;
+				padding: 2px 10px;
+				border-left: 5px solid rgb(25, 159, 147);
+			}
+			
+			.tdd>select {
+				width: 12.5%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="">
+			<div class="col-lg-12 col-xs-12 back" style="background-color: #f2f2f2;">
+				<p style="font-weight: bold;padding-top: 10px;">商家服务推荐信息</p>
+			</div>
+			<div class="col-xs-12" style="margin-bottom: 5px;"></div>
+			<form class="form-inline">
+				<table class="table table-hover table-condensed table-bordered">
+					<TBODY>
+						<TR>
+							<TD width="18%" align=right><strong>商家信息</strong></TD>
+							<TD width="32%">&nbsp;</TD>
+							<TD width="18%" align=right>&nbsp;</TD>
+							<TD width="32%">&nbsp;</TD>
+						</TR>
+						<TR>
+							<TD align=right>店铺名称:</TD>
+							<TD>微笑</TD>
+							<TD align="right">保证金:</TD>
+							<TD>500</TD>
+						</TR>
+
+						<TR>
+							<TD align="right">所在城市:</TD>
+							<TD colspan="3"></TD>
+						</TR>
+						<TR>
+							<TD align=right>QQ:</TD>
+							<TD>2501509959</TD>
+							<TD align="right">微信:</TD>
+							<TD>Y2501509958</TD>
+
+						</TR>
+
+						<TR style="display:;">
+							<TD  align=right>店铺状态:</TD>
+							<TD colspan="3">
+								<label> 开启</label>
+								<label> </label>
+								<label> </label>
+							</TD>
+						</TR>
+						<TR>
+							<TD width="18%" align=right noWrap> 注册时间:</TD>
+							<TD width="32%">
+								2019-02-20 10:09 </TD>
+							<TD width="18%" align="right">注册 IP:</TD>
+							<TD width="32%">106.18.85.151</TD>
+						</TR>
+						<TR>
+							<TD  align=right>最后登录时间:</TD>
+							<TD>
+								2019-03-08 16:00 </TD>
+							<TD align="right">最后登录IP:</TD>
+							<TD></TD>
+						</TR>
+						<TR>
+
+							<TR>
+								<TD  align=right>服务类别:</TD>
+								<TD colspan="3">
+									自驾游 </TD>
+							</TR>
+							<TR>
+								<TD  align=right>服务类别图片(首页推荐栏目展示):</TD>
+								<TD colspan="3"><img src="/Uploads/image/2019-03/20190302030550-37149.jpg" width="150" /></a>
+								</TD>
+							</TR>
+							<TR>
+								<TD align=right>店铺服务推荐:</TD>
+								<TD colspan="3">
+									<label>
+                  			<input name="is_recommend" type="radio" value="1"  />推荐</label>
+                  			<label style="width: 15px;"></label>
+									<label>
+                  			<input type="radio" name="is_recommend" value="0"  checked/>不推荐</label>
+								</TD>
+							</TR>
+							<tr>
+			            <TD><input type="hidden" name="id" value="61"></TD>
+			            <td colspan="1"></td>
+			            <TD colspan="1" style="text-align: right;">
+			            	<button type="button"  class="btn btn-success">保存</button>
+			            </TD>
+			            <TD colspan="1" >
+			            	<button type="button"  class="btn btn-default" onClick="history.go(-1)">返回</button>
+			            </TD>
+			          </tr>
+							
+						
+
+					</TBODY>
+
+				</table>
+			</form>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+
+</html>

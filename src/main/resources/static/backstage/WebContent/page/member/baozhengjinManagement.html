@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>保证金管理</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container {
+				font-size: 14px;
+			}
+			
+			.back {
+				width: 1386px;
+				font-size: 14px;
+				border-radius: 0 2px 2px 0;
+				background-color: #f2f2f2;
+				padding: 2px 10px;
+				border-left: 5px solid rgb(25, 159, 147);
+			}
+			
+			table thead tr>th,
+			tr>td {
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="">
+			<blockquote class="back">
+				<p style="font-weight: bold;padding-top: 10px;">保证金管理</p>
+				<div style="padding:0px 0px 12px 15px;font-size: 14px;">
+					用户名：<input type="text" value="" placeholder="" name="username"> &nbsp;
+					<select name="status">
+						<option value="">全部状态</option>
+						<option value="1">待审核</option>
+						<option value="2">拒绝</option>
+						<option value="3">完成</option>
+					</select>
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search()">
+						查询</button>
+				</div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<THEAD style="background-color:#f2f2f2;">
+						<TR>
+							<th>序号</th>
+							<TH>用户</TH>
+							<TH>商家</TH>
+							<TH>类型</TH>
+							<TH>获取方式</TH>
+							<TH>消费</TH>
+							<TH>获得</TH>
+							<TH>状态</TH>
+							<TH>备注</TH>
+							<TH>消费时间</TH>
+							<TH></TH>
+						</TR>
+					</THEAD>
+					<tbody>
+						<tr>
+							<td align="center">
+								1 <input value="" type="checkbox" name="favid[]" style="display:none;">
+							</td>
+							<td align="center" nowrap>
+								<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">魅力。解释一切♀</a>
+							</td>
+							<td align="center" nowrap>店铺</TH>
+								<td align="center" nowrap>金币</td>
+								<td align="center" nowrap>保证金</td>
+								<td align="center" nowrap>
+									- </td>
+								<td align="center" nowrap>
+									+500.00 </td>
+								<td align="center" nowrap>
+									完成 </td>
+								<td align="center" nowrap>退保证金</td>
+								<td nowrap>2019-03-09 11:23</td>
+
+								<td nowrap>
+									<a href="javascript:void(0)" onclick="location.href='baozhengjin_detail.html'">查看</a>
+								</td>
+						</tr>
+						<tr>
+							<td align="center">
+								2 <input value="" type="checkbox" name="favid[]" style="display:none;">
+							</td>
+							<td align="center" nowrap>
+								<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">666</a>
+							</td>
+							<td align="center" nowrap>学习</TH>
+								<td align="center" nowrap>金币</td>
+								<td align="center" nowrap>保证金</td>
+								<td align="center" nowrap>
+									-500.00 </td>
+								<td align="center" nowrap>
+									- </td>
+								<td align="center" nowrap>
+									完成 </td>
+								<td align="center" nowrap>提交保证金</td>
+								<td nowrap>2019-03-09 10:57</td>
+
+								<td nowrap>
+						</tr>
+						<tr>
+							<td align="center">
+								3 <input value="" type="checkbox" name="favid[]" style="display:none;">
+							</td>
+							<td align="center" nowrap>
+								<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">魅力。解释一切♀</a>
+							</td>
+							<td align="center" nowrap>店铺</TH>
+								<td align="center" nowrap>金币</td>
+								<td align="center" nowrap>保证金</td>
+								<td align="center" nowrap>
+									-500.00 </td>
+								<td align="center" nowrap>
+									- </td>
+								<td align="center" nowrap>
+									完成 </td>
+								<td align="center" nowrap>提交保证金</td>
+								<td nowrap>2019-03-05 16:02</td>
+
+								<td nowrap>
+						</tr>
+						<tr>
+							<td align="center">
+								4 <input value="" type="checkbox" name="favid[]" style="display:none;">
+							</td>
+							<td align="center" nowrap>
+								<a href="/index.php/Admincp/user/edit/name/666/id/398.html" target="_blank">666</a>
+							</td>
+							<td align="center" nowrap>学习</TH>
+								<td align="center" nowrap>金币</td>
+								<td align="center" nowrap>保证金</td>
+								<td align="center" nowrap>
+									-500.00 </td>
+								<td align="center" nowrap>
+									- </td>
+								<td align="center" nowrap>
+									完成 </td>
+								<td align="center" nowrap>提交保证金</td>
+								<td nowrap>2019-03-05 09:54</td>
+
+								<td nowrap>
+						</tr>
+						<tr>
+							<td align="center">
+								5 <input value="" type="checkbox" name="favid[]" style="display:none;">
+							</td>
+							<td align="center" nowrap>
+								<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">666</a>
+							</td>
+							<td align="center" nowrap>学习</TH>
+								<td align="center" nowrap>金币</td>
+								<td align="center" nowrap>保证金</td>
+								<td align="center" nowrap>
+									- </td>
+								<td align="center" nowrap>
+									+500.00 </td>
+								<td align="center" nowrap>
+									完成 </td>
+								<td align="center" nowrap>申请退回保证金</td>
+								<td nowrap>2019-03-05 09:53</td>
+
+								<td nowrap>
+									<a href="javascript:void(0)" onclick="location.href='baozhengjin_detail.html'">查看</a>
+								</td>
+						</tr>
+						<tr>
+							<td align="center">
+								6 <input value="" type="checkbox" name="favid[]" style="display:none;">
+							</td>
+							<td align="center" nowrap>
+								<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">qwqw</a>
+							</td>
+							<td align="center" nowrap>仙女聚集之地</TH>
+								<td align="center" nowrap>金币</td>
+								<td align="center" nowrap>保证金</td>
+								<td align="center" nowrap>
+									-500.00 </td>
+								<td align="center" nowrap>
+									- </td>
+								<td align="center" nowrap>
+									完成 </td>
+								<td align="center" nowrap>提交保证金</td>
+								<td nowrap>2019-02-27 14:14</td>
+
+								<td nowrap>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="11">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+										<a href="javascript:void(0)">
+											首页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)">
+											上一页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)">
+											下一页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)">
+											尾页
+										</a>
+									</li>
+								</ul>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+
+</html>

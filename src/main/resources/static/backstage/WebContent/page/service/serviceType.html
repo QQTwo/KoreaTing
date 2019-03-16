@@ -10,33 +10,34 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
-	<link rel="stylesheet" href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" />
-	<link rel="stylesheet" href="../../css/news.css" media="all" />
+	<!-- <link rel="stylesheet" href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" />
+	<link rel="stylesheet" href="../../css/news.css" media="all" /> -->
 </head>
 <body class="childrenBody">
+<div  id="vmCnt">
 	<blockquote class="layui-elem-quote news_search">
 		<div class="layui-inline">服务类型：
 		    <div class="layui-input-inline">
-		    	<select type="text" value="" placeholder="请输入关键字" class="layui-input search_input">
-		    		<option>所有</option>
-		    		<option>xs</option>
+		    	<select  name="stid" id="stid" class="layui-input search_input">
+		    		<option value="0">所有</option>
+                   <option v-for="temp in selType" v-bind:value="temp.stid">
+						{{temp.stname}}</option>
 		    	</select>
 		    </div>
-		    <a class="layui-btn search_btn">查询</a>
+		    <a class="layui-btn search_btn" @click="likeSearch()">查询</a>
 		</div>
-		<div class="layui-inline">
-			<a class="layui-btn layui-btn-danger batchDel">批量删除</a>
-		</div>
-		<div class="layui-inline">
-			<div class="layui-form-mid layui-word-aux">本页面刷新后除新添加的链接外所有操作无效，关闭页面所有数据重置</div>
+		
+		<div class="layui-inline" style="float:right">
+			<!-- <div class="layui-form-mid layui-word-aux">本页面刷新后除新添加的链接外所有操作无效，关闭页面所有数据重置</div> -->
+			<a class="layui-btn search_btn">更新栏目</a><a class="layui-btn layui-btn-normal" @click="addInfo($event)">增加栏目</a>
 		</div>
 	</blockquote>
-	<div class="layui-form links_list">
-	  	<table class="layui-table">
+	<div class="" >
+	  	<table class="layui-table" id="table1">
 		    <colgroup>
-				<col width="50">
-				<col width="30%">
-				<col>
+				
+				<col width="10%">
+				<col width="25%">
 				<col>
 				<col>
 				<col>
@@ -45,7 +46,6 @@
 		    </colgroup>
 		    <thead>
 				<tr>
-					<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose" id="allChoose"></th>
 					<th>ID</th>
 					<th>分类名称</th>
 					<th>排序</th>
@@ -54,83 +54,193 @@
 				</tr> 
 		    </thead>
 		    <tbody class="links_content">
-		    	<!--<tr>
-		    		<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-		    		<td>4</td>
-    				<td  nowrap>
-    					微整形    <input type="text" name="catname[4]" id="catname4" value="微整形" class="validate[required]" style="display:none" />
-    				</td>
-    				<td  nowrap><input name="sort[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort4" value="1" size="8" /></td>
-					<td  nowrap>显示</td>
-    				<td nowrap>
-        				<a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        				<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-    				</td>
-		    	</tr>
-		    	<tr id="data-row-165">
-		    		<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-        <td nowrap  >165</td>
-        <td  nowrap>—眼部整形          <input name="catname[165]" type="text" class="validate[required]" id="catname165" value="眼部整形" size="12" style="display:none" />
-        </td>
-        <td  nowrap>—
-            <input name="sort[165]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort165" value="1" size="8" />
-        </td>
-        <td  nowrap>显示</td>
-        <td nowrap>
-            <a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        				<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-        </td>
-      </tr>
-      <tr id="data-row-209">
-      	<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-        <td nowrap  >209</td>
-        <td  nowrap>—qwe          <input name="catname[209]" type="text" class="validate[required]" id="catname209" value="qwe" size="12" style="display:none" />
-        </td>
-        <td  nowrap>—
-            <input name="sort[209]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort209" value="1" size="8" />
-        </td>
-        <td  nowrap>不显示</td>
-        <td nowrap>
-            <a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        	<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-        </td>
-      </tr>
-      <tr id="data-row-161">
-      	<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-        <td nowrap  >161</td>
-        <td  nowrap>—鼻部整形          <input name="catname[161]" type="text" class="validate[required]" id="catname161" value="鼻部整形" size="12" style="display:none" />
-        </td>
-        <td  nowrap>—
-            <input name="sort[161]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort161" value="2" size="8" />
-        </td>
-        <td nowrap>显示</td>
-        <td nowrap>
-           <a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        	<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-        </td>
-      </tr>
-      <tr id="data-row-166">
-      	<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
-        <td nowrap  >166</td>
-        <td  nowrap>—脸部轮廓整形          <input name="catname[166]" type="text" class="validate[required]" id="catname166" value="脸部轮廓整形" size="12" style="display:none" />
-        </td>
-        <td  nowrap>—
-            <input name="sort[166]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="sort166" value="3" size="8" />
-        </td>
-        <td  nowrap>显示</td>
-        <td nowrap>
-            <a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>
-        	<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>　
-        </td>
-      </tr>-->
-		    </tbody>
+		    	<template v-for="(temp,index) in serviceTypeList">
+						<tr>
+							<td v-text="temp.stid"></td>
+							<td v-text="temp.stname" @click="nextInfo(temp.stid,this)">会员名称</td>
+							<td><input type="text" :value="temp.sort" /></td>
+							<td><input :name="'dis'+index" v-model="temp.display"
+								type="radio" value="true" />显示 <input :name="'dis'+index"
+								v-model="temp.display" type="radio" value="false" />不显示</td>
+							<td>
+								<a class="layui-btn layui-btn-mini links_edit" @click="updateInfo($event, temp.stid, index)"><i class="iconfont icon-edit"></i> 编辑</a>
+							<!-- <a href="javascript:void(0)"
+								@click="removeInfo(temp.stid)">删除</a> -->
+								</td>
+						</tr>
+						
+						<template v-for="tem in temp.data">
+							<tr>
+						        <td v-text="tem.stid"></td>
+								<td v-text="'— '+tem.stname" @click="nextInfo(tem.stid,this)">会员名称</td>
+								<td>— <input type="text" :value="tem.sort" /></td>
+								<td><input :name="'dis2'+index+tem.stid" v-model="tem.display"
+									type="radio" value="true"/>显示 <input :name="'dis2'+index+tem.stid"
+									v-model="tem.display" type="radio" value="false" />不显示</td>
+								<td><a class="layui-btn layui-btn-mini links_edit"  @click="updateInfo($event, tem.stid, index)"><i class="iconfont icon-edit"></i> 编辑</a>
+        					<a class="layui-btn layui-btn-danger layui-btn-mini links_del" v-bind:data-id="tem.stid"><i class="layui-icon">&#xe640;</i> 删除</a>　
+							<!-- <a href="javascript:void(0)"
+								@click="removeInfo(temp.stid)">删除</a> --></td>
+						       
+					        </tr>
+					        
+					        <template v-for="te in tem.data">
+							<tr>
+						          	<td v-text="te.stid"></td>
+									<td v-text="'— — '+te.stname" @click="nextInfo(te.stid,this)">会员名称</td>
+									<td>— — <input type="text" :value="te.sort" /></td>
+									<td><input :name="'dis3'+index+te.stid" v-model="te.display"
+										type="radio" value="true" />显示 <input :name="'dis3'+index+te.stid"
+										v-model="te.display" type="radio" value="false" />不显示</td>
+									<td><a class="layui-btn layui-btn-mini links_edit"  @click="updateInfo($event, te.stid, index)"><i class="iconfont icon-edit"></i> 编辑</a>
+        					<a class="layui-btn layui-btn-danger layui-btn-mini links_del" v-bind:data-id="te.stid"><i class="layui-icon">&#xe640;</i> 删除</a>　
+							<!-- <a href="javascript:void(0)"
+								@click="removeInfo(temp.stid)">删除</a> --></td>
+						    </tr>
+						</template>
+					        
+						</template>
+					
+					</template>
+				</tbody>
+		    
+		   
 		</table>
 	</div>
-	<div id="page"></div>
-	<div><a class="layui-btn search_btn">更新栏目</a><a class="layui-btn layui-btn-normal newsAdd_btn">增加栏目</a>
-	<script type="text/javascript" src="../../layui/layui.js"></script>
-	<script type="text/javascript" src="../service/serviceType.js"></script>
-	<script type="text/javascript" src="../service/serviceTypeAdd.js"></script>
+	
+	</div>
+	
+	<script type="text/javascript" src="../../js/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="../../js/vue.js"></script>
+	
+ 	<!-- <script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript" src="../service/serviceType.js"></script> 
+	<script type="text/javascript" src="../service/serviceTypeAdd.js"></script> -->
+	<script>
+		var stid=$("#stid").val();
+		var vm = new Vue({
+			el: "#vmCnt",
+			data: {
+				allData: {
+					text: '全选',
+					parCheck: false
+				},
+				serviceTypeList:[],
+				selType:[]
+			},
+			
+			//属性过滤器
+			
+			methods:{
+				goToPage: function(stid) {
+					$.ajax({
+						url : "/c/cmservice/querytype",
+						type : "get",
+						data:{"stid":stid},
+						dataType : "json",
+						success : function(jsondata){
+							var topArr = []; //声明一个数组，存储所有的json数据
+							for (var i = 0; i < jsondata.length; i++) {
+								if (jsondata[i].stpid == 0) {
+									jsondata[i].data = []; //给一级菜单下面添加data数据，存放二级菜单
+									topArr.push(jsondata[i]); //得到一级菜单
+								}
+							}
+
+							for (var j = 0; j < topArr.length; j++) {
+								for (var i = 0; i < jsondata.length; i++) {
+									if (jsondata[i].stpid == topArr[j].stid) {
+										jsondata[i].data = [];
+										topArr[j].data
+												.push(jsondata[i]); //把获取的二级菜单存放到一级菜单的data对象中
+									}
+								}
+							}
+
+							for (var j = 0; j < topArr.length; j++) {
+								for (var m = 0; m < topArr[j].data.length; m++) {
+									for (var i = 0; i < jsondata.length; i++) {
+										if (jsondata[i].stpid == topArr[j].data[m].stid) {
+											topArr[j].data[m].data
+													.push(jsondata[i]); //把获取的三级菜单存放到二级菜单的data对象中
+										}
+									}
+								}
+							}
+							vm.serviceTypeList = topArr;
+						}
+					})
+				},
+			
+				nextInfo : function(stid,objs) {
+					var nums=$(objs).parent().attr("class");
+				},
+				likeSearch:function(){
+					stid=$("#stid").val();
+					$.ajax({
+						url : "/c/cmservice/querytype",
+						type : "get",
+						data:{"stid":stid},
+						dataType : "json",
+						success : function(jsondata){
+							var topArr = []; //声明一个数组，存储所有的json数据
+							for (var i = 0; i < jsondata.length; i++) {
+								if (jsondata[i].stpid == 0) {
+									jsondata[i].data = []; //给一级菜单下面添加data数据，存放二级菜单
+									topArr.push(jsondata[i]); //得到一级菜单
+								}
+							}
+
+							for (var j = 0; j < topArr.length; j++) {
+								for (var i = 0; i < jsondata.length; i++) {
+									if (jsondata[i].stpid == topArr[j].stid) {
+										jsondata[i].data = [];
+										topArr[j].data
+												.push(jsondata[i]); //把获取的二级菜单存放到一级菜单的data对象中
+									}
+								}
+							}
+
+							for (var j = 0; j < topArr.length; j++) {
+								for (var m = 0; m < topArr[j].data.length; m++) {
+									for (var i = 0; i < jsondata.length; i++) {
+										if (jsondata[i].stpid == topArr[j].data[m].stid) {
+											topArr[j].data[m].data
+													.push(jsondata[i]); //把获取的三级菜单存放到二级菜单的data对象中
+										}
+									}
+								}
+							}
+							vm.serviceTypeList = topArr;
+						}
+					})
+				},
+				/* removeInfo: function(e, pid, index) {
+					if(window.confirm('是否移除')) {
+						this.persons.splice(index, 1); //移除
+					}
+				}, */
+				updateInfo: function(e, stid, index) {
+					window.sessionStorage.setItem("stid", stid);
+					window.location.href="../service/serviceTypeUpdate.html";
+				},
+				addInfo:function(e){
+					window.location.href="serviceTypeAdd.html";
+				}
+			},
+			created:function(){
+				this.goToPage(0);
+				$.ajax({
+					url : "/c/cmservice/selType",
+					type : "get",
+					dataType : "json",
+					success : function(data){
+						vm.selType=data;
+					}
+				})
+			} 
+		});
+	</script>
 	<!--<script type="text/javascript" src="serviceTypeAdd.js"></script>-->
 </body>
 </html>

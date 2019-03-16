@@ -5,15 +5,15 @@ layui.config({
 		layer = parent.layer === undefined ? layui.layer : parent.layer,
 		laypage = layui.laypage,
 		$ = layui.jquery;
-
 	//加载页面数据
 	var linksData = '';
 	$.ajax({
-		url : "../../json2/serviceType.json",
+		url : "/c/cmservice/querylevel",
 		type : "get",
 		dataType : "json",
 		success : function(data){
-			linksData = data;
+			linksData = data.list;
+			
 			if(window.sessionStorage.getItem("addLinks")){
 				var addLinks = window.sessionStorage.getItem("addLinks");
 				linksData = JSON.parse(addLinks).concat(linksData);
@@ -24,13 +24,13 @@ layui.config({
 	})
 
 	//查询
-	$(".search_btn").click(function(){
+	/*$(".search_btn").click(function(){
 		var newArray = [];
 		if($(".search_input").val() != ''){
 			var index = layer.msg('更新中，请稍候',{icon: 16,time:false,shade:0.8});
             setTimeout(function(){
             	$.ajax({
-					url : "../../json2/serviceType.json",
+					url : "/c/cmservice/querylevel",
 					type : "get",
 					dataType : "json",
 					success : function(data){
@@ -84,28 +84,11 @@ layui.config({
 			layer.msg("请输入需要查询的内容");
 		}
 	})
-
+*/
 	//添加友情链接
-	$(".linksAdd_btn").click(function(){
-		var index = layui.layer.open({
-			title : "添加友情链接",
-			type : 2,
-			content : "linksAdd.html",
-			success : function(layero, index){
-				setTimeout(function(){
-					layui.layer.tips('点击此处返回友链列表', '.layui-layer-setwin .layui-layer-close', {
-						tips: 3
-					});
-				},500)
-			}
-		})
-		//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
-		$(window).resize(function(){
-			layui.layer.full(index);
-		})
-		layui.layer.full(index);
-	})
-
+	
+	
+	
 	//批量删除
 	$(".batchDel").click(function(){
 		var $checkbox = $('.links_list tbody input[type="checkbox"][name="checked"]');
@@ -117,10 +100,12 @@ layui.config({
 	            	//删除数据
 	            	for(var j=0;j<$checked.length;j++){
 	            		for(var i=0;i<linksData.length;i++){
-							if(linksData[i].linksId == $checked.eq(j).parents("tr").find(".links_del").attr("data-id")){
+							/*if(linksData[i].serlevelid == $checked.eq(j).parents("tr").find(".links_del").attr("data-id")){
 								linksData.splice(i,1);
 								linksList(linksData);
-							}
+							}*/
+	            			linksData.splice(i,1);
+							linksList(linksData);
 						}
 	            	}
 	            	$('.links_list thead input[type="checkbox"]').prop("checked",false);
@@ -157,22 +142,24 @@ layui.config({
 	})
  
 	//操作
-	$("body").on("click",".links_edit",function(){  //编辑
-		
+	/*$("body").on("click",".links_edit",function(){  //编辑
+		window.sessionStorage.setItem("serlevelid", serlevelid);
 		window.location.href="../service/serviceLevelUpdate.html";
-	})
+	})*/
 
 	$("body").on("click",".links_del",function(){  //删除
 		var _this = $(this);
 		layer.confirm('确定删除此信息？',{icon:3, title:'提示信息'},function(index){
 			//_this.parents("tr").remove();
 			for(var i=0;i<linksData.length;i++){
-				if(linksData[i].linksId == _this.attr("data-id")){
+				if(linksData[i].serlevelid == _this.attr("data-id")){
 					linksData.splice(i,1);
 					linksList(linksData);
 				}
 			}
 			layer.close(index);
+			
+			layer.msg("删除成功");
 		});
 	})
 
@@ -186,21 +173,20 @@ layui.config({
 				currData = that.concat().splice(curr*nums-nums, nums);
 			}
 			if(currData.length != 0){
-				
-				for(var i=0;i<currData.length;i++){
+				/*for(var i=0;i<currData.length;i++){
 					dataHtml += '<tr>'
 					+'<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>'
-			    	+'<td>'+currData[i].linksId+'</td>'
-			    	+'<td>银牌商家</td>'
-			    	+'<td>'+currData[i].linksName+'</td>'
-			    	+'<td>10000</td>'
-			    	+'<td>15000</td>'
+			    	+'<td>'+currData[i].serlevelid+'</td>'
+			    	+'<td>'+currData[i].serlevelname+'</td>'
+			    	+'<td>'+currData[i].stname+'</td>'
+			    	+'<td>'+currData[i].serviceintegralmin+'</td>'
+			    	+'<td>'+currData[i].serviceintegralmax+'</td>'
 			    	+'<td>'
 					+  '<a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>'
-					+  '<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].linksId+'"><i class="layui-icon">&#xe640;</i> 删除</a>'
+					+  '<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].serlevelid+'"><i class="layui-icon">&#xe640;</i> 删除</a>'
 			        +'</td>'
 			    	+'</tr>';
-				}
+				}*/
 			}else{
 				dataHtml = '<tr><td colspan="7">暂无数据</td></tr>';
 			}
@@ -208,7 +194,7 @@ layui.config({
 		}
 
 		//分页
-		var nums = 13; //每页出现的数据量
+		/*var nums = 13; //每页出现的数据量
 		if(that){
 			linksData = that;
 		}
@@ -220,6 +206,6 @@ layui.config({
 				$('.links_list thead input[type="checkbox"]').prop("checked",false);
 		    	form.render();
 			}
-		})
+		})*/
 	}
 })

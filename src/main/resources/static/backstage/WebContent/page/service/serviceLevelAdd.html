@@ -12,39 +12,104 @@
 	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
 </head>
 <body class="childrenBody">
-	<blockquote class="layui-elem-quote news_search">
-	</blockquote>
-	<form class="">
+	<div>
+	<form class="" id="vmCnt1">
 		<div class="layui-form-item">
 			<div class="layui-inline">
 				<label class="layui-form-label">服务类型:</label>
 				<div class="layui-input-inline" style="margin-top: 7px;">
-					<select name="catid" id="catid" style="width: 130%;">
-                <option value="4">微整形</option><option value="5">留学中介</option><option value="6">韩语翻译</option><option value="7">学习资源</option><option value="217">sxd</option><option value="229">qwe</option><option value="3">自驾游</option>            </select>
-
+					<select  name="stid" id="stid" class="layui-input search_input">
+		    		<option value="0">所有</option>
+                   <option v-for="temp in selType" v-bind:value="temp.stid" >
+						{{temp.stname}}</option>
+		    	</select>
 				</div>
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">级别名称:</label>
-			<INPUT id="level_name" size=40 type="text" name="level_name" value="" style="width: 21%;">
+			<div class="layui-input-block">
+				<INPUT type="text" class="layui-input" id="level_name"  style="width:21%" v-model="selLevel.serlevelname">
+			</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">交易金额:</label>
-			<div class="">
+			<div class="layui-input-inline">
 				
-				<input name="minmoney" type="text" id="minmoney" value="" size="10">
-              ——
-              <input name="maxmoney" type="text" id="maxmoney" value="" size="10">
-              
+				<input name="minmoney"  class="layui-input-inline" style="width:25%" type="text" id="minmoney" value="" size="10" v-model="selLevel.serviceintegralmin">
+             	<span>————</span>
+			</div>
+			<div class="layui-input-inline">
+				&nbsp;<input name="maxmoney"  class="layui-input-inline" style="width:25%;margin-left:-80px" type="text" id="maxmoney" value="" size="10" v-model="selLevel.serviceintegralmax">
 			</div>
 		</div>
 		<div class="layui-form-item">
 			<div class="layui-input-block">
-				<button class="layui-btn" lay-submit="" lay-filter="addNews">保存</button>
+				<button class="layui-btn" @click="submit()">保存</button>
 				<button type="reset" class="layui-btn layui-btn-primary" style="margin-left: 110px;">重置</button>
 		    </div>
 		</div>
 	</form>
+	</div>
 </body>
+
+	<script type="text/javascript" src="../../js/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="../../js/vue.js"></script>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript" src="serviceLevelAdd.js"></script>
+	<script type="text/javascript">
+	var vmCnt1  = new Vue({
+		el: "#vmCnt1",
+		data: {
+			allData: {
+				text: '全选',
+				parCheck: false
+			},
+			selLevel:{
+				stid:"",
+				serlevelname:"",
+				serviceintegralmin:"",
+				serviceintegralmax:""
+			},
+			selType:[]
+		},
+		
+		//属性过滤器
+		
+		methods:{
+			submit:function(){
+				/* this.selLevel.stpid=$("[name=stpid]").val();
+				this.selLevel.display=$('input[name="display"]:checked').val(); */
+				this.selLevel.stid=$("[name=stid]").val();
+				var _selLevel=this.selLevel;
+				$.ajax({
+					url:"/c/cmservice/addsellevel",
+					type:"post",
+					dataType:"json",
+					contentType:"application/json",
+					data:JSON.stringify(_selLevel),
+					success:function(json){
+						if(json.code==200){
+							alert("数据"+JSON.stringify(_selLevel))
+							location.href="../service/serviceLevel.html";
+						}else{
+							showAlertDialog("更新失败");
+						}
+					}
+				});
+			}
+		},
+		created:function(){
+			$.ajax({
+				url : "/c/cmservice/selType",
+				type : "get",
+				dataType : "json",
+				success : function(data){
+					vmCnt1.selType=data;
+				}
+			});
+		}
+	});
+	</script>
+
 </html>

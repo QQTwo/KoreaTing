@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>充值详情</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.back{
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			.tdd>select{
+				width: 12.5%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="">
+			<div class="col-lg-12 col-xs-12 back" style="background-color: #f2f2f2;">
+			  <p style="font-weight: bold;padding-top: 10px;">金币充值详情</p>
+			</div>
+			<div class="col-xs-12" style="margin-bottom: 5px;"></div>
+			<form class="form-inline">
+				<table class="table table-hover table-condensed table-bordered">
+					<TBODY>
+			          <TR>
+			            <TD width="89" align=right ><strong>会员:</strong></TD>
+			            <TD width="300" >阿giao</TD>
+			            <TD align=right>&nbsp;</TD>
+			            <TD >&nbsp;</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right >申请日期：</TD>
+			            <TD >2019-02-21 08:57:01</TD>
+			            <TD align=right>充值金额：</TD>
+			            <TD >1000000000.00元</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>银行名称：</TD>
+			            <TD >中国建设银行</TD>
+			            <TD align=right>开户名：</TD>
+			            <TD >123123213213</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right >账号：</TD>
+			            <TD >123123</TD>
+			            <TD align=right>姓名：</TD>
+			            <TD >21332121</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right >转账图片：</TD>
+			            <TD colspan="3" ><img  src="" width="135" /></TD>
+			          </TR>
+			          
+			           <TR>
+			            <TD align=right>状态：</TD>
+			            <!--如果交易完成，则这里直接显示交易成功
+			            	处于正在审核，说明还可以根据单选按钮修改其状态
+			            -->
+			            <TD colspan="3" >
+						     <label>
+			                	<input checked type="radio" name="status" value="0" id="status_0">
+			                	待审核
+						     </label>
+						     <label style="width: 15px;"></label>
+			                <label>
+				                <input  type="radio" name="status" value="1" id="status_1">
+				               	 交易失败
+			                </label>        
+			                <label style="width: 15px;"></label>
+			                <label>
+			                	<input  type="radio" name="status" value="2" id="status_2">
+			                	交易成功
+			                </label>			            
+			            </TD>
+			          </TR>
+
+			          <TR>
+			            <TD align=right>&nbsp;</TD>
+			            <td></td>
+			            <td></td>
+			            <td>
+							<button type="button"  class="btn btn-default-xs" onClick="history.go(-1)">返回</button>
+							<input type="hidden" value="4980" name="id" />
+						</td>
+			          </TR>
+			        </tbody>
+				</table>
+			</form>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+</html>

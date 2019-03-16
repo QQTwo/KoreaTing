@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>提现申请详情</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.back{
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			.tdd>select{
+				width: 12.5%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="" id="tixianDetail">
+			<div class="col-lg-12 col-xs-12 back" style="background-color: #f2f2f2;">
+			  <p style="font-weight: bold;padding-top: 10px;">提现申请详情</p>
+			</div>
+			<div class="col-xs-12" style="margin-bottom: 5px;"></div>
+		
+		<form class="form-inline">
+			<table class="table table-hover table-condensed table-bordered">
+				<TBODY>
+		          <TR>
+		            <TD width="89" align=right noWrap><strong>会员:</strong></TD>
+		            <TD width="300" v-text="tixianDeObj.userName">瓶</TD>
+		           <TD align=right>&nbsp;</TD>
+		            <TD >&nbsp;<input type="hidden" v-model="tixianDeObj.userID" name="userID">
+		            <input type="hidden" name="Time"
+		            v-model="tixianDeObj.submitTime">
+		             <!-- <input type="hidden" th:value="${type}" name="type"> -->
+		             </TD>
+		          </TR>
+		         
+				  <TR>
+		            <TD align=right noWrap>申请日期：</TD>
+		            <TD v-text="tixianDeObj.submitTime">2019-02-22 13:12:29</TD>
+		            <TD align=right style="width:15px" noWrap>提现金额：</TD>
+		            <TD align=left>
+						<input type="number" value="">
+					</TD>
+		          </TR>
+		          <TR>
+		            <TD align=right>银行名称：</TD>
+		            <TD v-text="tixianDeObj.bankName">中国农业银行</TD>
+		            <TD align=right style="width:15px" noWrap>开户名：</TD>
+		            <TD v-text="tixianDeObj.openBankName" align=left>大撒旦撒</TD>
+		          </TR>
+		          <TR>
+		            <TD align=right noWrap>账号：</TD>
+		            <TD v-text="tixianDeObj.bankAccount">6200000000000000000</TD>
+		            <TD align=right style="width:15px"noWrap>姓名：</TD>
+		            <TD v-text="tixianDeObj.userRealName" align=left>大声地</TD>
+		          </TR>		            <TR>
+		            <TD align=right>状态：</TD>
+		            <!--
+                    	作者：1017009135@qq.com
+                    	时间：2019-03-10
+                    	描述：当状态为交易完成时，直接显示状态，也就没有下面的“设置状态”按钮
+                    -->
+		             <TD colspan="3" align="left">
+			            <span v-if="tixianDeObj.auditStatus==1" style="padding-left:10px">
+				            <input type="radio" name="auditStatus" id="chck1" v-model="tixianDeObj.auditStatus" value="1">待审核
+				            <input type="radio" name="auditStatus" id="chck2" v-model="tixianDeObj.auditStatus" value="2">交易成功
+				            <input type="radio" name="auditStatus" id="chck3" v-model="tixianDeObj.auditStatus" value="3">交易失败
+			            </span>
+			            <span v-if="tixianDeObj.auditStatus==2">
+			            	交易成功
+			            	<input type="hidden" name="auditStatus" v-model="tixianDeObj.auditStatus" value="2">
+			            </span>
+			            <span v-if="tixianDeObj.auditStatus==3">
+			            	交易失败
+			            	<input type="hidden" name="auditStatus" v-model="tixianDeObj.auditStatus" value="3">
+			            </span>
+		             </TD>
+		          </TR>
+		          <TR>
+		            <TD align=right>备注：</TD>
+		            <TD colspan="3"><textarea name="remarks"  rows='3' cols='160' placeholder="请填入拒绝原因" v-text="tixianDeObj.adminOpinion"></textarea></TD>
+		          </TR>
+		          <tr>
+			            <TD></TD>
+			            <td colspan="1"></td>
+			            <TD colspan="1" style="text-align: right;">
+			            	<button type="button"  class="btn btn-success" @click="updateTiXianInfo()">设置状态</button>
+			            </TD>
+			            <TD colspan="1" >
+			            	<button type="button"  class="btn btn-default" onClick="history.go(-1)">返回</button>
+			            </TD>
+			          </tr>
+		        </tbody>
+
+			</table>
+		</form>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	var userID=window.sessionStorage.getItem("userID");
+	var submitTime=window.sessionStorage.getItem("submitTime");
+	var vmCnt = new Vue({
+		el: "#tixianDetail",
+		data: {
+			tixianDeObj:{
+				submitTime:"",
+					money:""
+			},
+			Time:"",
+			
+		},
+
+		//方法
+		methods: {
+			updateTiXianInfo:function(e){
+				this.tixianDeObj.submitTime=submitTime;
+				var money=$("[type=number]").val();
+				this.tixianDeObj.money=parseFloat(money);
+				var _tixianDeObj=this.tixianDeObj;
+				$.ajax("/c/cmmember/updateForward",{
+					type:"put",
+					dataType:"json",
+					contentType:"application/json",
+					data:JSON.stringify(_tixianDeObj),
+					success:function(json){
+						if(json.code==200){
+							alert("审核成功！");
+							location.href="tixianManagement.html";
+						}else{
+							
+						}
+					}
+				});
+			}
+		},
+	
+		created: function() {
+			var userID=window.sessionStorage.getItem("userID");
+			var submitTime=window.sessionStorage.getItem("submitTime");
+			$.ajax({
+				url : "/c/cmmember/loadforward",
+				type : "get",
+				data:{
+					"userID":userID,
+					"Time":submitTime
+					},
+				dataType : "json",
+				success : function(obj){
+					$("[type=number]").val(obj.money);
+					vmCnt.tixianDeObj = obj;
+					console.log(vmCnt.tixianDeObj);
+				}
+			});
+		
+	} 
+
+});
+	</script>
+</html>

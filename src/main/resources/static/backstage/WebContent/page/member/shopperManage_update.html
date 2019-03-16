@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商家管理--会员信息编辑</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+		.back{
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			.tdd>select{
+				width: 12.5%;
+			}
+	</style>
+	</head>
+	<body>
+		<div class="">
+			<div class="col-lg-12 col-xs-12 back" style="background-color: #f2f2f2;">
+			  <p style="font-weight: bold;padding-top: 10px;">会员信息</p>
+			</div>
+			<div class="col-xs-12" style="margin-bottom: 5px;"></div>
+			<form class="form-inline"><br />
+				<!--
+                	作者：1017009135@qq.com
+                	时间：2019-03-10
+                	描述：一个三个table，
+                -->
+				<table class="table table-hover table-condensed table-bordered" >
+					 <TBODY>
+			          <TR>
+			            <TD width="18%" align=right noWrap><strong>会员组:</strong></TD>
+			            <TD  width="32%" noWrap>
+			              <label for="group_id"></label>
+			              	大陆商家用户                
+			              	<select name="group_id" id="group_id" style="display:none;">
+			                  <option value="1" >普通会员</option>
+			                  <option value="2" selected>大陆商家用户</option>
+			                  <option value="3" >海外商家用户</option>              
+			              	</select>
+			            </TD>
+			            <TD width="18%"  align=right>&nbsp;</TD>
+			            <TD width="32%" >&nbsp;</TD>
+			          </TR>
+			          <TR>
+			            <TD  align=right >用户名:</TD>
+			            <TD  >qwqw</TD>
+			            <TD  align=right>密码:</TD>
+			            <TD  ><input id="password" size=20 type="text" name="password" value=""></TD>
+			          </TR>
+			          <TR>
+			            <TD align=right >手机:</TD>
+			            <TD ><input name="mobile" type="text" class="" id="mobile" value="" maxlength="13"></TD>
+			            <TD align=right>邮箱:</TD>
+			            <TD >7478@163.com			<!--
+						<input name="email" type="text" id="email" value="7478@163.com" size=40  class="validate[required,custom[email]]">
+						-->
+						</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>真实姓名:</TD>
+			            <TD ><input name="truename" type="text" id="truename" value="仙女" size=20  class=""></TD>
+			            <TD align=right>性别:</TD>
+			            <TD >
+			              <label>
+			                <input name="sex" type="radio" id="check_0" value="男" >男</label>
+			                <label style="width: 15px;"></label>
+			              <label>
+			                <input type="radio" name="sex" value="女" id="check_1" checked>女</label>
+			            </TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>住址:</TD>
+			            <TD colspan="3"  class="tdd" >
+			            	<!--
+                            	作者：1017009135@qq.com
+                            	时间：2019-03-10
+                            	描述：省市区三级联动,绑定onChange事件
+                            -->
+			            	<select class="sel_f sel_f2 sel_b2" name="countryid" onChange="setarea(this.value, 'shengid')">
+								<option value="399" selected>中国</option>
+								<option value="400" >韩国</option>
+								<option value="1023" >测试地址</option>				</select>
+							<select class="sel_f sel_f2 sel_b2" name="shengid" id="shengid" onChange="setarea(this.value, 'areaid')">
+								<option value="0">省</option>
+								<option value="1" >北京市</option><option value="2" >上海市</option><option value="3" >天津市</option><option value="4" >重庆市</option><option value="5" >河北市</option><option value="6" >山西</option><option value="7" >内蒙古</option><option value="8" >辽宁</option><option value="9" >吉林</option><option value="10" >黑龙江</option><option value="11" >江苏</option><option value="12" >浙江</option><option value="13" >安徽</option><option value="14" selected>福建</option><option value="15" >江西</option><option value="16" >山东</option><option value="17" >河南</option><option value="18" >湖北</option><option value="19" >湖南</option><option value="20" >广东</option><option value="21" >广西</option><option value="22" >海南</option><option value="23" >四川</option><option value="24" >贵州</option><option value="25" >云南</option><option value="26" >西藏</option><option value="27" >陕西</option><option value="28" >甘肃</option><option value="29" >青海</option><option value="30" >宁夏</option><option value="31" >新疆</option><option value="32" >台湾</option><option value="33" >香港</option><option value="34" >澳门</option><option value="577" ></option><option value="1011" ></option><option value="1018" ></option><option value="1022" >测试地址1</option>				</select>
+						  	<select class="sel_f sel_f2 sel_b2" name="areaid" id="areaid"  >
+								<option value="0">市</option>
+			                    <option value="146" selected>福州市</option><option value="147" >厦门市</option><option value="148" >莆田市</option><option value="149" >三明市</option><option value="150" >泉州市</option><option value="151" >漳州市</option><option value="152" >南平市</option><option value="153" >龙岩市</option><option value="154" >宁德市</option>			  </select>
+							<input name="address" type="text" class="input_c inf_inc" id="address" value="sss" size="50"  />
+			            </TD>
+			          </TR>
+			        </tbody>
+      			</table>
+      			<table class="table table-hover table-condensed table-bordered">
+			        <tbody>
+			          <TR>
+			            <TD width="18%" align=right><strong>商家信息</strong></TD>
+			            <TD width="32%">&nbsp;</TD>
+			            <TD width="18%"  align=right>&nbsp;</TD>
+			            <TD width="32%">&nbsp;</TD>
+			          </TR>
+						<TR>
+						  <TD  align=right>店铺名称:</TD>
+						  <TD >仙女聚集之地</TD>
+						  <TD align="right">保证金:</TD>
+						<!--
+                        	作者：1017009135@qq.com
+                        	时间：2019-03-10
+                        	描述：扣除保证金需添加单击事件 onclick="kcbzj('487')"
+                        -->
+			        	<TD >0 &nbsp;<input id="kbzj" type="text" name="deposit" value="0"><a href="javascript:void(0)"  >&nbsp;扣除保证金</a></TD>
+					  </TR> 
+						<TR>
+			            <TD  align=right>服务类别:</TD>
+			            <TD colspan="3" >
+			           		 自驾游,            </TD>
+			          </TR>
+			          <TR>  
+						  <TD  align=right>身份证:</TD>
+						  <TD colspan="3" >身份证：430221199907197128</TD>
+					  </TR>
+			          			<TR>
+						  <TD  align=right>证件正面:</TD>
+						  <TD ><a href="/Uploads/image/2019-02/20190227021334-53969.jpg" target="_blank"><img src="/Uploads/image/2019-02/20190227021334-53969.jpg" width="150" /></a></TD>
+						  <TD align="right">证件反面:</TD>
+						  <TD ><a href="/Uploads/image/2019-02/20190227021354-44078.jpg" target="_blank"><img src="/Uploads/image/2019-02/20190227021354-44078.jpg" width="150" /></a></TD>
+				      </TR>
+						<TR>
+						  <TD  align=right>手持证件照:</TD>
+						  <TD >
+			              <a href="/Uploads/image/2019-02/20190227021357-63378.jpg" target="_blank"><img src="/Uploads/image/2019-02/20190227021357-63378.jpg" width="150" /></a>
+			              </TD>
+						  <TD align="right">服务语言:</TD>
+						  <TD >中文</TD>
+					  </TR>
+						<TR>
+						  <TD  align=right>擅长专业:</TD>
+						  <TD >
+			             		 视觉设计,              </TD>
+						  <TD align="right">所在城市:</TD>
+						  <TD >首尔特别市</TD>
+					  </TR>
+						<TR>
+						  <TD  align=right>QQ:</TD>
+						  <TD ></TD>
+						  <TD align="right">微信:</TD>
+						  <TD ></TD>
+					  </TR>
+						<TR>
+						  <TD  align=right>职业:</TD>
+						  <TD ></TD>
+						  <TD align="right">身高:</TD>
+						  <TD >CM</TD>
+					  </TR>
+						<TR>
+						  <TD  align=right>星座:</TD>
+						  <TD >白羊座</TD>
+						  <TD align="right">年龄:</TD>
+						  <TD >0</TD>
+					  </TR>
+						<TR>
+						  <TD  align=right>自我介绍:</TD>
+						  <TD colspan="3" >scsd</TD>
+					  </TR>
+			
+			          <TR>
+			            <TD align="right">店铺免费体验:</TD>
+			            <!--<td ><INPUT  type="radio" name="SHOP_FREE_STATUS" class="input-heigt" value="1"  >是-->
+			            <!--&nbsp;&nbsp;&nbsp;<INPUT type="radio" name="SHOP_FREE_STATUS" class="input-heigt" value="0" checked >否-->
+			            <!--</td>-->
+			            <td >否            </td>
+			            <td align="right" noWrap>店铺免费体验月数：</td>
+			            <td >
+			              <select id="free_time"  type="text" name="free_time" class="input-heigt">
+			                <option value="1"> 1</option>
+			                <option value="2"> 2</option>
+			                <option value="3"> 3</option>
+			                <option value="4"> 4</option>
+			                <option value="5"> 5</option>
+			                <option value="6"> 6</option>
+			                <option value="7"> 7</option>
+			                <option value="8"> 8</option>
+			                <option value="9"> 9</option>
+			                <option value="10"> 10</option>
+			                <option value="11"> 11</option>
+			                <option value="12"> 12</option>
+			              </select>
+			            </td>
+			          </tr>
+			
+			          <TR style="display:;">
+			            <TD  align=right>店铺状态:</TD>
+			            <TD colspan="3" >
+			            	<!--
+                            	作者：1017009135@qq.com
+                            	时间：2019-03-10
+                            	描述：v-if 对店铺状态做判断
+                            -->
+			              <label>
+			                <input name="shopstatus" type="radio" value="1" >开启</label>
+			              <label>
+			                <input type="radio" name="shopstatus" value="2"  checked>暂停</label>
+			              <label>
+			                <input type="radio" name="shopstatus" value="0"  >关闭</label>
+			            </TD>
+			          </TR>
+			          <TR style="display:;">
+			            <TD  align=right>暂停时间:</TD>
+			            <TD> 2019-03-01 21:45</TD>
+			            <TD  align=right>关闭时间:</TD>
+			            <TD> </TD>
+			          </TR>
+			
+			          <TR style="display:;">
+			            <TD  align=right>店铺暂停理由:</TD>
+			            <TD colspan="3" align="left">
+			              <textarea rows="2"  name="pausereason"  cols="100%" style="text-align: left;padding-left:5px;">
+			                              </textarea>
+			            </TD>
+			          </TR>
+			
+			          <TR style="display:;">
+			            <TD  align=right>店铺光闭理由:</TD>
+			            <TD colspan="3" align="left">
+			              <textarea  rows="2" name="stopreason" cols="100%" style="text-align: left;padding-left:5px;">
+			                             </textarea>
+			            </TD>
+			          </TR>
+			
+			        </tbody>
+			      </TABLE>
+			      <TABLE class="table table-hover table-condensed table-bordered">
+			        <TBODY>
+						<TR>
+			            <TD width="18%" align=right > 注册时间:</TD>
+			            <TD  width="32%">
+			            2019-02-22 09:35            </TD>
+			            <TD  width="18%" align="right">注册 IP:</TD>
+			            <TD  width="32%" >43.250.200.28</TD>
+			          </TR>
+			          <TR>
+			            <TD  align=right>最后登录时间:</TD>
+			            <TD >
+			              2019-03-04 13:37            </TD>
+			            <TD align="right">最后登录IP:</TD>
+			            <TD >220.202.152.8</TD>
+			          </TR>
+			          <TR>
+					  <TR style="display:;">
+						  <TD  align=right>资料审核:</TD>
+						  <TD >
+			              <label>
+			                <input name="zt" type="radio" id="check_0" value="1" checked>已通过审核</label>
+			              <label>
+			                <input type="radio" name="zt" value="0" id="check_1" >未通过审核</label></TD>
+			            <TD  align=right>邮箱验证:</TD>
+			            <TD >
+			              <label>
+			                <input name="check" type="radio" id="check_0" value="1" checked>已通过验证</label>
+			              <label>
+			                <input type="radio" name="check" value="0" id="check_1" >未通过验证</label>
+			            </TD>
+					  </TR>
+						<tr>
+			            <TD><input type="hidden" name="userid" value="490"></TD>
+			            <td colspan="1"></td>
+			            <TD colspan="1" style="text-align: right;">
+			            	<button type="button"  class="btn btn-success">保存</button>
+			            </TD>
+			            <TD colspan="1" >
+			            	<button type="button"  class="btn btn-default" onClick="history.go(-1)">返回</button>
+			            </TD>
+			          </tr>
+			        </tbody>
+			      </table>
+			</form>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+</html>

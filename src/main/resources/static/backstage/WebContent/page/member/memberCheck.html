@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<title>会员管理--会员审核模块</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class=""  id="listVm">
+			<blockquote class="back">
+			  <p style="font-weight: bold;padding-top: 10px;">会员管理</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户昵称：<input type="text" placeholder="" name="nickname">
+			    	<!-- Standard button -->
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search('1','10')">
+						查询</button>
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;">导出</button>
+
+			    </div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+            <div>
+				<table class="table table-bordered">
+  					<thead style="background-color:#f2f2f2;">
+  						<tr>
+							<th>序号</th>
+		                    <th>用户昵称</th>
+							<th>会员组</th>
+		                    <th>邮箱</th>
+		                    <th>积分</th>
+		                    <th>金币</th>
+		                    <th>邮箱验证</th>
+		                    <th>审核</th>
+		                    <th>鉴定</TH>
+		                    
+		                    <th>电话</TH>
+		                  	<TH>最后登录时间</TH>
+		                  	<TH>操作</TH>
+						</tr> 
+  					</thead>
+  					<tbody>
+  						<tr v-for="(temp,index) in membersPageInfo.list">
+					    	<td v-text="(index+1)">1</td>	
+					    	<td v-text="temp.username">ok</td>	
+					    	<td v-if="temp.merchanttype==0">普通会员</td>	
+					    	<td v-if="temp.merchanttype==1">大陆商家用户</td>
+					    	<td v-if="temp.merchanttype==2">海外商家用户</td>	
+					    	<td v-text="temp.contactmailbox">1017009456@qq.com</td>	
+					    	<td v-text="temp.userintegral">0</td>	
+					    	<td v-text="temp.usermoney">100</td>	
+					    	<!-- v-if判断状态 -->
+					    	<td v-if="temp.mailboxverification==0" style="color:#f00">未验证</td>	
+					    	<td v-if="temp.mailboxverification==1">已验证</td>	
+					    	<td v-if="temp.auditstatus==1" style="color:red">待审核</td>	
+					    	<td v-if="temp.auditstatus==2">通过</td>	
+					    	<td v-if="temp.auditstatus==3">拒绝</td>	
+					    	<td>开启</td>	
+					    	<td v-text="temp.userphone">18596230152</td>	
+					    	<td v-text="temp.recententry">2018-01-12 11:20</td>	
+					    	<td>
+					    		<a class="btn btn-default btn-xs  memberCheck_edit" @click="memberEdit(temp.userid)"><span class="glyphicon glyphicon-edit"></span> 编辑</a>
+								<a class="btn btn-primary btn-xs  score_record" @click="scorerecord()"><span class="glyphicon glyphicon-inbox"></span> 积分记录</a>
+							    <a class="btn btn-default btn-xs  recommend" @click="command(temp.userid)"><span class=""></span> 评论</a>
+					    	</td>	
+					    </tr>
+  					</tbody>
+  					<tfoot>
+  						<tr>
+  							<td colspan="14">
+  								合计  金币 <span v-text="jinbi">111111</span> 个，积分 <span v-text="jifen"> 4889943213</span>
+  							</td>
+  						</tr>
+						<tr>
+							<td colspan="14">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+								      <a href="javascript:void(0)" @click="goToPage(1,membersPageInfo.pageSize)">
+								        	首页
+								      </a>
+								    </li>
+						    		<li v-if="membersPageInfo.hasPreviousPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+								        	上一页
+								      </a>
+								    </li>
+								    <li v-if="membersPageInfo.hasNextPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+								        	下一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+								       		 尾页
+								      </a>
+								    </li>
+								    <li>
+										第<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pageNum">1</span>页，
+										共<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pages">5</span>页
+									</li>
+								</ul>
+							</td>
+						</tr>				
+  					</tfoot>
+				</table>
+            </div>
+        </div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	
+	var listVm = new Vue({
+		el: "#listVm",
+		data: {
+			//会员信息
+			membersPageInfo: {},
+			//金币
+			jinbi: "",
+			//积分
+			jifen: ""
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				$.getJSON("/c/cmmember/users/" + n + "/" + s + "/0", function(pageData) {
+					listVm.membersPageInfo = pageData;
+				});
+			},
+			//搜索
+			search:function(n,s){
+				var usernickName=$("[name=nickname]").val();
+				alert("nicheng:"+usernickName)
+				$.getJSON("/c/cmmember/users/" + n + "/" + s + "/"+usernickName, function(pageData) {
+					listVm.membersPageInfo = pageData;
+				});
+				this.sum(usernickName);
+			},
+			//编辑
+			memberEdit:function(userid){
+				window.sessionStorage.setItem("userid", userid);
+				window.location.href="memberCheck_update.html";
+			},
+			//积分记录
+			scorerecord:function(){
+				window.location.href="../service/serviceOrder.html";
+			},
+			command:function(userid){
+				//进入肖自成的论坛模块
+				window.sessionStorage.setItem("userid", userid);
+				window.location.href="memberCheck_commend.html";
+			},
+			sum:function(nickname){
+				$.ajax("/c/cmmember/users/sum/"+nickname, {
+					type: "get",
+					dataType: "json",
+					success: function(data) {
+						listVm.jinbi=data.jinbi;
+						listVm.jifen=data.jifen;
+					}
+				});
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 5);
+			//加载金币数和积分
+			this.sum(0);
+		}
+	});
+</script>
+</html>

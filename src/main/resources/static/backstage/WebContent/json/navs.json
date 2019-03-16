@@ -119,120 +119,120 @@
 		{
 			"title" : "会员审核",
 			"icon" : "&#xe609;",
-			"href" : "page/404.html",
+			"href" : "page/member/memberCheck.html",
 			"spread" : false
 		},
 		{
 			"title" : "商家管理",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/shopperManagement.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "商家入驻",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shopAllCheckUpdate.html",
+			"href" : "page/member/shopperRuzhu.html",
 			"spread" : false
 		
 		},
 		{
 			"title" : "鉴定审核",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/jiandingApply.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "商家推荐",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/shopperRecomend.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "商家托管",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/shopperTuoguan.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "评价管理",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/memberCheck_commend.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "金币记录",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/jinbiRecord.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "积分记录",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/scoreRecord.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "充值记录",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/addMoney.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "提现记录",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/tixianManagement.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "保证金详情",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/baozhengjinManagement.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "收藏排行",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/shoucangOrder.html",
 			"spread" : false
 		},
 		{
 			"title" : "服务收藏",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/servicecollect.html",
 			"spread" : false
 		},
 		{
 			"title" : "BBS收藏",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/shoucangOrder.html",
 			"spread" : false
 		},
 		{
 			"title" : "店铺收藏",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/shoucangOrder.html",
 			"spread" : false
 		},
 		{
 			"title" : "会员站内信",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/shoucangOrder.html",
 			"spread" : false
 		},
 		{
 			"title" : "留言反馈",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/shoucangOrder.html",
 			"spread" : false
 			
 		}
@@ -246,7 +246,7 @@
 		{
 			"title" : "广告位排版",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/member/linksList.html",
 			"spread" : false
 		}
 	]

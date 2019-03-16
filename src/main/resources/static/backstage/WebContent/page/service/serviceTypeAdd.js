@@ -32,7 +32,7 @@ layui.config({
 				newsData = JSON.parse(addNews).concat(newsData);
 			}
 			//执行加载数据的方法
-			newsList();
+			/*newsList();*/
 		}
 	})
 
@@ -40,8 +40,7 @@ layui.config({
 	$(".search_btn").click(function(){
 		var newArray = [];
 		if($(".search_input").val() != ''){
-			var index = layer.msg('查询中，请稍候',{icon: 16,time:false,shade:0.8});
-            setTimeout(function(){
+            /*setTimeout(function(){
             	$.ajax({
 					url : "../../json/newsList.json",
 					type : "get",
@@ -100,7 +99,7 @@ layui.config({
 				})
             	
                 layer.close(index);
-            },2000);
+            },2000);*/
 		}else{
 			layer.msg("请输入需要查询的内容");
 		}
@@ -166,7 +165,7 @@ layui.config({
 		}
 	})
 
-	//批量删除
+	/*//批量删除
 	$(".batchDel").click(function(){
 		var $checkbox = $('.news_list tbody input[type="checkbox"][name="checked"]');
 		var $checked = $('.news_list tbody input[type="checkbox"][name="checked"]:checked');
@@ -214,7 +213,7 @@ layui.config({
 		}
 		form.render('checkbox');
 	})
-
+*/
 	//是否展示
 	form.on('switch(isShow)', function(data){
 		var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
@@ -240,7 +239,7 @@ layui.config({
 	})
 
 	$("body").on("click",".news_del",function(){  //删除
-		var _this = $(this);
+		/*var _this = $(this);
 		layer.confirm('确定删除此信息？',{icon:3, title:'提示信息'},function(index){
 			//_this.parents("tr").remove();
 			for(var i=0;i<newsData.length;i++){
@@ -250,12 +249,11 @@ layui.config({
 				}
 			}
 			layer.close(index);
-		});
+		});*/
 	})
 
 	function newsList(that){
 		//渲染数据
-		
 		function renderDate(data,curr){
 			var dataHtml = '';
 			if(!that){
@@ -295,7 +293,7 @@ layui.config({
 		if(that){
 			newsData = that;
 		}
-		laypage({
+		/*laypage({
 			cont : "page",
 			pages : Math.ceil(newsData.length/nums),
 			jump : function(obj){
@@ -303,6 +301,6 @@ layui.config({
 				$('.news_list thead input[type="checkbox"]').prop("checked",false);
 		    	form.render();
 			}
-		})
+		})*/
 	}
 })

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商家推荐</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				width: 1386px;
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="">
+			<blockquote class="back">
+			  <p style="font-weight: bold;padding-top: 10px;">商家推荐</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户昵称：<input type="text" value="" placeholder="" name="nickname">
+					&nbsp;
+					店铺名称：<input type="text" value="" placeholder="" name="nickname">
+					&nbsp;
+					会员组：
+					<select name="huiyuangroup">
+			    		<option value="0">所有</option>
+	                    <option value="2">大陆商家用户</option>
+	                    <option value="3">海外商家用户</option>   
+		    		</select>
+		    		&nbsp;
+		    		是否推荐：
+		    		<select name="is_recommend" id="is_recommend">
+	                    <option value="">所有</option>
+	                    <option value="0">推荐</option>
+	                    <option value="0">不推荐</option>
+               		</select>
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search()">
+						查询</button>
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;">导出</button>
+			    </div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<THEAD style="background-color:#f2f2f2;">
+	                <TR>
+	                    <th>序号</th>
+	                    <TH>用户昵称</TH>
+						<TH>商铺名称</TH>                    
+						<TH>服务类别</TH>
+	                    <TH>会员组</TH>
+	                    <TH>电话</TH>
+	                    <TH>店铺状态</TH>
+	                    <TH>是否推荐</TH>
+	                  	<TH>操作</TH>
+	                </TR>
+                	</THEAD>
+					 <tbody>
+                <tr>
+                        <td>
+                            1                        </td>
+                        <td>qwqw</td>
+						<td>仙女聚集之地</td>
+                        <td>自驾游</td>
+                        <td>大陆商家用户</td>
+
+                        <td>18574787115</td>
+                        <td>
+                            <span style="color:lightcoral;">暂停</span>                        </td>
+                        <td>
+                            <span style="color:red;">是</span>                        </td>
+                        <td>
+                        <a href="/index.php/Admincp/User/recommendedit/catid/3/userid/487.html">修改</a>　
+                        </td>
+                    </tr><tr>
+                        <td>
+                            2                        </td>
+                        <td>独白</td>
+						<td align="center" nowrap>微笑</td>
+                        <td align="center" nowrap>自驾游</td>
+                        <td align="center" nowrap>大陆商家用户</td>
+
+                        <td align="center" nowrap>17373315022</td>
+                        <td align="center" nowrap>
+                            <span>开启</span>                        </td>
+                        <td align="center" nowrap>
+                            <span style="color:lightcoral;">否</span>                        </td>
+                        <td nowrap >
+                        <a href="/index.php/Admincp/User/recommendedit/catid/3/userid/475.html">修改</a>　
+                        </td>
+                    </tr><tr>
+                        <td align="center" bgcolor="#ffffff">
+                            3                        </td>
+                        <td align="center" nowrap>时♂钟✓©©</td>
+						<td align="center" nowrap>gauysg</td>
+                        <td align="center" nowrap>自驾游</td>
+                        <td align="center" nowrap>海外商家用户</td>
+
+                        <td align="center" nowrap>1234567890</td>
+                        <td align="center" nowrap>
+                            <span style="color:lightcoral;">暂停</span>                        </td>
+                        <td align="center" nowrap>
+                            <span style="color:lightcoral;">否</span>                        </td>
+                        <td nowrap >
+                        <a href="/index.php/Admincp/User/recommendedit/catid/3/userid/455.html">修改</a>　
+                        </td>
+                    </tr><tr>
+                        <td align="center" bgcolor="#ffffff">
+                            4                        </td>
+                        <td align="center" nowrap>时♂钟✓©©</td>
+						<td align="center" nowrap>gauysg</td>
+                        <td align="center" nowrap>自驾游</td>
+                        <td align="center" nowrap>海外商家用户</td>
+
+                        <td align="center" nowrap>1234567890</td>
+                        <td align="center" nowrap>
+                            <span style="color:lightcoral;">暂停</span>                        </td>
+                        <td align="center" nowrap>
+                            <span style="color:red;">是</span>                        </td>
+                        <td nowrap >
+                        <a href="/index.php/Admincp/User/recommendedit/catid/3/userid/455.html">修改</a>　
+                        </td>
+                    </tr><tr>
+                        <td align="center" bgcolor="#ffffff">
+                            5                        </td>
+                        <td align="center" nowrap>万家灯火</td>
+						<td align="center" nowrap>不告诉你</td>
+                        <td align="center" nowrap>自驾游</td>
+                        <td align="center" nowrap>大陆商家用户</td>
+
+                        <td align="center" nowrap>12345678900</td>
+                        <td align="center" nowrap>
+                            <span>开启</span>                        </td>
+                        <td align="center" nowrap>
+                            <span style="color:lightcoral;">否</span>                        </td>
+                        <td nowrap >
+                        <a href="/index.php/Admincp/User/recommendedit/catid/3/userid/450.html">修改</a>　
+                        </td>
+                    </tr><tr>
+                        <td align="center" bgcolor="#ffffff">
+                            6                        </td>
+                        <td align="center" nowrap>亡徒</td>
+						<td align="center" nowrap>日本一日游</td>
+                        <td align="center" nowrap>自驾游</td>
+                        <td align="center" nowrap>大陆商家用户</td>
+
+                        <td align="center" nowrap>13077037380</td>
+                        <td align="center" nowrap>
+                            <span style="color:lightcoral;">暂停</span>                        </td>
+                        <td align="center" nowrap>
+                            <span style="color:lightcoral;">否</span>                        </td>
+                        <td nowrap >
+                        <a href="/index.php/Admincp/User/recommendedit/catid/3/userid/432.html">修改</a>　
+                        </td>
+                    </tr><tr>
+                        <td>7</td>
+                        <td >阿giao</td>
+						<td>xxx</td>
+                        <td>留学中介</td>
+                        <td>大陆商家用户</td>
+                        <td>15197398630</td>
+                        <td>
+                            <span style="color:lightcoral;">暂停</span> </td>
+                        <td>
+                            <span style="color:red;">是</span></td>
+                        <td >
+                        <a href="/index.php/Admincp/User/recommendedit/catid/5/userid/429.html">修改</a>　
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+						<tr>
+							<td colspan="9">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+								      <a href="javascript:void(0)" >
+								        	首页
+								      </a>
+								    </li>
+						    		<li>
+								      <a href="javascript:void(0)" >
+								        	上一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)" >
+								        	下一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)">
+								       		 尾页
+								      </a>
+								    </li>
+								</ul>
+							</td>
+						</tr>				
+  					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+</html>

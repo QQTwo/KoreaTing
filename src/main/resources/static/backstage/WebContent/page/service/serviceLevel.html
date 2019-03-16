@@ -14,19 +14,26 @@
 	<link rel="stylesheet" href="../../css/news.css" media="all" />
 </head>
 <body class="childrenBody">
+<div id="vmCnt">
 	<blockquote class="layui-elem-quote news_search">
 		<div class="layui-inline" style="font-weight: bolder;">服务级别管理：
 			
 			<div class="layui-input-inline">
-		    	<select type="text" value="" placeholder="请输入关键字" class="layui-input search_input">
-		    		<option value="0">所有的</option>
-                            <option value="4">微整形</option><option value="5">留学中介</option><option value="6">韩语翻译</option><option value="7">学习资源</option><option value="217">sxd</option><option value="229">qwe</option><option value="3">自驾游</option>
+		    	<div class="layui-input-inline">
+		    	<select  name="stid" id="stid" class="layui-input search_input">
+		    		<option value="0">所有</option>
+                   <option v-for="temp in selType" v-bind:value="temp.stid">
+						{{temp.stname}}</option>
 		    	</select>
+		    	</div>
+		    	<a class="layui-btn search_btn" @click="likeSearch()">搜索</a>
 		    </div>
-		    <a class="layui-btn search_btn">搜索</a>
 		</div>
 		<div class="layui-inline">
 			<a class="layui-btn layui-btn-danger batchDel">批量删除</a>
+		</div>
+		<div class="layui-inline" style="float:right">
+			<a class="layui-btn search_btn">更新</a><a class="layui-btn layui-btn-normal newsAdd_btn">增加级别</a>
 		</div>
 	</blockquote>
 	<div class="layui-form links_list">
@@ -52,15 +59,85 @@
 				</tr> 
 		    </thead>
 		    <tbody class="links_content">
-		    	
+			    	<tr v-for="(temp,index) in selLevelList">
+			    		<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>
+			    		<td v-text="temp.serlevelid"></td>
+			    		<td v-text="temp.serlevelname"></td>
+			    		<td v-text="temp.stname"></td>
+			    		<td v-text="temp.serviceintegralmin"></td>
+			    		<td v-text="temp.serviceintegralmax"></td>
+			    		<td>
+			    			<a class="layui-btn layui-btn-mini links_edit" @click="updateInfo($event, temp.serlevelid,index)"><i class="iconfont icon-edit"></i> 编辑</a>
+        					<a class="layui-btn layui-btn-danger layui-btn-mini links_del" v-bind:data-id="temp.serlevelid">
+        					 <!-- @click="removeInfo($event,temp.serlevelid,index)" -->
+        					<i class="layui-icon">&#xe640;</i> 删除</a>　
+			    		</td>
+			    	</tr>
 		    </tbody>
 		</table>
 	</div>
-	<div id="page"></div>
-	<div><a class="layui-btn search_btn">更新</a><a class="layui-btn layui-btn-normal newsAdd_btn">增加级别</a>
-	<script type="text/javascript" src="../../layui/layui.js"></script>
-	<script type="text/javascript" src="../service/serviceLevel.js"></script>
-	<script type="text/javascript" src="../service/serviceLevelAdd.js"></script>
-	<!--<script type="text/javascript" src="../service/serviceCheckUpdate.js"></script>-->
+	<!-- <div id="page"></div> -->
+	
+	</div><!-- vmCnt -->
 </body>
+	<script type="text/javascript" src="../../js/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="../../js/vue.js"></script>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript" src="serviceLevel.js"></script>
+	<script type="text/javascript" src="../service/serviceLevelAdd.js"></script>
+	<script type="text/javascript">
+		var vmCnt=new Vue({
+			el: "#vmCnt",
+			data: {
+				allData: {
+					text: '全选',
+					parCheck: false
+				},
+				selLevelList:[],
+				selType:[]
+			},
+			methods:{
+				likeSearch:function(){
+					stid=$("#stid").val();
+					$.ajax({
+						url : "/c/cmservice/querylevel",
+						type : "get",
+						data:{"stid":stid},
+						dataType : "json",
+						success : function(jsondata){
+							vmCnt.selLevelList = jsondata.list;
+						}
+					})
+				},
+				updateInfo: function(e, serlevelid, index) {
+					window.sessionStorage.setItem("serlevelid", serlevelid);
+					window.location.href="../service/serviceLevelUpdate.html";
+				},
+				removeInfo: function(e, serlevelid, index) {
+					if(window.confirm('是否移除')) {
+						this.selLevelList.splice(index, 1); //移除
+					}
+				} 
+			},
+			created:function(){
+				$.ajax({
+					url : "/c/cmservice/selType",
+					type : "get",
+					dataType : "json",
+					success : function(data){
+						vmCnt.selType=data;
+					}
+				});
+				$.ajax({
+					url : "/c/cmservice/querylevel",
+					type : "get",
+					data:{"stid":0},
+					dataType : "json",
+					success : function(data){
+						vmCnt.selLevelList = data.list;
+					}
+				})
+			}
+		});
+	</script>
 </html>

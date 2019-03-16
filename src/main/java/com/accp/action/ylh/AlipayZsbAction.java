@@ -32,7 +32,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 public class AlipayZsbAction {// response
 	@Autowired
 	private GoldnotesBiz biz;
-	/**
+	*//**
 	 * 获取订单数据接口
 	 * 
 	 * @param request
@@ -40,8 +40,8 @@ public class AlipayZsbAction {// response
 	 * 
 	 * @throws AlipayApiException
 	 * @throws IOException
-	 */
-	/*@RequestMapping("viewOrder")
+	 *//*
+	@RequestMapping("viewOrder")
 	public void viewOrder(HttpServletRequest req, Model mod, HttpServletResponse rep,
 			@RequestParam(value = "goodId", required = true) Integer goodId) throws AlipayApiException, IOException {
 
@@ -87,17 +87,17 @@ public class AlipayZsbAction {// response
 		rep.getWriter().write(result);// 直接将完整的表单html输出到页面
 		rep.getWriter().flush();
 		rep.getWriter().close();
-	}*/
+	}
 
-	/**
+	*//**
 	 * 回调路径return_url
 	 * 
 	 * @param request
 	 * @param response
 	 * @throws AlipayApiException
 	 * @throws UnsupportedEncodingException
-	 */
-	/*@RequestMapping("return_url.view")
+	 *//*
+	@RequestMapping("return_url.view")
 	public String returnUrl(HttpServletRequest request, HttpServletResponse response)
 			throws AlipayApiException, UnsupportedEncodingException {
 		// 获取支付宝POST过来反馈信息
@@ -167,7 +167,7 @@ public class AlipayZsbAction {// response
 		request.setAttribute("reason", "验签失败");
 		request.setAttribute("signVerified", signVerified);
 		return "return_url";
-	}*/
+	}
 	@RequestMapping("viewOrder")
 	public void viewOrder(HttpSession session,HttpServletRequest req, Model mod, HttpServletResponse rep,Goldnotes goldnotes) throws AlipayApiException, IOException {
 		Integer userId=((User)session.getAttribute("USER")).getUserid();

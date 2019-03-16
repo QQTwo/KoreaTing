@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.accp.dao.cm.IUserDaoCm">
+	<!-- 会员审核 -->
+	<select id="queryUser" resultType="com.accp.vo.cm.HuiyuanVo">
+		select * from user
+		<where>
+			<if test="userName!=null">
+				 userName like '%${userName}%' and
+			</if>
+			merchantType=0
+		</where>
+	</select>
+	<select id="summmoney" resultType="java.lang.Float">
+		SELECT SUM(userMoney) AS jinbi  FROM `user`
+		<where>
+			<if test="userName!=null">
+				 userName like '%${userName}%' and
+			</if>
+			merchantType=0
+		</where>
+		
+	</select>
+	<select id="sumjifen" resultType="java.lang.Float">
+		SELECT SUM(userIntegral) AS jifen FROM `user`
+		<where>
+			<if test="userName!=null">
+				 userName like '%${userName}%' and
+			</if>
+			merchantType=0 
+		</where>
+	</select>
+	<!-- 根据编号查询用户 -->
+	<select id="qeuryByUserId" resultType="com.accp.vo.cm.VipVo">
+		SELECT u.`userID`,u.`userName`,u.contactMailbox AS `userEmail`,u.`mailboxVerification`,u.`userRealName`,l.`userPwd`,u.`userSex`,u.userRegistrationTime,u.registerIP,
+		u.`country`,u.`provincialID`,u.`cityID`,u.`auditStatus`,u.`userPhone`,u.`merchantType`,u.`recentEntry`,u.`adDetail` FROM `user` AS u
+		JOIN login AS l ON u.`userID`=l.`userID`
+		WHERE u.userId=#{userid}
+	</select>
+	<!--用户信息修改 -->
+	<update id="updatememberInfo">
+		UPDATE `user` SET userPhone=#{vo.userPhone},userRealName=#{vo.userRealName},userSex=#{vo.userSex},auditStatus=#{vo.auditStatus},mailboxVerification=#{vo.mailboxVerification} WHERE userID=#{vo.userID};
+		UPDATE `login` SET userPwd=#{vo.userPwd} WHERE userID=#{vo.userID};
+		<if test="vo.auditStatus==2">
+		INSERT INTO `news`(addRessee,content,sendingTime,readState,newsType)VALUES(#{vo.userID},'您的会员申请已通过审核',NOW(),0,1);
+		</if>
+		<if test="vo.auditStatus==3">
+		INSERT INTO `news`(addRessee,content,sendingTime,readState,newsType)VALUES(#{vo.userID},'您的会员申请未通过审核',NOW(),0,1);
+		</if>
+	</update>
+	<!-- fuwu收藏 -->
+	<select id="serviceCollect" resultType="com.accp.vo.cm.ServiceCollectVo">
+		SELECT u.`userName`,a.`collectionTime`,t.`stName`,b.`serviceTitle` FROM  `user` AS u JOIN servicecollection AS a 
+		ON u.`userID`=a.`userID`
+		 JOIN services AS b ON
+		a.`serviceID`=b.serviceID JOIN servicetype AS t ON b.`stid`=t.`stid`
+		<where>
+			<if test="stname!='不限'">
+				AND stName=#{stname}
+			</if>
+			<if test="userName!=null">
+				AND userName like '%${userName}%' 
+			</if>
+			<if test="serviceTitle!=null">
+				AND serviceTitle like '%${serviceTitle}%'
+			</if>
+		</where>
+	</select>
+	<!-- BBS收藏 -->
+	<!-- <select id="">
+		
+	</select> -->
+	<!-- 提现 -->
+	<select id="querytixian" resultType="com.accp.vo.cm.PutforwardrecordVo">
+		SELECT p.`pfID`,u.userID,u.`userName`,p.`submitTime`,p.`money`,p.`bankAccount`,b.`bankName`,p.`openBankName`,pr.`submitTime`,
+		u.`userRealName`,p.`auditStatus`,pr.`adminOpinion` FROM goldnotes AS g
+		JOIN Putforward AS p ON g.`recordDate`=p.`submitTime`
+		JOIN `user` AS u ON g.`userID`=u.`userID`
+		JOIN PutforwardRecord AS pr ON pr.`pfrID`=p.`pfID`
+		JOIN banktype AS b ON p.`bankID`=b.`bankID`
+		<where>
+			<if test="userName!=null">
+				AND userName like '%${userName}%' 
+			</if>
+		</where>
+	</select>
+	<!-- 查询体现会员对象 -->
+	<select id="queryForward" resultType="com.accp.vo.cm.ForwardVo">
+			SELECT u.userID,p.`pfID`,u.`userName`,p.`submitTime`,p.`money`,p.`bankAccount`,b.`bankName`,p.`openBankName`,
+			u.`userRealName`,p.`auditStatus`,pr.`adminOpinion` FROM goldnotes AS g
+			JOIN Putforward AS p ON g.`recordDate`=p.`submitTime`
+			JOIN `user` AS u ON g.`userID`=u.`userID`
+			JOIN PutforwardRecord AS pr ON pr.`pfrID`=p.`pfID`
+			JOIN banktype AS b ON p.`bankID`=b.`bankID`
+			<where>
+			<if test="userID!=null">
+				u.userID=#{userID} AND pr.`submitTime`='${Time}'
+			</if>
+			</where>
+		</select>
+		<!-- 针对提现信息进行修改 -->
+		<update id="updateForward">
+			UPDATE `putforward` SET auditStatus='${vo.auditStatus}',auditTime=NOW() WHERE userID='${vo.userID}' AND submitTime='${vo.submitTime}';
+			UPDATE `putforwardrecord` SET adminOpinion='${vo.adminOpinion}',completeTime=NOW() WHERE userID='${vo.userID}' AND submitTime='${vo.submitTime}';
+			UPDATE `goldnotes` SET auditStatus='${vo.auditStatus}' WHERE userID='${vo.userID}' AND recordDate='${vo.submitTime}';
+			<if test="vo.auditStatus==2">
+			INSERT INTO `news`(addRessee,content,sendingTime,readState,newsType) VALUES('${vo.userID}','您的金币申请已通过审核',NOW(),0,1);
+			</if>
+			<if test="vo.auditStatus==3">
+			INSERT INTO `news`(addRessee,content,sendingTime,readState,newsType)VALUES('${vo.userID}','您的金币申请未通过审核',NOW(),0,1);
+			insert into goldnotes (userID,acquisitionMode,recordDate,recordDescribe,recordInAndOut)
+			value('${vo.userID}',8,now(),'提现失败',#{vo.money});
+			update `user` set userMoney=userMoney+#{vo.money} where userid=#{vo.userID};
+			</if>
+		</update>
+		<!-- 积分记录 -->
+		<select id="queryIntegral" resultType="com.accp.vo.cm.IntegralVo">
+			SELECT i.`IRID`,u.`userName`,i.`IRDate`,i.`IRDescribe`,i.`recordInAndOut`,i.auditStatus,g.integralName FROM
+			integral as g join
+			  `integralrecord` AS i
+			  on g.integralID=i.integralID
+			JOIN `user` AS u ON i.`userID`=u.`userID`
+			<where>
+				<if test="userName!=null">
+					u.`userName` like '%${userName}%'
+				</if>
+			</where>
+		</select>
+		<!-- 充值记录 -->
+		<select id="queryRecharge" resultType="com.accp.vo.cm.RecordVo">
+			SELECT u.userID,g.`recordID`,u.`userName`,g.`acquisitionMode`,g.`recordDate`,
+			g.`recordDescribe`,g.`recordInAndOut`,g.`auditStatus` FROM Goldnotes AS g
+			JOIN `user` AS u ON g.`userID`=u.`userID`
+			<where>
+				<if test="userName!=null">
+					 AND u.userName like '%${userName}%'
+				</if>
+				<if test="acquisitionMode!=0">
+					AND g.`acquisitionMode`=#{acquisitionMode}
+				</if>
+			</where>
+		</select>
+</mapper>
