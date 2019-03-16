@@ -92,7 +92,7 @@ public class GoldnotesBiz {
 		String dateString = formatter.format(currentTime);
     	News news=new News();
     	news.setAddressee(goldnotes.getUserid());
-    	news.setContent("您于 "+dateString+" 充值了 "+goldnotes.getRecordinandout()+" 金币");
+    	news.setContent("您于 "+dateString+" 充值 "+goldnotes.getRecordinandout()+" 金币");
     	news.setMessagegroup(1);
     	news.setNewstype(1);
     	news.setReadstate(false);

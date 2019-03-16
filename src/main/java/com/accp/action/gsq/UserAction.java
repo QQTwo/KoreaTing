@@ -296,15 +296,17 @@ public class UserAction {
 	 * @return
 	 */
 	@RequestMapping(value="/user/updateEmailPwd",method=RequestMethod.POST)
-	public String updateEmailPwd(HttpSession session,String pastpassword,String password) {
+	public String updateEmailPwd(HttpSession session,String pastpassword,String password,Model model) {
 		String email=session.getAttribute("Email").toString();
 		if(biz.login(email, pastpassword)!=null) {
 			biz.updatePwd(email, password);
 			session.removeAttribute("USER");
 			session.removeAttribute("Email");
+			model.addAttribute("gaimima", "Yes");
 			return "szy-login.html";
 		} else {
-			return "redirect:c/gsq/user/queryGrzxInfo?jiumima="+pastpassword+"";
+			model.addAttribute("jiumima", pastpassword);
+			return "zhsz-xgmm.html";
 		}
 	}
 	/**

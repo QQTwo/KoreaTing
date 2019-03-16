@@ -29,19 +29,12 @@
 			</div>
 		<!--header end-->
 		<div style="height: 330px; width: 100%; margin: auto; border: 0px ;" >
-			<div style="margin-left: 29%;margin-top: 5%">
+			<div class="test_box" style="text-align: center;">
 				<h1  style="font-size: 50px;">
-					邮件已发送，请在邮箱中查看。
-				</h1>
-			</div>
-			<div style="margin-left: 45%;margin-top: 5%">
-				<h1  style="font-size: 50px;">
-					<a  th:href="'http://mail.'+${url}" target="_blank" style="color:#3385ff">点击查看</a>
+					邮件已发送，请在邮箱中查看。<a th:href="'http://mail.'+${url}" target="_blank" style="color:#3385ff;" onclick="GotoLogin()">点击查看</a>
 				</h1>
 			</div>
 		</div>
-	
-
 	<!--footer-->
 		<div class="footer community_footer_dl">
 			<dl class="footer_dl">
@@ -86,5 +79,13 @@
 			</li>
 		</ul>
 		<!--right nav end-->	
+		<script type="text/javascript">
+			//点击之后三秒跳转到登陆
+			function GotoLogin(){
+				setTimeout(function(){
+					window.location="/szy-login.html";
+				},3000)
+			}
+		</script>
 	</body>
 </html>
