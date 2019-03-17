@@ -91,7 +91,9 @@ public class UserAction {
 			e.printStackTrace();
 			System.out.println("====================\n发送失败\n====================\n");
 		}
-		return "redirect:/szy-login.html";
+		String tl =  email.substring(email.indexOf("@")+1);
+		model.addAttribute("url", tl);
+		return "/gsq-goEamil";
 	}
 	/**
 	 * 激活邮箱
@@ -294,15 +296,17 @@ public class UserAction {
 	 * @return
 	 */
 	@RequestMapping(value="/user/updateEmailPwd",method=RequestMethod.POST)
-	public String updateEmailPwd(HttpSession session,String pastpassword,String password) {
+	public String updateEmailPwd(HttpSession session,String pastpassword,String password,Model model) {
 		String email=session.getAttribute("Email").toString();
 		if(biz.login(email, pastpassword)!=null) {
 			biz.updatePwd(email, password);
 			session.removeAttribute("USER");
 			session.removeAttribute("Email");
+			model.addAttribute("gaimima", "Yes");
 			return "szy-login.html";
 		} else {
-			return "redirect:c/gsq/user/queryGrzxInfo?jiumima="+pastpassword+"";
+			model.addAttribute("jiumima", pastpassword);
+			return "zhsz-xgmm.html";
 		}
 	}
 	/**
