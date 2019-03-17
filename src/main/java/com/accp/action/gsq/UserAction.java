@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -123,6 +124,7 @@ public class UserAction {
 	 */
 	@RequestMapping(value="/user/saveEmail",method=RequestMethod.POST)
 	public String saveEmail(TimeOutEmailDateVo tqedv) {
+		tqedv.setPassword(DigestUtils.md5Hex(tqedv.getPassword()));
 		if(biz.saveEmailUser(tqedv)) {
 			return "redirect:/szy-login.html";
 		}else{
@@ -174,7 +176,7 @@ public class UserAction {
 	        	System.out.println(password);
 	            String decryptByPrivateKey = RSAUtils.decryptByPrivateKey(password, (RSAPrivateKey) object);
 	            System.out.println(decryptByPrivateKey);
-	            User u = biz.login(email, decryptByPrivateKey);
+	            User u = biz.login(email, DigestUtils.md5Hex(decryptByPrivateKey));
 	    		if(u!=null) {
 	    			session.setAttribute("USER", u);
 	    			session.setAttribute("Email", email);
@@ -201,7 +203,7 @@ public class UserAction {
 			String pwd=VerifyCode.createVerifyCode(6);
 			Email.sendSimpleMail(email, "重置密码", EmailBoard.verifyCode(email, "您的密码已重置,新密码为:", pwd));
 			System.out.println("====================\n修改密码发送成功\n====================\n");
-			if(biz.updatePwd(email, pwd)) {
+			if(biz.updatePwd(email, DigestUtils.md5Hex(pwd))) {
 				map.put("code", "200");
 			}else {
 				map.put("code", "500");
@@ -298,8 +300,9 @@ public class UserAction {
 	@RequestMapping(value="/user/updateEmailPwd",method=RequestMethod.POST)
 	public String updateEmailPwd(HttpSession session,String pastpassword,String password,Model model) {
 		String email=session.getAttribute("Email").toString();
+		pastpassword =  DigestUtils.md5Hex(pastpassword);
 		if(biz.login(email, pastpassword)!=null) {
-			biz.updatePwd(email, password);
+			biz.updatePwd(email, DigestUtils.md5Hex(password));
 			session.removeAttribute("USER");
 			session.removeAttribute("Email");
 			model.addAttribute("gaimima", "Yes");

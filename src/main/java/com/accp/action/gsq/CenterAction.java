@@ -34,4 +34,17 @@ public class CenterAction {
 		model.addAttribute("user", user);
 		return "grzx-index";
 	}
+	/**
+	 * 积分抽奖
+	 * 
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/center/Luck")
+	public String centerLuck(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("USER");
+		model.addAttribute("user", user);
+		return "gsq-Luck";
+	}
 }

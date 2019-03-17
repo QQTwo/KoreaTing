@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>积分抽奖_韩汀社区</title>
+<link rel="stylesheet" href="/Public/css/common.css" />
+<link rel="stylesheet" type="text/css" href="/Public/css/styleCJ.css" />
+<script type="text/javascript" src="/Public/js/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+	<!--header-->
+	<div class="h_top" id="botop">
+		<div class="b_box">
+			<div class="top_nav"></div>
+			<div class="top_right login_right"></div>
+		</div>
+	</div>
+	<!--header end-->
+	<!-- body -->
+	<div style="background: #FFF5E5; width: 80%; margin: auto;">
+		<div>
+			<img src="/Public/images/LuckTop.png" width="100%" height="400" />
+		</div>
+		<div>
+			<span style="background: #FEA800;">我的积分：</span> <span>每次抽奖</span>
+		</div>
+		<div class="shanDeng" id="deng">
+			<div id="luck">
+				<!-- luck -->
+				<table style="border-spacing: .08rem .03rem;">
+					<tr>
+						<td class="luck-unit luck-unit-0"><img src="./img/01.png"></td>
+						<td class="luck-unit luck-unit-1"><img src="./img/02.png"></td>
+						<td class="luck-unit luck-unit-2"><img src="./img/03.png"></td>
+					</tr>
+					<tr>
+						<td class="luck-unit luck-unit-7"><img src="./img/05.png"></td>
+						<td class="cjBtn" id="btn"></td>
+						<td class="luck-unit luck-unit-3"><img src="./img/01.png"></td>
+					</tr>
+					<tr>
+						<td class="luck-unit luck-unit-6"><img src="./img/02.png"></td>
+						<td class="luck-unit luck-unit-5"><img src="./img/04.png"></td>
+						<td class="luck-unit luck-unit-4"><img src="./img/03.png"></td>
+					</tr>
+				</table>
+			</div>
+			<!-- luckEnd -->
+		</div>
+	</div>
+	<!-- body end -->
+	<!--footer-->
+	<div class="footer community_footer_dl">
+		<dl class="footer_dl">
+			<dt>
+				<div class="footer_ewm_box">
+					<img src="/Public/images/footer_ewm.png" alt="" />
+				</div>
+				<span class="ft_ewm_name">御品韩汀</span>
+			</dt>
+			<dd>
+				<p class="flink">
+					<a href="#">商家入驻</a>| <a href="/fw-bzzx.html">帮助中心</a>| <a href="#">人才招聘</a>|
+					<a href="#">联系我们</a>| <a href="#">网站地图</a>| <a href="#">使用条款</a>
+				</p>
+				<p>湘ICP备16017200号-2 | 地址：湖南省株洲市天元区丽景滨江二栋2502号 |网站负责人：夏先生 |
+					邮编：412000</p>
+
+				<p>官方QQ：3119683838 | 微信公众号：御品韩汀 | 官网邮箱：3119683838@qq.com |
+					官方热线电话：0731-2286-7673</p>
+
+				<p>Copyright © 2017 - 2018 yphting.com 版权所有</p>
+			</dd>
+		</dl>
+	</div>
+	<!--footer end-->
+
+	<!--right nav-->
+	<ul class="right_nav">
+		<li><a href="javascript:void(0);" class="rn_tel">客服电话</a>
+			<div class="over_show kf_tel">0731-2286-7673</div></li>
+		<li><a href="javascript:void(0);" class="rn_wx">官方微信</a>
+			<div class="over_show">
+				<img src="/Public/images/r_ewm.jpg" alt="" class="gw_ewm" />
+			</div></li>
+		<li><a
+			href="tencent://Message/?Uin=3119683838&websiteName=http://yphting.zglxkj.com=&Menu=yes"
+			class="rn_kf">在线客服</a></li>
+		<li><a href="#" class="rn_top">Back top</a></li>
+	</ul>
+	<script type="text/javascript" src="/Public/js/sessionHeader.js"></script>
+	<script type="text/javascript" src="/Public/js/headLeftNav.js"></script>
+	<script type="text/javascript">
+		var luck = {
+			index : 0, //当前转动到哪个位置，起点位置
+			count : 0, //总共有多少个位置
+			timer : 0, //setTimeout的ID，用clearTimeout清除
+			speed : 20, //初始转动速度
+			times : 0, //转动次数
+			cycle : 50, //转动基本次数：即至少需要转动多少次再进入抽奖环节
+			prize : -1, //中奖位置
+			init : function(id) {
+				if ($("#" + id).find(".luck-unit").length > 0) {
+					$luck = $("#" + id);
+					$units = $luck.find(".luck-unit");
+					this.obj = $luck;
+					this.count = $units.length;
+					$luck.find(".luck-unit-" + this.index).addClass("active");
+				}
+				;
+			},
+
+			roll : function() {
+				var index = this.index;
+				var count = this.count;
+				var luck = this.obj;
+				$(luck).find(".luck-unit-" + index).removeClass("active");
+				index += 1;
+				if (index > count - 1) {
+					index = 0;
+				}
+				;
+				$(luck).find(".luck-unit-" + index).addClass("active");
+				this.index = index;
+				return false;
+			},
+			stop : function(index) {
+				this.prize = index;
+				return false;
+			}
+		};
+
+		function roll() {
+			luck.times += 1;
+			luck.roll();
+			if (luck.times > luck.cycle + 10 && luck.prize == luck.index) {
+				clearTimeout(luck.timer);
+				luck.prize = -1;
+				luck.times = 0;
+				click = false;
+			} else {
+				if (luck.times < luck.cycle) {
+					luck.speed -= 10;
+				} else if (luck.times == luck.cycle) {
+					var index = Math.random() * (luck.count) | 0;
+					if (index > 5) {
+						index = 7;
+					} else {
+						index = 5;
+					}
+					luck.prize = index;//最终中奖位置
+				} else {
+					if (luck.times > luck.cycle + 10
+							&& ((luck.prize == 0 && luck.index == 7) || luck.prize == luck.index + 1)) {
+						luck.speed += 110;
+					} else {
+						luck.speed += 20;
+					}
+				}
+				if (luck.speed < 40) {
+					luck.speed = 40;
+				}
+				;
+
+				luck.timer = setTimeout(roll, luck.speed);
+			}
+			return false;
+		}
+
+		var click = false;
+		window.onload = function() {
+			luck.init('luck');
+			$("#btn").click(function() {
+				//按下弹起效果
+				$("#btn").addClass("cjBtnDom");
+				setTimeout(function() {
+					$("#btn").removeClass("cjBtnDom");
+				}, 200);
+
+				if (click) {
+					return false;
+				} else {
+					luck.speed = 100;
+					roll();
+					click = true;
+					return false;
+				}
+
+			});
+		};
+	</script>
+</body>
+</html>
