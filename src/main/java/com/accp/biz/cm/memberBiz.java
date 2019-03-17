@@ -9,6 +9,7 @@
 package com.accp.biz.cm;
 
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -71,9 +72,9 @@ public class memberBiz {
 		return new PageInfo<ServiceCollectVo>(dao.serviceCollect(userName,serviceTitle,stname));
 	}
 	//提现申请
-	public PageInfo<PutforwardrecordVo> findtixian(String userName,Integer num,Integer size){
+	public PageInfo<PutforwardrecordVo> findtixian(String userName,Integer auditStatus,Integer num,Integer size){
 		PageHelper.startPage(num,size);
-		return new PageInfo<PutforwardrecordVo>(dao.querytixian(userName));
+		return new PageInfo<PutforwardrecordVo>(dao.querytixian(userName,auditStatus));
 	}
 	public ForwardVo queryForward(int userID,String Time) {
 		return dao.queryForward(userID,Time);
@@ -89,8 +90,8 @@ public class memberBiz {
 		return new PageInfo<IntegralVo>(dao.queryIntegral(userName));
 	}
 	//充值记录
-	public PageInfo<RecordVo> queryRecharge(Integer pageNum, Integer pageSize,String userName,Integer acquisitionMode){
+	public PageInfo<RecordVo> queryRecharge(Integer pageNum, Integer pageSize,String userName,Integer acquisitionMode,Integer auditStatus){
 		PageHelper.startPage(pageNum, pageSize);
-		return new PageInfo<RecordVo>(dao.queryRecharge(userName,acquisitionMode));
+		return new PageInfo<RecordVo>(dao.queryRecharge(userName,acquisitionMode,auditStatus));
 	}
 }

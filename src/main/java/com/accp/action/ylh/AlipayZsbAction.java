@@ -32,7 +32,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 public class AlipayZsbAction {// response
 	@Autowired
 	private GoldnotesBiz biz;
-	*//**
+	/**
 	 * 获取订单数据接口
 	 * 
 	 * @param request
@@ -167,7 +167,7 @@ public class AlipayZsbAction {// response
 		request.setAttribute("reason", "验签失败");
 		request.setAttribute("signVerified", signVerified);
 		return "return_url";
-	}
+	}*/
 	@RequestMapping("viewOrder")
 	public void viewOrder(HttpSession session,HttpServletRequest req, Model mod, HttpServletResponse rep,Goldnotes goldnotes) throws AlipayApiException, IOException {
 		Integer userId=((User)session.getAttribute("USER")).getUserid();

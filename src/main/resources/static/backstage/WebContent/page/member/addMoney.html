@@ -41,6 +41,12 @@ table thead tr>th, tr>td {
 					<option value="7">退款</option>
 					<option value="8">提现</option>
 				</select> &nbsp;
+				状态：<select name="status">
+					<option value="0">全部</option>
+					<option value="1">待审核</option>
+					<option value="2">审核成功</option>
+					<option value="3">未通过</option>
+				</select> &nbsp;
 				<button type="button" class="btn btn-default btn-sm"
 					style="background-color: rgb(25, 159, 147); color: white;"
 					@click="search('1','15')">查询</button>
@@ -250,7 +256,8 @@ table thead tr>th, tr>td {
 						"num":n,
             			"size":s,
 						"userName":"0",
-						"acquisitionMode":"0"
+						"acquisitionMode":"0",
+						"auditStatus":"0"
 					},
 					success : function(data){
 						listVm.membersPageInfo = data;
@@ -262,6 +269,7 @@ table thead tr>th, tr>td {
 			search:function(n,s){
 				var username=$("[name=username]").val();
 				var acquisitionMode=$("[name=payment_type]").val();
+				var auditStatus=$("[name=status]").val();
 				$.ajax({
 					url : "/c/cmmember/queryRecharge",
 					type : "get",
@@ -270,7 +278,8 @@ table thead tr>th, tr>td {
 						"num":n,
             			"size":s,
 						"userName":username,
-						"acquisitionMode":acquisitionMode
+						"acquisitionMode":acquisitionMode,
+						"auditStatus":auditStatus
 					},
 					success : function(data){
 						listVm.membersPageInfo = data;

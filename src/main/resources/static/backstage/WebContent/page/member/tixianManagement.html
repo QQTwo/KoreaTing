@@ -30,6 +30,12 @@
 			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
 			    	用户名：<input type="text"  placeholder="" name="userName">
 					&nbsp;
+					状态：<select name="tixianStatus">
+					<option value="0">全部</option>
+					<option value="1">待审核</option>
+					<option value="2">审核成功</option>
+					<option value="3">未通过</option>
+				</select> &nbsp;
 					<button type="button" class="btn btn-default btn-sm" @click="search('1','10')" style="background-color:rgb(25,159,147);color: white;" @click="search()">
 						查询</button>
 			    </div>
@@ -133,9 +139,10 @@
 					type : "get",
 					dataType : "json",
 					data:{
-						userName:"",
-						num:n,
-            			size:s
+						"userName":"",
+						"auditStatus":0,
+						"num":n,
+            			"size":s
 					},
 					success : function(data){
 						listVm.membersPageInfo = data;
@@ -146,14 +153,16 @@
 			//搜索
 			search:function(n,s){
 				var userName=$("[name=userName]").val();
+				var auditStatus=$("[name=tixianStatus]").val();
 				$.ajax({
 					url : "/c/cmmember/querytixian",
 					type : "get",
 					dataType : "json",
 					data:{
-						userName:userName,
-						num:n,
-            			size:s
+						"userName":userName,
+						"auditStatus":auditStatus,
+						"num":n,
+            			"size":s
 					},
 					success : function(data){
 						listVm.membersPageInfo = data;

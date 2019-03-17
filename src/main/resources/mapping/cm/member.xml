@@ -84,7 +84,11 @@
 			<if test="userName!=null">
 				AND userName like '%${userName}%' 
 			</if>
+			<if test="auditStatus!=0">
+				AND p.auditStatus=#{auditStatus}
+			</if>
 		</where>
+		ORDER BY p.submitTime DESC
 	</select>
 	<!-- 查询体现会员对象 -->
 	<select id="queryForward" resultType="com.accp.vo.cm.ForwardVo">
@@ -117,16 +121,18 @@
 		</update>
 		<!-- 积分记录 -->
 		<select id="queryIntegral" resultType="com.accp.vo.cm.IntegralVo">
-			SELECT i.`IRID`,u.`userName`,i.`IRDate`,i.`IRDescribe`,i.`recordInAndOut`,i.auditStatus,g.integralName FROM
-			integral as g join
+			
+	SELECT i.`IRID`,u.`userName`,i.`IRDate`,i.`IRDescribe`,i.`recordInAndOut`,i.auditStatus FROM
+			
 			  `integralrecord` AS i
-			  on g.integralID=i.integralID
+			  
 			JOIN `user` AS u ON i.`userID`=u.`userID`
 			<where>
 				<if test="userName!=null">
 					u.`userName` like '%${userName}%'
 				</if>
 			</where>
+			order by i.`IRDate` desc
 		</select>
 		<!-- 充值记录 -->
 		<select id="queryRecharge" resultType="com.accp.vo.cm.RecordVo">
@@ -140,6 +146,10 @@
 				<if test="acquisitionMode!=0">
 					AND g.`acquisitionMode`=#{acquisitionMode}
 				</if>
+				<if test="auditStatus!=0">
+					And g.`auditStatus`=#{auditStatus}
+				</if>
 			</where>
+			order by g.`recordDate` desc
 		</select>
 </mapper>

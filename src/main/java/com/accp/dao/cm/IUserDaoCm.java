@@ -46,12 +46,12 @@ public interface IUserDaoCm {
 	//服务收藏
 	public List<ServiceCollectVo> serviceCollect(@Param("userName") String userName,@Param("serviceTitle") String serviceTitle, @Param("stname") String stname);
 	//提现申请
-	public List<PutforwardrecordVo> querytixian(@Param("userName") String userName);
+	public List<PutforwardrecordVo> querytixian(@Param("userName") String userName,@Param("auditStatus") Integer auditStatus);
 	public ForwardVo queryForward(@Param("userID")int userID,@Param("Time")String Time);
 	//修改，新增提现信息
 	public void updateForward(@Param("vo")ForwardVo vo);
 	//积分记录
 	public List<IntegralVo> queryIntegral(@Param("userName") String userName);
 	//充值记录
-	public List<RecordVo> queryRecharge(@Param("userName") String userName,@Param("acquisitionMode") Integer acquisitionMode);
+	public List<RecordVo> queryRecharge(@Param("userName") String userName,@Param("acquisitionMode") Integer acquisitionMode,@Param("auditStatus") Integer auditStatus);
 }

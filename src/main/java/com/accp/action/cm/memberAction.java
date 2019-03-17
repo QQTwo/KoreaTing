@@ -117,7 +117,7 @@ public class memberAction {
 	}
 	//提现申请
 	@GetMapping("querytixian")
-	public PageInfo<PutforwardrecordVo> querytixian(String userName,Integer num, Integer size){
+	public PageInfo<PutforwardrecordVo> querytixian(String userName, Integer auditStatus,Integer num, Integer size){
 		if(num==null) {
 			num=1;
 		}
@@ -128,7 +128,7 @@ public class memberAction {
 			userName=null;
 		}
 		PageHelper.startPage(num, size);
-		return biz.findtixian(userName, num, size);
+		return biz.findtixian(userName,auditStatus, num, size);
 	}
 	//找到提现对象
 	@GetMapping("loadforward")
@@ -177,7 +177,7 @@ public class memberAction {
 	}
 	//充值记录
 	@GetMapping("queryRecharge")
-	public PageInfo<RecordVo> queryRecharge(Integer num, Integer size,String userName,Integer acquisitionMode){
+	public PageInfo<RecordVo> queryRecharge(Integer num, Integer size,String userName,Integer acquisitionMode,Integer auditStatus){
 		if(num==null) {
 			num=1;
 		}
@@ -188,6 +188,6 @@ public class memberAction {
 			userName = null;
 		}
 		PageHelper.startPage(num, size);
-		return biz.queryRecharge(num, size, userName, acquisitionMode);
+		return biz.queryRecharge(num, size, userName, acquisitionMode,auditStatus);
 	}
 }

@@ -38,7 +38,6 @@ function showConfirm(_msg, _func){
 
 		closetip();
 		eval(_func);
-	WW
 	}, function(){
 		closetip();
 	});
@@ -560,13 +559,7 @@ function toshipsuccess(_lid){
 			$('#pop_bg').hide();
 		});
 	});
-<<<<<<< HEAD
-
-
-
 	
-=======
->>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
 	function changechk(){
 		$('#chkimg').attr('src','/index.php?m=Home&c=Index&a=verify&t='+(new Date().getTime()));
 	}
@@ -582,9 +575,5 @@ function toshipsuccess(_lid){
 				layer.msg("系统正忙，请稍后再试");
 			}
 		}); 
-<<<<<<< HEAD
 	}
 
-=======
-	}
->>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
