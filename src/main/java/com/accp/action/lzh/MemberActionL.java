@@ -17,7 +17,7 @@ import com.github.pagehelper.PageInfo;
 @RestController
 @RequestMapping("/c/lzh/member")
 public class MemberActionL {
-	@Autowired
+	@Resource
 	private MemberBizL biz;
 	
 	/*
