@@ -255,7 +255,11 @@
 		  `user` 
 		SET
 		  `userIntegral` = `userIntegral`+#{signNum},
-		  `signType` = 1
-		WHERE `userID` = #{userid} ;
+		  `signType` = #{signType}
+		<where>
+			<if test="userid != 0">
+				AND `userID` = #{userid} ;
+			</if>
+		</where>
 	</update>
 </mapper>

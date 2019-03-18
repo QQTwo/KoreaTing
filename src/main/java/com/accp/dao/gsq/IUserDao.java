@@ -165,5 +165,5 @@ public interface IUserDao {
 	    * @return int  返回类型
 	    * @throws
 	 */
-	public int updateUserSign(@Param("userid")Integer userID,@Param("signNum")Integer signNum);
+	public int updateUserSign(@Param("userid")Integer userID,@Param("signNum")Integer signNum,@Param("signType")Integer signType);
 }

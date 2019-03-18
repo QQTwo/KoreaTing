@@ -248,6 +248,6 @@ public class UserBiz {
 		Integralrecord.setAuditstatus(4);
 		Integralrecord.setRecordinandout(+20);
 	    Gdao.addIntegralRecord(Integralrecord);
-		return dao.updateUserSign(userid, 20);
+		return dao.updateUserSign(userid, 20,0);
 	}
 }

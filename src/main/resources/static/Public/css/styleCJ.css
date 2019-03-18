@@ -14,23 +14,34 @@
 
 	#btn.cjBtn{
 		background: url(/Public/images/Luck-btn.png) no-repeat 0 0;
-		width: 206px;
-		height: 208px;
+		width: 186px;
+   		height: 189px;
+		background-size: cover;
+		opacity:0.9;
 	}
 	#btn.cjBtnDom{
-		background: url(/Public/images/Luck-btn.png) no-repeat -220px 0;
+		background: url(/Public/images/Luck-btn.png) no-repeat -201px 0;
+		width: 186px;
+   		height: 189px;
+		background-size: cover;
 	}
 
 	#luck .active{
-		background-image: url(../img/active.png);
+		background: url(/Public/images/proBj1.png) no-repeat;
+		opacity:1;
+   		background-size:contain;
 	}
 	.shanDeng td{
 		text-align: center;
-		background-image: url(/Public/images/proBj.png);
-		background-size: 100% 100%;
+		background: url(/Public/images/proBj1.png) no-repeat;
+		width: 190px;
+   		height: 189px;
+   		background-size:contain;
+		opacity:0.6;
+		margin: 2px;
 	}
 	.shanDeng table{
-		margin: 0 auto;
+		margin-left: 3%;
 	}
 
 /*rule s*/
@@ -66,7 +77,7 @@
 	border-left: 2px solid #E84A54;
 }
 .play span{
-	background: url("../img/icon-laba.png") no-repeat;
+	background: url(/Public/images/proBj1.png) no-repeat;
 	background-size: 100%;
 	position: absolute;
 	top: 50%;
