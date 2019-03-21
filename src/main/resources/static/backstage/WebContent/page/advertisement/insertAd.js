@@ -7,12 +7,15 @@ layui.config({
 		$ = layui.jquery;
 	//加载页面数据
 	var linksData = '';
+	var typesJson;
 	//加载广告分类
 	$.ajax({
 		url : "/wdg/adv/types",
 		type : "get",
+		async : true,
 		dataType : "json",
 		success:function(data){
+			typesJson = data;
 			$("#types_select").html("");
 			$("#types_select").append("<option value='0'>请选择</option>");
 			$.each(data,function(i,e){
@@ -20,6 +23,23 @@ layui.config({
 			});
 			form.render();
 		}
+	});
+	form.on('select(types)', function(data){
+		var atid =data.value;
+		$.each(typesJson,function(i,e){
+			if(e.atid == atid){
+				var rentAMonth = parseFloat($("[name=rentAMonth]").val());
+				var price  =  parseFloat(e.aprice);
+				$("#types_price").html(price + "元/月");
+				$("#sumPrice").html("总计:" + price * rentAMonth + "元");
+			}
+		})
+	});
+	form.on('select(price)',function(data){
+		var rentAMonth = data.value;
+		var price  =  $("#types_price").html();
+		price = price.substr(0,price.lastIndexOf("元"));
+		$("#sumPrice").html("总计:" + price * rentAMonth + "元");
 	});
 	var obj = {};
 
@@ -35,6 +55,9 @@ layui.config({
 		obj["apcUrl"] = $("[name=apcUrl]").val();
 		obj["aappUrl"] = $("[name=aappUrl]").val();
 		obj["desc"] = $("[name=desc]").val();
+		obj["rentamonth"] = $("[name=rentAMonth]").val()
+		num = $("#sumPrice").html();
+		obj["price"] = num.replace(/[^0-9]/ig,"");
 		if(obj["atitle"] =="" || obj["aorder"]=="" || obj["aimgpath"]=="" || obj["atid"]=="" || obj["desc"]==""){
 			layer.msg(JSON.stringify(data.field));
 			return false;
@@ -54,7 +77,7 @@ layui.config({
 		});
 	});
 })
-	
+
 	//选择预览图片
 	$("#imgFile").on("change", function(e) {
 		var fr = new FileReader();//读取文件

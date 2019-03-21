@@ -16,6 +16,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.accp.biz.cn.OrdersBiz;
 import com.accp.biz.gsq.UserBiz;
 import com.accp.pojo.News;
+import com.accp.pojo.Services;
 import com.accp.pojo.Sharea;
 import com.accp.pojo.User;
 import com.accp.util.code.VerifyCode;
@@ -32,6 +34,7 @@ import com.accp.util.email.Email;
 import com.accp.util.email.EmailBoard;
 import com.accp.util.file.Upload;
 import com.accp.util.rsaKey.RSAUtils;
+import com.accp.vo.cn.ServicesVO;
 import com.accp.vo.gsq.ListVo;
 import com.accp.vo.gsq.NewsVo;
 import com.accp.vo.gsq.TimeOutEmailDateVo;
@@ -456,7 +459,10 @@ public class UserAction {
 	@ResponseBody
 	public PageInfo<NewsVo>  queryZnxNewsPageInfo(HttpSession session,Integer pageNum,Integer pageSize){
 		Integer userID=((User)session.getAttribute("USER")).getUserid();
-		return biz.queryZnxNewsPageInfo(userID, pageNum, pageSize);
+		
+		PageInfo<NewsVo> pageinfo= biz.queryZnxNewsPageInfo(userID, pageNum, pageSize);
+	
+		return pageinfo;
 	}
 	/**
 	 * 修改站内信状态
@@ -465,15 +471,20 @@ public class UserAction {
 	 */
 	@RequestMapping(value="/user/updateZnxNews",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,String> updateZnxNews(String groupID) {
+	public Map<String,String> updateZnxNews(String theSender,String addressee) {
 		Map<String,String> m=new HashMap<>();
 		
-		groupID=groupID.substring(1, groupID.length());
-	
-		String[] Ids=groupID.split(",");
+		theSender=theSender.substring(1, theSender.length());	
+		String[] Ids=theSender.split(",");
+		
+		addressee=addressee.substring(1, addressee.length());	
+		String[] aIds=addressee.split(",");
+		
 		try {
 			for (String id : Ids) {
-				biz.updateZnxNews(id);
+				for (String aid : aIds) {
+				biz.updateZnxNews(id,aid);
+			}
 			}
 			m.put("code", "200");
 		} catch (Exception e) {
@@ -483,6 +494,27 @@ public class UserAction {
 		return m;
 	}
 	
+	/**
+	 * 修改单个站内状态
+	 */
+	@RequestMapping(value="/user/updateOneState",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> updateOneState(String theSender,String addressee){
+		Map<String,String> m=new HashMap<>();
+		System.out.println(theSender);
+		System.out.println(addressee);
+		int count=biz.updateZnxNews(theSender, addressee);
+		if(count>0) {
+			m.put("code", "200");
+			m.put("msg","成功");
+		}
+		m.put("code", "500");
+		m.put("msg","失败");
+		return m;
+	}
+	
+	
+	
 
 	/**
 	 * 删除系统消息
@@ -491,20 +523,26 @@ public class UserAction {
 	 */
 	@RequestMapping(value="/user/deleteZnxNews",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,String> deleteZnxNews(String groupID){
+	public Map<String,String> deleteZnxNews(String theSender,String addressee){
 		Map<String,String> m=new HashMap<>();
-		groupID=groupID.substring(1, groupID.length());
-		String[] Ids=groupID.split(",");
+		theSender=theSender.substring(1, theSender.length());	
+		String[] Ids=theSender.split(",");
+		
+		addressee=addressee.substring(1, addressee.length());	
+		String[] aIds=addressee.split(",");
+		
 		try {
 			for (String id : Ids) {
-				biz.deleteZnxNews(id);
+				for (String aid : aIds) {
+				biz.deleteZnxNews(id,aid);
+			}
 			}
 			m.put("code", "200");
 		} catch (Exception e) {
 			m.put("code", "500");
 			m.put("msg", e.getMessage());
 		}
-		return m; 
+		return m;
 	}
 	/**
 	 * 查询站内信详情
@@ -513,9 +551,14 @@ public class UserAction {
 	 * @return
 	 */
 	@RequestMapping(value="/user/queryZnxXq",method=RequestMethod.GET)
-	public String queryZnxXq(Model model ,String groupID) {
-		model.addAttribute("news", biz.queryZnxXq(groupID));
-		return "/xx-znx-xq.html";
+	public String queryZnxXq(Model model ,String groupID,Integer thesender,Integer addressee,String name) {
+		
+		List<NewsVo> list= biz.queryZnxXq(groupID,thesender,addressee);
+		model.addAttribute("name",name);
+		model.addAttribute("thesender",thesender);
+		model.addAttribute("addressee",addressee);
+		model.addAttribute("news",list);
+		return "xx-znx-xq.html";
 	}
 	/**
 	 * 新增站内信
@@ -589,5 +632,22 @@ public class UserAction {
 		}
 		return map;
 	}
-	
+	/**
+	 * 
+	    * @Title: queryHabit
+	    * @Description: 猜你喜欢
+	    * @param session
+	    * @return List<Services>    返回类型
+	    * @throws
+	 */
+	@GetMapping("api/queryHabit")
+	@ResponseBody
+	public List<ServicesVO> queryHabit(HttpSession session){
+		Integer uid = null;
+		User loginUser = (User)session.getAttribute("USER");
+		if(loginUser!=null) {
+			uid = loginUser.getUserid();
+		}
+		return biz.queryUserHabit(uid);
+	}
 }

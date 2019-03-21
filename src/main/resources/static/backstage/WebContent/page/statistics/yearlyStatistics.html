@@ -6,7 +6,7 @@
 		<!-- Required meta tags -->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>清泉办公管理系统</title>
+		<title>统计</title>
 		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
 		<style type="text/css">
 			tr td {
@@ -15,7 +15,7 @@
 			
 			body {
 				padding: 10px;
-				width: 1000px;
+				width: 1180px;
 				/*background: #f2edf3;*/
 			}
 			
@@ -32,30 +32,29 @@
 	<body>
 		<div>
 			<blockquote class="back">
-				<p style="font-weight: bold;padding-top: 10px;">年度统计</p>
+				<p style="font-weight: bold;padding-top: 10px;">统计</p>
 				<div style="padding:0px 0px 12px 15px;font-size: 14px;">
-					年份:
-					<select id="type" style="font-size: 14px;padding: 1px; height: 22px;">
-						<option>请选择</option>
-						<option>2017</option>
-						<option>2018</option>
-						<option>2019</option>
+					统计:
+					<select id="state" style="font-size: 14px;padding: 1px; height: 22px;">
+						<option value="1">按年统计</option>
+						<option value="2">按月统计</option>
 					</select>
-					月份:
-					<select id="type" style="font-size: 14px;padding: 1px; height: 22px;">
-						<option>请选择</option>
-						<option>2017</option>
-						<option>2018</option>
-						<option>2019</option>
+					
+					<span id="name">年份:</span>
+					
+					<select id="year" style="font-size: 14px;padding: 1px; height: 22px;">
+						<option value="0">不限</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
 					</select>
+					
 					详细:
-					<select id="type" style="font-size: 14px;padding: 1px; height: 22px;">
+					<select id="conditions" style="font-size: 14px;padding: 1px; height: 22px;">
 						<option>请选择</option>
 						<option>总利润 </option>
-						<option>充值</option>
+						<option>充值+广告</option>
 						<option>提现</option>
 						<option>商家入驻</option>
-						<option>广告费</option>
 						<option>服务费</option>
 					</select>
 					<!-- Standard button -->
@@ -65,37 +64,40 @@
 				</div>
 			</blockquote>
 			<div class="col-md-12 col-xs-12"> </div>
-			<div class="">
+			<div class="" id="statisContent">
 				<table class="table table-bordered" style="text-align: center;">
 					<thead style="background-color:#f2f2f2;text-align: center;">
-						<tr>
+						<tr style="background-color:#f2f2f2;text-align: center;">
 							<th>编号</th>
-							<th>总计</th>
+							<th>总计（元）</th>
+							<th>提现（元）</th> 	
+							<th>充值（元）</th>
+							<th>服务费（元）</th>
+							<th>商家入驻（个）</th>
 							<th>年份</th>
-							<th>月份</th>
+							
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>￥16356.0</td>
-							<td>2018月</td>
-							<td>9月</td>
+						<tr v-for="(temp,index) in pageInfo.list">
+							<td v-text="index+1"></td>
+							<td v-text="temp.sum">￥16356.0</td>
+							<td v-text="temp.withdrawCash">2018月</td>
+							<td v-text="temp.rechargeCash">9月</td>
+							<td v-text="temp.serviceMoney">1</td>
+							<td v-text="temp.businessCount">￥16356.0</td>
+							<td v-text="temp.year">2018月</td>
+
 						</tr>
-						<tr>
-							<td>1</td>
-							<td>￥16356.0</td>
-							<td>11月</td>
-							<td>9月</td>
-						</tr>
+						
 
 					</tbody>
 					<tfoot>
 
 						<tr>
-							<td colspan="4" style="text-align: center;font-weight: bolder;">
+							<td colspan="8" style="text-align: center;font-weight: bolder;">
 								总计 ￥
-								<span style="color: red;">16356.0</span>
+								<span style="color: red;" v-text="info.sum"></span>
 							</td>
 						</tr>
 						<tr>
@@ -122,11 +124,11 @@
 											尾页
 										</a>
 									</li>
-									<li>
+									<!-- <li>
 										<span style="border: none;padding: 0 2px;">1</span>/
 										<span style="border: none;padding: 0 2px;">5</span>页&nbsp;
 										<span style="border: none;padding: 0 2px;">22</span>&nbsp;条记录
-									</li>
+									</li> -->
 								</ul>
 							</td>
 						</tr>
@@ -134,25 +136,25 @@
 				</table>
 
 			</div>
-			<h4 style="text-align: center;">
+			<!-- <h4 style="text-align: center;">
                  	<a href=""><button type="button" class="btn btn-gradient-primary mr-2">查看柱状图</button></a>
                    <a href=""><button type="button" class="btn btn-gradient-info mr-2">查看饼状图</button></a>
                    <a href=""><button type="button" class="btn btn-gradient-dark mr-2">查看曲线图</button></a>
-			</h4>
+			</h4> -->
 
 		</div>
 
 		</div>
-		<div class="col-lg-12 grid-margin stretch-card">
-			<div class="card">
-				<div class="card-body">
-					<div id="Chartjs">
+		<!-- <div class="col-lg-12 grid-margin stretch-card" style="text-align: center;">
+			<div class="card"  style="width:400px;height:400px;">
+				<div class="card-body"> -->
+					<div id="Chartjs"  style="width:1180px;height:400px;">
 						
 					</div>
-				</div>
+				<!-- </div>
 			</div>
 		</div>
-		</div>
+		</div> -->
 		<!-- container-scroller -->
 		<!-- plugins:js -->
 		<script type="text/javascript" src="../../js/echarts/echarts.min.js"></script>
@@ -160,78 +162,125 @@
 		<script src="../../js/bootstrap.min.js"></script>
 		<!-- <script src="../../js/vue.js"></script> -->
 		 <script src="../../js/echarts/ichart.1.2.1.min.js"></script>
+		 <script src="../../js/vue.js"></script>
 		<!-- endinject -->
 		<script type="text/javascript">
-		jQuery(function() {
-				var flow = [];
-				for(var i = 0; i < 4; i++) {
-					flow.push(Math.floor(Math.random() * (60000 + ((i % 12) * 5))) + 10);
-				}
-				var data1 = [{
-					name: '报销金额',
-					value: flow,
-					color: '#0d8ecf',
-					line_width: 2
-				}];
-
-				var labels = ["丁磊", "雷军", "刘某", "卢老爷"];
-
-				var line = new iChart.LineBasic2D({
-					render: 'Chartjs', //ID
-					data: data1,
-					align: 'center',
-					animation: true,
-					animation_duration: 1000,
-					title: '曲线图',
-					subtitle: '年度报销统计',
-					footnote: '数据来源：管理员',
-					width: 800,
-					height: 400,
-					sub_option: {
-						smooth: true, //平滑曲线
-						point_size: 10
-					},
-					tip: {
-						enable: true,
-						shadow: true
-					},
-					legend: {
-						enable: false
-					},
-					crosshair: {
-						enable: true,
-						line_color: '#62bce9'
-					},
-					coordinate: {
-						width: 600,
-						valid_width: 500,
-						height: 260,
-						axis: {
-							color: '#9f9f9f',
-							width: [0, 0, 2, 2]
-						},
-						grids: {
-							vertical: {
-								way: 'share_alike',
-								value: 12
+			var pageList;
+			var vmStatic = new  Vue({
+				el:"#statisContent",
+				data:{
+					pageInfo:{},
+					info:{sum:0}
+					
+				},
+				methods:{
+					getInfo:function(index){
+						this.info.sum = 0;
+						var state = $("#state").val();
+						var year = $("#year").val();
+						$.ajax({
+							url:"/c/lzh/statistics/StatisticsInfo/"+year+"/"+state+"/"+index,
+							type:"get",
+							success:function(json){
+								vmStatic.pageInfo = json;
+								pageList = json.list;
+								for (var i = 0; i < json.list.length; i++) {
+									vmStatic.info.sum += json.list[i].sum;
+								}
 							}
-						},
-						scale: [{
-							position: 'left',
-							start_scale: 0,
-							end_scale: 100000,
-							scale_space: 10000,
-							scale_size: 2,
-							scale_color: '#9f9f9f'
-						}, {
-							position: 'bottom',
-							labels: labels
-						}]
+						});
 					}
-				});
-				//开始画图
-				line.draw();
-			});
+				},
+				created:function(){
+					this.getInfo(1);
+				}
+			})
+		
+			
+			
+			
+			if($("#state").val()==2){
+				$("#year").show();
+				$("#name").show();
+			}else{
+				$("#year").hide();
+				$("#name").hide();
+			}
+			$("#state").change(function(){
+				if($("#state").val()==2){
+					$("#year").show();
+					$("#name").show();
+				}else{
+					$("#year").hide();
+					$("#name").hide();
+				}
+			})
+			
+			var myChart = echarts.init(document.getElementById('Chartjs'));
+			
+			option = {
+				    title: {
+				        text: '折线图'
+				    },
+				    tooltip: {
+				        trigger: 'axis'
+				    },
+				    legend: {
+				        data:['统计','提现','充值','服务','商家入驻']
+				    },
+				    grid: {
+				        left: '3%',
+				        right: '4%',
+				        bottom: '3%',
+				        containLabel: true
+				    },
+				    toolbox: {
+				        feature: {
+				            saveAsImage: {}
+				        }
+				    },
+				    xAxis: {
+				        type: 'category',
+				        boundaryGap: false,
+				        data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+				    },
+				    yAxis: {
+				        type: 'value'
+				    },
+				    series: [
+				        {
+				            name:'统计',
+				            type:'line',
+				            stack: '总量',
+				            data:[0,0,0,0,0,0,0,0,14680,4100,0]
+				        },
+				        {
+				            name:'提现',
+				            type:'line',
+				            stack: '总量',
+				            data:[0,0,0,0,0,0,0,0,10,5080,0]
+				        },
+				        {
+				            name:'充值',
+				            type:'line',
+				            stack: '总量',
+				            data:[0,0,0,0,0,0,0,0,14690,9180,0]
+				        },
+				        {
+				            name:'服务',
+				            type:'line',
+				            stack: '总量',
+				            data:[0,0,0,0,0,0,0,0,1770,600,0]
+				        },
+				        {
+				            name:'商家入驻',
+				            type:'line',
+				            stack: '总量',
+				            data:[0,0,0,0,0,0,0,0,0,0,0]
+				        }
+				    ]
+				};
+			 myChart.setOption(option);
 		</script>
 	</body>
 

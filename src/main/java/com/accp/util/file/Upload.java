@@ -48,19 +48,23 @@ public class Upload {
 	 */
 	private static void deleteFileRoute(String fileName) {
 		fileName = fileName.replace("/api/upload/", "");
-		String parent = UPLOADED_FOLDER.replace("//", "/");
-		String path = parent + fileName;
-		File dest = new File(path); 
-		// 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
-        if (dest.exists() && dest.isFile()) {
-            if (dest.delete()) {
-                System.out.println("删除单个文件" + path + "成功！");
-            } else {
-                System.out.println("删除单个文件" + path + "失败！");
-            }
-        } else {
-            System.out.println("删除单个文件失败：" + path + "不存在！");
-        }
+		//除开默认头像，其他都删除
+		if(fileName != "2019-03-02/yes.png") {
+			String parent = UPLOADED_FOLDER.replace("//", "/");
+			String path = parent + fileName;
+			File dest = new File(path); 
+			// 如果文件路径所对应的文件存在，并且是一个文件，则直接删除
+	        if (dest.exists() && dest.isFile()) {
+	            if (dest.delete()) {
+	                System.out.println("删除单个文件" + path + "成功！");
+	            } else {
+	                System.out.println("删除单个文件" + path + "失败！");
+	            }
+	        } else {
+	            System.out.println("删除单个文件失败：" + path + "不存在！");
+	        }
+		}
+		
 	}
 
 	/**

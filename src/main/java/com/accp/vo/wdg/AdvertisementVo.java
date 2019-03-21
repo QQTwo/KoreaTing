@@ -1,5 +1,9 @@
 package com.accp.vo.wdg;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class AdvertisementVo {
 	private Integer aid;
 	private Integer atid;
@@ -10,6 +14,9 @@ public class AdvertisementVo {
 	private String aappUrl;
 	private String adescribe;
 	private String atname;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date startTime;
+	private Integer rentamonth;
 	private Integer atpx;
 	public AdvertisementVo() {
 		super();
@@ -73,5 +80,17 @@ public class AdvertisementVo {
 	}
 	public void setAtpx(Integer atpx) {
 		this.atpx = atpx;
+	}
+	public Date getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	public Integer getRentamonth() {
+		return rentamonth;
+	}
+	public void setRentamonth(Integer rentamonth) {
+		this.rentamonth = rentamonth;
 	}
 }

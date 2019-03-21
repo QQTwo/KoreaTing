@@ -27,6 +27,7 @@ import com.accp.vo.cn.SerReserveVO;
 import com.accp.vo.cn.ServiceDetailInfo;
 import com.accp.vo.cn.ServiceMerchantInfo;
 import com.accp.vo.cn.ServiceSelect;
+import com.accp.vo.cn.ServicesVO;
 import com.accp.vo.cn.SerRecommendVO;
 
 /**
@@ -51,7 +52,7 @@ public interface IMerchantEnterDao {
 	 * 根据服务列表条件查询服务
 	 * @return
 	 */
-	public List<Services> queryServices(@Param("obj")ServiceSelect obj);
+	public List<ServicesVO> queryServices(@Param("obj")ServiceSelect obj);
 	/**
 	 * 查询服务语言
 	 * @return
