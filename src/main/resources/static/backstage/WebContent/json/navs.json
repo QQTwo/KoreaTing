@@ -122,7 +122,7 @@
 	"spread" : false,
 	"children" : [
 		{
-			"title" : "会员审核",
+			"title" : "会员审核  ",
 			"icon" : "&#xe609;",
 			"href" : "page/member/memberCheck.html",
 			"spread" : false
