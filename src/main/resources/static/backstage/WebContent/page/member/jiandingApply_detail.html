@@ -108,6 +108,22 @@
           		<label>
                 <input type="radio" name="status" v-model="user.auditstatus"  value="2" id="status_3">
             		    审核通过</label>            </td>
+
+			            <TD colspan="3" v-if="user.auditStatus==1" >
+			            	<label>
+			            		<!--v-if 针对状态进行radio 的判断-->
+			                <input type="radio" name="status" value="1" id="status_1">
+			                待审核</label>
+			                <label style="width: 10px;"></label>
+			                <label>
+			                <input  type="radio" name="status" value="2" id="status_2">
+			                审核不通过</label>
+			                 <label style="width: 10px;"></label>
+			                  <label style="width: 10px;"></label>
+			                <label>
+			                <input checked type="radio" name="status" value="3" id="status_3">
+			                审核通过
+			                </label>            </TD>
 			          </TR>
 			          <TR>
 			            <TD align=right>管理员理由：</TD>

@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
+<html  xmlns:th="http://www.thymeleaf.org">
+=======
 <html xmlns:th="http://www.thymeleaf.org">
+>>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
 <head>
 <meta charset="UTF-8">
 <title>登陆_韩汀社区</title>
@@ -121,13 +125,18 @@
 	</ul>
 	<!--right nav end-->
 </body>
+	
 <script type="text/javascript" src="/Public/js/layer/layer.js"></script>
 <script type="text/javascript" src="/Public/js/security.js"></script>
 <script type="text/javascript">
+<<<<<<< HEAD
+
+=======
 		if('[[${gaimima}]]'=="Yes"){
 			layer.msg("修改成功，重新登陆!");
 		}
 		
+>>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
 		create_code();
 		function submit1(){
 			var email=$("[name=email]").val();
@@ -164,15 +173,20 @@
 				   var pwdKey = new RSAUtils.getKeyPair(data.exponent,"",data.modulus);
 	               var reversedPwd = password.split("").reverse().join("");
 	               var encrypedPwd = RSAUtils.encryptedString(pwdKey,reversedPwd);
-	           		$.getJSON("/c/gsq/user/checkRSAKey",{"email":email,"password":encrypedPwd},function(result){
-	           			if(result.code=="200"){
 <<<<<<< HEAD
-	           				alert("登陆成功！");
+	           		$.getJSON("/c/gsq/user/checkRSAKey",{"email":email,"password":encrypedPwd},function(result){
+
+=======
+	           		$.getJSON("/c/gsq/user/checkRSAKey",{"email":email,"password":encrypedPwd},function(result){
+>>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
+	           			if(result.code=="200"){
+	           				layer.msg("登陆成功！");
+<<<<<<< HEAD
 	           				/* location.href="/c/cn/merchantEnterUrl"; */
        					location.href="/c/gsq/center/home"; 
 
+	           			
 =======
-	           				layer.msg("登陆成功！");
 	           				setTimeout(function(){
 	       						location.href="/c/gsq/center/home"; 
 	           				},2000)
@@ -186,7 +200,7 @@
 		           					$("[name=password]").val("");
 		           				}); 
 	           			}else{
-	           				layer.alert("系统异常："+result.msg);
+	           				layer.msg("系统异常："+result.msg);
 	           			}
 	           		})
 			})
@@ -194,5 +208,5 @@
 		})
 	</script>
 	<script type="text/javascript" src="/Public/js/headLeftNav.js"></script>
-	
+
 </html>

@@ -44,7 +44,7 @@
 					class="my_nav_i"></span></li>
 				<li id="li3"><a href="javascript.void(0);">账户设置</a><span
 					class="my_nav_i"></span></li>
-				<li id="li4"><a href="/xx-xtxx.html">消息</a><span
+				<li id="li4"><a href="/xx-xtxx.html">消息<span class="msg_num">5</span></a><span
 					class="my_nav_i"></span></li>
 			</ul>
 		</div>
@@ -62,7 +62,7 @@
 					<li><a href="/c/gsq/order/query/list"><span
 							class="msp2 pre_c1"></span>我预订的服务</a></li>
 					<li><a href="/grzx-downloads.html"><span
-							class="msp2 pre_c2"></span>我的下载</a></li>
+							class="msp2 pre_c2"></span>积分抽奖</a></li>
 					<li><a href=""><span class="msp2 community_sp csp7"></span>我的帖子</a>
 					</li>
 
@@ -204,4 +204,10 @@
 <script type="text/javascript" src="/Public/js/headLeftNav.js"></script>
 <script type="text/javascript" src="/Public/js/grzx-href.js"></script>
 <script type="text/javascript" src="/Public/js/layer/layer.js"></script>
+<script type="text/javascript" src="/Public/js/Websocket/ajaxlunxun.js" th:inline="javascript"></script>
+<script type="text/javascript">
+var userid=[[${session.USER.userid}]];
+
+ initWebSocket(-1,userid);	 
+</script>
 </html>

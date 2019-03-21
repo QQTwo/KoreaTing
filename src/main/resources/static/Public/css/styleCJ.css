@@ -1,0 +1,94 @@
+
+	.shanDeng{
+		width: 100%;
+		background-size: 100%;
+		background-repeat: no-repeat;
+		margin-bottom: .15rem;
+	}
+
+	#btn .cjBtn,.shanDeng .active,.shanDeng td{
+		width: 1.74rem;
+		height: 1.48rem;
+		background-repeat: no-repeat;
+	}
+
+	#btn.cjBtn{
+		background: url(/Public/images/Luck-btn.png) no-repeat 0 0;
+		width: 186px;
+   		height: 189px;
+		background-size: cover;
+		opacity:0.9;
+	}
+	#btn.cjBtnDom{
+		background: url(/Public/images/Luck-btn.png) no-repeat -201px 0;
+		width: 186px;
+   		height: 189px;
+		background-size: cover;
+	}
+
+	#luck .active{
+		background: #752e99;
+		opacity:1;
+	}
+	.shanDeng td{
+		text-align: center;
+		background: #752e99;
+		width: 186px;
+   		height: 189px;
+   		margin:10px;
+		opacity:0.5;
+	}
+	.shanDeng td img{
+		width: 170px;
+		height: 145px;
+	}
+	.shanDeng td div{
+		font-size: 18px;
+		padding: 5px;
+	}
+	.shanDeng table{
+		margin-left: 3%;
+	}
+
+/*rule s*/
+.rule {
+	margin: 0 auto;
+	background-color: #E84A54;
+	width: 4.3rem;
+	height: 2.3rem;
+	padding: 0 .4rem;
+}
+.rule p{
+	font-size: 26px;
+	color: #fff;
+	line-height: .38rem;
+}
+.rule p:first-child{
+	text-align: center;
+	font-size: 32px;
+	line-height: .6rem;
+}
+/*rule e*/
+.play {
+	position: absolute;
+	top: 4%;
+	width: 100%;
+	height: .42rem;
+	line-height: .42rem;
+	background-color: #FFEAB2;
+}
+.play .div{
+	height: 100%;
+	margin-left: .7rem;
+	border-left: 2px solid #E84A54;
+}
+.play span{
+	background: url(/Public/images/proBj1.png) no-repeat;
+	background-size: 100%;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	height: .26rem;
+	width: .3rem;
+	margin: 0 .2rem;
+}

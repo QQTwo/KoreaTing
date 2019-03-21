@@ -1,5 +1,5 @@
  ydfwHref="/c/gsq/order/query/list";
- xzHref="javascript:void(0)";
+ xzHref="/c/gsq/center/Luck";
  tzHref="/c/tty/myPost?type=1&page=1&title=";
  scHref="/ylh/c/getServicesByUserId";
  jbHref="/ylh/c/goldnotesQueryAll";

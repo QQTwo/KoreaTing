@@ -41,7 +41,7 @@
 				<li class="cur" id="li2"><a href="">个人中心</a><span
 					class="my_nav_i"></span></li>
 				<li id="li3"><a href="">账户设置</a><span class="my_nav_i"></span></li>
-				<li id="li4"><a href="">消息</a><span class="my_nav_i"></span></li>
+				<li id="li4"><a href="">消息<span class="msg_num">5</span></a><span class="my_nav_i"></span></li>
 
 			</ul>
 		</div>
@@ -57,7 +57,7 @@
 				<h1 class="member_left_title">个人中心</h1>
 				<ul class="member_system_ul">
 					<li><a href=""><span class="msp2 pre_c1"></span>我预订的服务</a></li>
-					<li><a href=""><span class="msp2 pre_c2"></span>我的下载</a></li>
+					<li><a href=""><span class="msp2 pre_c2"></span>积分抽奖</a></li>
 					<li><a href=""><span class="msp2 pre_c3"></span>我的收藏</a></li>
 					<li class="cur"><a href=""><span class="msp2 pre_c4"></span>我的金币</a></li>
 					<li><a href=""><span class="msp2 pre_c5"></span>我的积分</a></li>
@@ -289,5 +289,11 @@
 <script type="text/javascript" src="/Public/js/grzx-interlinkage.js"></script>
 <script type="text/javascript" src="/Public/js/headLeftNav.js"></script>
 <script type="text/javascript" src="/Public/js/grzx-href.js"></script>
+<script type="text/javascript" src="/Public/js/Websocket/ajaxlunxun.js" th:inline="javascript"></script>
+<script type="text/javascript">
+var userid=[[${session.USER.userid}]];
+
+initWebSocket(-1,userid);	
+</script>
 </body>
 </html>

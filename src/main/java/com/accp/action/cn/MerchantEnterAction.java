@@ -18,16 +18,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.accp.biz.cn.MerchantEnterBiz;
-
+import com.accp.biz.gsq.UserBiz;
 import com.accp.pojo.Complainttype;
 import com.accp.pojo.Languagetype;
 import com.accp.pojo.Majortype;
 import com.accp.pojo.Post;
 import com.accp.pojo.Resouroe;
 import com.accp.pojo.Servicelevel;
+import com.accp.pojo.Services;
 import com.accp.pojo.Servicetype;
 import com.accp.pojo.Sharea;
 import com.accp.pojo.User;
+import com.accp.pojo.UserHabit;
 import com.accp.util.file.Upload;
 import com.accp.vo.cn.AdvertisementVO;
 import com.accp.vo.cn.EsLevelVO;
@@ -47,8 +49,8 @@ public class MerchantEnterAction {
 	
 	@Autowired
 	private MerchantEnterBiz biz;
-	/*@Autowired
-	private UserBiz szyUserBiz;*/
+	@Autowired
+	private UserBiz UserBiz;
 /**
  * 	
  * @param session
@@ -154,7 +156,7 @@ public class MerchantEnterAction {
 	 * @return
 	 */
 	@GetMapping("serviceDetailUrl")
-	public String serviceDetailUrl(Model model,String htmlUrl,Integer sid,Integer uid) {
+	public String serviceDetailUrl(HttpSession session,Model model,String htmlUrl,Integer sid,Integer uid,Integer stid) {
 		//查询发布服务的商家信息
 		ServiceMerchantInfo serMerchantObj = biz.queryServiceMerchantInfo(uid,sid);
 		//查询服务信息
@@ -168,6 +170,16 @@ public class MerchantEnterAction {
 		List<Complainttype> complainttypeList = biz.queryComplainttype();
 		//更新浏览数
 		biz.updateServiceBrowseNumber(sid);
+		//记录用户习惯
+		User loginUser = (User)session.getAttribute("USER");	//登录用户
+		if(loginUser!=null) {
+			//如果与父级相同则未空
+			Integer st = null;
+			if(serDetailObj.getStid()!=stid) {
+				st = serDetailObj.getStid();
+			}
+			UserBiz.saveUserHabit(new UserHabit(loginUser.getUserid(),stid ,st,serDetailObj.getServicePrice()));
+		}
 		//广告查询：未完成
 		model.addAttribute("serMerchantObj",serMerchantObj);
 		model.addAttribute("serDetailObj",serDetailObj);

@@ -260,7 +260,7 @@ function linksList(that){
 		    	+'<td>'+(currData[i].shelfState==1 ? '上架' :'下架')+' </td>'
 		    	+'<td>'+currData[i].releaseTime+'</td>'
 		    	+'<td>'+(currData[i].recommendBool!=1?'不推荐':'推荐')+'</td>'
-		    	+'<td>'+(currData[i].orderByNum)+'</td>'
+		    	+'<td>'+currData[i].sort+'</td>'
 		    	+'<td>'
 				+  '<a class="layui-btn layui-btn-mini links_edit links_del" data-id="'+currData[i].serviceID+'"><i class="iconfont icon-edit"></i> 修改</a>'
 		        +'</td>'

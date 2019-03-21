@@ -7,7 +7,7 @@
 <mapper namespace="com.accp.dao.lzh.IServicesDao">
 	<!-- 查询服务vo -->
 	<select id="findAllServiceVo" resultType="com.accp.vo.lzh.ServiceVo">
-		SELECT `serviceID`,s.`stid` AS stid,`stName`,s.`userID` AS userID,`userName`,`serviceTitle`,s.`auditStatus` AS auditStatus,`shopName`,`shelfState`,`orderByNum`,`recommendBool`,`releaseTime`,adminOpinion FROM `services` s
+		SELECT `serviceID`,s.`stid` AS stid,`stName`,s.`userID` AS userID,`userName`,`serviceTitle`,s.`auditStatus` AS auditStatus,`shopName`,`shelfState`,`recommendBool`,`releaseTime`,adminOpinion,sort FROM `services` s
 		LEFT JOIN `servicetype` se ON s.`stid` = se.`stid`
 		LEFT JOIN `user` u ON s.`userID` = u.`userID`
 		<where>
@@ -76,7 +76,7 @@
 		a.`auditTime`,c.`refundstatus` FROM `refund` a JOIN `user` b ON a.userID=b.`userID`
 		JOIN `orders` c ON a.`orderID`=c.`orderID` JOIN `services` d ON
 		c.`serviceID`=d.`serviceID`
-		WHERE c.orderStatus=8)v
+		WHERE c.refundstatus NOT IN (0))v
 		<where>
 			<if test="username!= null and username != ''">
 				AND v.userName like '%${username}%'
@@ -93,7 +93,9 @@
 			<if test="status != null and status != 0">
 				AND v.refundstatus=#{status}
 			</if>
+				
 		</where>
+		order by v.applicationTime desc
 	</select>
 	<!-- 查询退款byid -->
 	<select id="queryRefundByID" resultType="com.accp.vo.lzh.RefundVo">
