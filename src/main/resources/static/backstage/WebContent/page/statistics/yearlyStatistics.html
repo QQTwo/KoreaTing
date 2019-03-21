@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>清泉办公管理系统</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<style type="text/css">
+			tr td {
+				padding: 5px;
+			}
+			
+			body {
+				padding: 10px;
+				width: 1000px;
+				/*background: #f2edf3;*/
+			}
+			
+			.back {
+				font-size: 14px;
+				border-radius: 0 2px 2px 0;
+				background-color: #f2f2f2;
+				padding: 2px 10px;
+				border-left: 5px solid rgb(25, 159, 147);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<blockquote class="back">
+				<p style="font-weight: bold;padding-top: 10px;">年度统计</p>
+				<div style="padding:0px 0px 12px 15px;font-size: 14px;">
+					年份:
+					<select id="type" style="font-size: 14px;padding: 1px; height: 22px;">
+						<option>请选择</option>
+						<option>2017</option>
+						<option>2018</option>
+						<option>2019</option>
+					</select>
+					月份:
+					<select id="type" style="font-size: 14px;padding: 1px; height: 22px;">
+						<option>请选择</option>
+						<option>2017</option>
+						<option>2018</option>
+						<option>2019</option>
+					</select>
+					详细:
+					<select id="type" style="font-size: 14px;padding: 1px; height: 22px;">
+						<option>请选择</option>
+						<option>总利润 </option>
+						<option>充值</option>
+						<option>提现</option>
+						<option>商家入驻</option>
+						<option>广告费</option>
+						<option>服务费</option>
+					</select>
+					<!-- Standard button -->
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search()">
+						查询</button>
+				</div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div class="">
+				<table class="table table-bordered" style="text-align: center;">
+					<thead style="background-color:#f2f2f2;text-align: center;">
+						<tr>
+							<th>编号</th>
+							<th>总计</th>
+							<th>年份</th>
+							<th>月份</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>￥16356.0</td>
+							<td>2018月</td>
+							<td>9月</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>￥16356.0</td>
+							<td>11月</td>
+							<td>9月</td>
+						</tr>
+
+					</tbody>
+					<tfoot>
+
+						<tr>
+							<td colspan="4" style="text-align: center;font-weight: bolder;">
+								总计 ￥
+								<span style="color: red;">16356.0</span>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="14">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+										<a href="javascript:void(0)" @click="goToPage(1,membersPageInfo.pageSize)">
+											首页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" @click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+											上一页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" @click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+											下一页
+										</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" @click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+											尾页
+										</a>
+									</li>
+									<li>
+										<span style="border: none;padding: 0 2px;">1</span>/
+										<span style="border: none;padding: 0 2px;">5</span>页&nbsp;
+										<span style="border: none;padding: 0 2px;">22</span>&nbsp;条记录
+									</li>
+								</ul>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+
+			</div>
+			<h4 style="text-align: center;">
+                 	<a href=""><button type="button" class="btn btn-gradient-primary mr-2">查看柱状图</button></a>
+                   <a href=""><button type="button" class="btn btn-gradient-info mr-2">查看饼状图</button></a>
+                   <a href=""><button type="button" class="btn btn-gradient-dark mr-2">查看曲线图</button></a>
+			</h4>
+
+		</div>
+
+		</div>
+		<div class="col-lg-12 grid-margin stretch-card">
+			<div class="card">
+				<div class="card-body">
+					<div id="Chartjs">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		<!-- container-scroller -->
+		<!-- plugins:js -->
+		<script type="text/javascript" src="../../js/echarts/echarts.min.js"></script>
+		<script src="../../js/jquery-2.1.4.js"></script>
+		<script src="../../js/bootstrap.min.js"></script>
+		<!-- <script src="../../js/vue.js"></script> -->
+		 <script src="../../js/echarts/ichart.1.2.1.min.js"></script>
+		<!-- endinject -->
+		<script type="text/javascript">
+		jQuery(function() {
+				var flow = [];
+				for(var i = 0; i < 4; i++) {
+					flow.push(Math.floor(Math.random() * (60000 + ((i % 12) * 5))) + 10);
+				}
+				var data1 = [{
+					name: '报销金额',
+					value: flow,
+					color: '#0d8ecf',
+					line_width: 2
+				}];
+
+				var labels = ["丁磊", "雷军", "刘某", "卢老爷"];
+
+				var line = new iChart.LineBasic2D({
+					render: 'Chartjs', //ID
+					data: data1,
+					align: 'center',
+					animation: true,
+					animation_duration: 1000,
+					title: '曲线图',
+					subtitle: '年度报销统计',
+					footnote: '数据来源：管理员',
+					width: 800,
+					height: 400,
+					sub_option: {
+						smooth: true, //平滑曲线
+						point_size: 10
+					},
+					tip: {
+						enable: true,
+						shadow: true
+					},
+					legend: {
+						enable: false
+					},
+					crosshair: {
+						enable: true,
+						line_color: '#62bce9'
+					},
+					coordinate: {
+						width: 600,
+						valid_width: 500,
+						height: 260,
+						axis: {
+							color: '#9f9f9f',
+							width: [0, 0, 2, 2]
+						},
+						grids: {
+							vertical: {
+								way: 'share_alike',
+								value: 12
+							}
+						},
+						scale: [{
+							position: 'left',
+							start_scale: 0,
+							end_scale: 100000,
+							scale_space: 10000,
+							scale_size: 2,
+							scale_color: '#9f9f9f'
+						}, {
+							position: 'bottom',
+							labels: labels
+						}]
+					}
+				});
+				//开始画图
+				line.draw();
+			});
+		</script>
+	</body>
+
+</html>

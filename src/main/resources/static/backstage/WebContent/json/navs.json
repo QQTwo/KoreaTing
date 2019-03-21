@@ -11,8 +11,8 @@
 	"spread" : false
 },{
 	"title" : "&nbsp;&nbsp;统计",
-	"icon" : "&#xe6b2;",
-	"href" : "page/main.html",
+	"icon" : "&#xe705;",
+	"href" : "page/statistics/yearlyStatistics.html",
 	"spread" : false
 },{
 	"title" : "论坛管理",
