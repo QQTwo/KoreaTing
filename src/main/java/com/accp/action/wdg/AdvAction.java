@@ -2,6 +2,7 @@ package com.accp.action.wdg;
 
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,9 +31,9 @@ public class AdvAction {
 	private AdvBiz biz;
 	
 	// 查询所有广告
-	@GetMapping("advs/{atid}/{p}/{s}")
-	public PageInfo<AdvertisementVo> queryAllAdvVo(@PathVariable Integer atid,@PathVariable Integer p,@PathVariable Integer s){
-		return biz.queryAllAdvVo(atid, p, s);
+	@GetMapping("advs/{atid}")
+	public List<AdvertisementVo> queryAllAdvVo(@PathVariable Integer atid){
+		return biz.queryAllAdvVo(atid);
 	}
 	
 	//删除广告
@@ -48,11 +49,11 @@ public class AdvAction {
 		//重命名文件
 		String name = UUID.randomUUID().toString().replaceAll("-", "")+hName;
 		String base64 = adv.getAimgpath().substring(adv.getAimgpath().indexOf(";")+8);
-		String path = System.getProperty("user.dir")+"\\src\\main\\resources\\static\\uploadImg"+File.separator+ name;
+		String path = "d:/hantingImg"+File.separator+ name;
 		//保存图片至服务器
 		Base64ConvertImageUtil.generateImageFromBase64(base64,path);
 		
-		adv.setAimgpath("/uploadImg/"+name);
+		adv.setAimgpath("/"+name);
 		return biz.addAdv(adv);
 	}
 	//查询所有广告分类

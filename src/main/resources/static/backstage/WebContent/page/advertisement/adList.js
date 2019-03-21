@@ -118,7 +118,10 @@ layui.config({
  
 	//操作
 	$("body").on("click",".links_edit",function(){  //编辑
-		layer.alert('您点击了友情链接编辑按钮，由于是纯静态页面，所以暂时不存在编辑内容，后期会添加，敬请谅解。。。',{icon:6, title:'友链编辑'});
+		var aid = $(this).attr("data-id");
+		window.sessionStorage.setItem("advid",aid);
+		window.sessionStorage.setItem("type",2);//标记为续费
+		window.location.href="insertAd.html";
 	})
 
 	$("body").on("click",".links_del",function(){  //删除
@@ -153,11 +156,11 @@ layui.config({
 	
 	function loadInfo(atid){
 		$.ajax({
-			url : "/wdg/advs/"+atid+"/1/30",
+			url : "/wdg/advs/"+atid,
 			type : "get",
 			dataType : "json",
 			success : function(data){
-				linksData = data.list;
+				linksData = data;
 				if(window.sessionStorage.getItem("addLinks")){
 					var addLinks = window.sessionStorage.getItem("addLinks");
 					linksData = JSON.parse(addLinks).concat(linksData);
@@ -167,6 +170,25 @@ layui.config({
 			}
 		})
 	}
+	
+	function dateFtt(fmt,date){ //author: meizz   
+	  var o = {   
+	    "M+" : date.getMonth()+1,                 //月份   
+	    "d+" : date.getDate(),                    //日   
+	    "h+" : date.getHours(),                   //小时   
+	    "m+" : date.getMinutes(),                 //分   
+	    "s+" : date.getSeconds(),                 //秒   
+	    "q+" : Math.floor((date.getMonth()+3)/3), //季度   
+	    "S"  : date.getMilliseconds()             //毫秒   
+	  };   
+	  if(/(y+)/.test(fmt))   
+	    fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));   
+	  for(var k in o)   
+	    if(new RegExp("("+ k +")").test(fmt))   
+	  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+	  return fmt;   
+	} 
+	
 	
 	function linksList(that){
 		//渲染数据
@@ -178,16 +200,25 @@ layui.config({
 				currData = that.concat().splice(curr*nums-nums, nums);
 			}
 			if(currData.length != 0){
+				
 				for(var i=0;i<currData.length;i++){
+						var endTime = "<td>---</td>";
+						var btn = '<a class="layui-btn layui-btn-mini "><i class="iconfont icon-edit"></i> 编辑</a>';
+						if(currData[i].startTime!= "" && currData[i].startTime !=null &&currData[i].rentamonth!=""){
+							var d = new Date(currData[i].startTime);
+							d.setMonth(d.getMonth()+currData[i].rentamonth);
+							endTime = "<td>"+dateFtt("yyyy-MM-dd hh:mm:ss",d)+"</td>";
+							btn +=  '<a class="layui-btn layui-btn-warm layui-btn-mini links_edit" data-id="'+currData[i].aid+'"><i class="layui-icon">&#xe61f;</i> 续费</a>';
+						}
 						dataHtml += '<tr>'
 					    	+'<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>'
 					    	+'<td align="left">'+currData[i].atitle+'</td>'
 					    	+'<td>'+currData[i].aorder+'</td>'
 					    	+'<td><img src="'+currData[i].aimgPath+'" width="200px"/></td>'
-					    	+'<td>---</td>'
+					    	+endTime
 					    	+'<td>'+currData[i].atname+'</td>'
 					    	+'<td>'
-							+  '<a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>'
+					    	+btn
 							+  '<a class="layui-btn layui-btn-danger layui-btn-mini links_del" data-id="'+data[i].aid+'"><i class="layui-icon">&#xe640;</i> 删除</a>'
 					        +'</td>'
 					    	+'</tr>';

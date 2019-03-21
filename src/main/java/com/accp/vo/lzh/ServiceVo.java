@@ -21,7 +21,7 @@ public class ServiceVo {
 	private Integer auditStatus;//审核状态
 	private String shopName;//店铺名称
 	private Integer shelfState;//营业状态
-	private Integer orderByNum;//排序（0 1 2）
+	private Integer sort;//排序（0 1 2）
 	private Integer recommendBool;//不为空就推荐
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date releaseTime;//发布时间
@@ -97,11 +97,11 @@ public class ServiceVo {
 		this.shelfState = shelfState;
 	}
 	
-	public Integer getOrderByNum() {
-		return orderByNum;
+	public Integer getSort() {
+		return sort;
 	}
-	public void setOrderByNum(Integer orderByNum) {
-		this.orderByNum = orderByNum;
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 	public Integer getRecommendBool() {
 		return recommendBool;
