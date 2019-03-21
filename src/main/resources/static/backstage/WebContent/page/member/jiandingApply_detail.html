@@ -98,7 +98,7 @@
 			          </TR>
 			                    <TR>
 			            <TD align=right>状态：</TD>
-			            <TD colspan="3" v-text="user.auditStatus" >
+			            <TD colspan="3" v-if="user.auditStatus==1" >
 			            	<label>
 			            		<!--v-if 针对状态进行radio 的判断-->
 			                <input type="radio" name="status" value="1" id="status_1">

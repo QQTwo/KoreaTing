@@ -140,6 +140,7 @@
 				var auditstatus=0;
 				$.getJSON("/sj/jd/" + n + "/" + s +"/"+auditstatus, function(pageData) {
 					listVm.membersPageInfo = pageData;
+					console.log(pageData);
 				}); 
 			},
 		 	//搜索
