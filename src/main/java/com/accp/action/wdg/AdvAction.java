@@ -57,7 +57,7 @@ public class AdvAction {
 		Base64ConvertImageUtil.generateImageFromBase64(base64,path);
 		
 		adv.setAimgpath("/"+name);
-		
+		 
 		Goldnotes g = new Goldnotes();
 		g.setAcquisitionmode(6);
 		g.setRecorddate(new Date());
