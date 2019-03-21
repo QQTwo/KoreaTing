@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商家管理--鉴定申请</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<!--
+        	作者：1017009135@qq.com
+        	时间：2019-03-10
+        	描述：首先默认是加载根据id传过来的数据，可根据下拉进行条件查询
+        -->
+		<div class="" id="listVm">
+			<blockquote class="back">
+			  <p style="font-weight: bold;padding-top: 10px;">鉴定申请</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户名：<input type="text" value="" placeholder="" name="username">
+			    	<!-- Standard button -->
+					&nbsp;
+					状态：
+					<select name="status" id="status">
+	                    <option value="0">所有</option>
+	                    <option value="1">待审核</option>
+	                    <option value="3">审核不通过</option>
+	                    <option value="2">审核通过</option>                  
+					</select>
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search(1,10)">
+						搜索</button>
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" onclick="history.go(-1)">
+						返回</button>
+			    </div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<thead style="background-color:#f2f2f2;">
+  						<TR>
+		                    <th>序号</th>
+		                    <TH>用户</TH>
+		                    <TH >类型</TH>
+		                    <TH>姓名</TH>
+		                    <TH>性别</TH>
+		                    <TH>联系电话</TH>
+		                    <TH>提交时间</TH>
+		                    <TH >审核状态</TH>
+		                    <TH scope=col >审核时间</TH>
+		                    <TH>操作</TH>
+		                  </TR>
+  					</thead>
+  					<!--
+                      	作者：1017009135@qq.com
+                      	时间：2019-03-10
+                      	描述：tbody 可对用户id进行判断，从而循环
+                      -->
+  					 <tbody>
+  						<tr v-for="(temp,index) in membersPageInfo.list">
+					    	<td v-text="(index+1)">1</td>	
+					    	<td v-text="temp.username">ok</td>	
+					    	<td v-text="temp.shopname">普通会员</td>	
+					    	<td v-text="temp.name">1017009456@qq.com</td>	
+					    	<td v-if="temp.sex==1">男</td>	
+					    	<td v-if="temp.sex==2">女</td>
+					    	<td v-text="temp.phone">0</td>	
+					    	<td v-text="temp.submittime">0</td>	
+					    	<td v-if="temp.auditstatus==1">待审核</td>	
+					    	<td v-if="temp.auditstatus==2">已通过</td>	
+					    	<td v-if="temp.auditstatus==3">未通过</td>
+					    	<td v-text="temp.audittime">100</td>	
+					    		<td>
+					    		<a><a class="btn btn-default btn-xs  memberCheck_edit" @click="memberEdit(temp.userid)"><span class="glyphicon glyphicon-edit"></span> 查看</a></a>	
+					    		<a v-if="temp.auditstatus==2"  @click="updatesh(temp.userid)">取消审核</a>
+					    	</td>	
+					    </tr>
+  					</tbody>
+  					<tfoot>
+  						<tr>
+							<td colspan="10">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+								      <a href="javascript:void(0)" @click="goToPage(1,membersPageInfo.pageSize)">
+								        	首页
+								      </a>
+								    </li>
+						    		<li>
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+								        	上一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+								        	下一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+								       		 尾页
+								      </a>
+								    </li>
+								</ul>
+							</td>
+						</tr>			
+  					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	var listVm = new Vue({
+		el: "#listVm",
+		data: {
+			//会员信息
+			membersPageInfo: {},
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				var auditstatus=0;
+				$.getJSON("/sj/jd/" + n + "/" + s +"/"+auditstatus, function(pageData) {
+					listVm.membersPageInfo = pageData;
+					console.log(pageData);
+				}); 
+			},
+		 	//搜索
+			search:function(n, s,auditstatus){
+				var auditstatus=$("[name=status]").val();
+				$.getJSON("/sj/jd/" + n + "/" + s +"/"+auditstatus, function(pageData) {
+					listVm.membersPageInfo = pageData;
+				});
+			},
+			memberEdit:function(userid){
+				window.sessionStorage.setItem("userid", userid);
+				window.location.href="jiandingApply_detail.html";
+			},
+			updatesh:function(userid){
+				var sss = listVm;
+				alert(userid)
+				$.getJSON("/sj/jd/" +userid, function(a) {
+					sss.goToPage(1,10)
+				});
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+			
+			//加载金币数和积分
+		}
+	});
+	</script>
+</html>

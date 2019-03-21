@@ -4,11 +4,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+<<<<<<< HEAD
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.accp.ws.SysMessageSocketHanlder;
+=======
+import org.springframework.scheduling.annotation.EnableScheduling;
+>>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
 
 @SpringBootApplication
+@EnableScheduling
 public class KoreaTingApplication{
 
 	public static void main(String[] args) {

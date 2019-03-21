@@ -1,96 +1,258 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-	<meta charset="utf-8">
-	<title>服务类型预约管理</title>
-	<meta name="renderer" content="webkit">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="format-detection" content="telephone=no">
-	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
-	<link rel="stylesheet" href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" />
-	<link rel="stylesheet" href="../../css/news.css" media="all" />
+<meta charset="UTF-8">
+<title>服务类型预约管理</title>
+<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.back {
+	font-size: 14px;
+	border-radius: 0 2px 2px 0;
+	background-color: #f2f2f2;
+	padding: 2px 10px;
+	border-left: 5px solid rgb(25, 159, 147);
+}
+
+table thead tr>th, tr>td {
+	text-align: center;
+}
+</style>
 </head>
-<body class="childrenBody">
-	<blockquote class="layui-elem-quote news_search">
-		<div style="font-weight: bolder;">服务类型预约</div>
-		<div class="layui-inline">
-			<div class="layui-input-inline" style="padding-left: 20px;">
-				会员名/商家名/订单号:
-                      <input name="title" type="text" value='' id="title" size="15">
-                      时间:
-                      <input type="text" value="" name="starttime" id="starttime" size="14" class="Wdate" onFocus="WdatePicker({doubleCalendar:true,skin:'default',firstDayOfWeek:1,dateFmt:'yyyy-MM-dd HH:mm:00'})"/>
-                      ——
-                      <input type="text" value="" name="endtime" id="endtime" size="14" class="Wdate" onFocus="WdatePicker({doubleCalendar:true,skin:'default',firstDayOfWeek:1,dateFmt:'yyyy-MM-dd HH:mm:59'})"/>
-服务类别：
-		    	<select name="catid" id="catid">
-                    <option value="0">不限</option>
-                    <option value="4">微整形</option><option value="5">留学中介</option><option value="6">韩语翻译</option><option value="7">学习资源</option><option value="217">sxd</option><option value="229">qwe</option><option value="3">自驾游</option>                  </select>
-                  状态:
-                  <select name="status" id="status">
-					<option value="0">不限</option>
-					<option value="1" >待付款</option><option value="2" >待接单</option><option value="3" >待提供服务</option><option value="4" >待提供服务</option><option value="5" >已提供服务</option><option value="6" >服务完成</option><option value="7" >服务取消</option><option value="8" >未接单</option><option value="9" >已退款</option>                  </select>
- <input type="hidden" name="p" value="1" />
-
-		    </div>
-		    <a class="layui-btn search_btn">查询</a>
-			
-		</div>
-		
-	</blockquote>
-	<div class="layui-form links_list">
-	  	<table class="layui-table">
-		    <colgroup>
-				<col width="35">
-				<col width="15%">
-				<col width="8%">
-				<col width="8%">
-				<col width="8%">
-				<col width="12%">
-				<col align=center>
-				<col width="8%">
-				<col align="center">
-				<col align="center">
-				<col align="center">
-				<col align="center">
-				<col width="5%" >
+<body>
+	<div class="" id="listVm1">
+		<blockquote class="back">
+			<p style="font-weight: bold; padding-top: 10px;">服务类型预约</p>
+			<div style="padding: 0px 0px 12px 15px; font-size: 14px;">
 				
-		    </colgroup>
-		    <thead>
-				<tr>
-					<th >序号</th>
-                    <th>单号</th>
-                    <TH>会员</TH>
-                    <TH>商家</TH>
-                    <TH>服务类别</TH>
-                    <TH>服务名称</TH>
-                    <TH>积分</TH>
-                    <TH>下单时间</TH>
-                    <TH>订单状态</TH>
-                    <TH>支付状态</TH>
-                    <TH>支付时间</TH>
-                    <TH>备注</TH>
-                    <TH>&nbsp;</TH>
+				会员名/商家名/订单号: <input name="title" type="text" 
+					id="title" size="15"> 
+					&nbsp;
+					时间: <input placeholder=" 开始日期"
+					 type="date"
+					id="starttime" name="starttime"> —— <input
+					placeholder=" 结束日期" 
+					type="date" name="endtime" id="endtime" />
+					&nbsp;
+					
+					 服务类别：<select  name="catid" id="catid" class="">
+		    		<option value="不限">不限</option>
+                   <option v-for="temp in selType" v-bind:value="temp.stname">
+						{{temp.stname}}</option>
+		    	</select> &nbsp;
+				状态: <select name="status" id="status">
+					<option value="0">不限</option>
+								<option value="1">待付款</option>
+								<option value="2">待接单</option>
+								<option value="3">待提供服务</option>
+								<option value="4">已提供服务</option>
+								<option value="5">服务完成</option>
+								<option value="6">服务取消</option>
+								<option value="7">未接单</option>
+								<option value="8">已退款</option>
+				</select> 
+				&nbsp;
+				<button type="button" class="btn btn-default btn-sm"  @click="search('1','10')"
+					style="background-color: rgb(25, 159, 147); color: white;"
+					>查询</button>
 
-				</tr> 
-		    </thead>
-		    <tbody class="links_content">
-		    	
-		    </tbody>
-		    
-		</table>
+			</div>
+		</blockquote>
+		<div class="col-md-12 col-xs-12"></div>
+		<div>
+			<table class="table table-bordered">
+				<thead style="background-color: #f2f2f2;">
+					<tr>
+						<th>序号</th>
+	                    <th>单号</th>
+	                    <TH style="width:6%">会员</TH>
+	                    <TH style="width:8%">商家</TH>
+	                    <TH style="width:8%">服务类别</TH>
+	                    <TH style="width:9%">服务名称</TH>
+	                    <TH>积分</TH>
+	                    <TH>下单时间</TH>
+	                    <TH style="width:9%">订单状态</TH>
+	                    <TH style="width:8%">支付状态</TH>
+	                    <TH>支付时间</TH>
+	                    <TH>备注</TH>
+	                    <TH>&nbsp;</TH>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(temp,index) in membersPageInfo.list">
+					<td v-text="(index+1)">1</td>
+					<td v-text="temp.orderid" @click="memberShow(temp.orderid)">15389827632133</td>
+					<td v-text="temp.username">。</td>
+					<td v-text="temp.shopname">心动发</td>
+					<td v-text="temp.stname">观光类</td>
+					<td v-text="temp.servicetitle">先发</td>
+					<td v-text="temp.integral">999.0</td>
+					<td v-text="temp.ordertime">2018-10-08 15:12</td>
+					<td v-if="temp.orderstatus==1" style="color:#f00">待付款</td>
+					<td v-if="temp.orderstatus==2">待接单</td>
+					<td v-if="temp.orderstatus==3">待提供服务</td>
+					<td v-if="temp.orderstatus==4">已提供服务</td>
+					<td v-if="temp.orderstatus==5">服务完成</td>
+					<td v-if="temp.orderstatus==6">服务取消</td>
+					<td v-if="temp.orderstatus==12">已退款</td>
+
+					<td v-if="temp.orderstatus==1">未支付</td>
+					<td v-if="temp.orderstatus==2">已支付</td>
+					<td v-if="temp.orderstatus==3">已支付</td>
+					<td v-if="temp.orderstatus==4">已支付</td>
+					<td v-if="temp.orderstatus==5">已支付</td>
+					<td v-if="temp.orderstatus==6">未支付</td>
+					<td v-if="temp.orderstatus==9">已支付</td>
+					<td v-if="temp.orderstatus==12">已支付</td>
+					<td v-text="temp.paymenttime">未支付</td>
+					<td v-text="temp.remarks"></td>
+					<td><a href="javascript:void(0)" @click="memberShow(temp.orderid)">查看</a></td>
+				</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="14">合计    <span v-text="dingdan">111111</span>个订单，<span v-text="jinbi">4889943213</span>金币
+						</td>
+					</tr>
+					<tr>
+						<td colspan="14">
+							<ul class="pager">
+								<li>
+									<!--@click="goToPage(1,emailsPageInfo.pageSize)"--> <a
+									href="javascript:void(0)"
+									@click="goToPage(1,membersPageInfo.pageSize)"> 首页 </a>
+								</li>
+								<li v-if="membersPageInfo.hasPreviousPage==true"><a
+									href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+										上一页 </a></li>
+								<li v-if="membersPageInfo.hasNextPage==true"><a
+									href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+										下一页 </a></li>
+								<li><a href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+										尾页 </a></li>
+								<li>第<span style="border: none; padding: 0 2px;"
+									v-text="membersPageInfo.pageNum">1</span>页， 共<span
+									style="border: none; padding: 0 2px;"
+									v-text="membersPageInfo.pages">5</span>页
+								</li>
+							</ul>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
 	</div>
-	<tfoot>
-		    	<div style="text-align: center;">
-		    		合计<span>111111</span>个订单，<span>4889943213</span>金币
-		    	</div>
-		    </tfoot>
-	<div id="page"></div>
-	<script type="text/javascript" src="../../layui/layui.js"></script>
-	<script type="text/javascript" src="../service/serviceOrder.js"></script>
-	
-	<script type="text/javascript" src="serviceTypeAdd.js"></script>
 </body>
+<script src="../../js/jquery-1.12.4.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/vue.js"></script>
+<script type="text/javascript">
+var san=$("#title").val();
+var datestart=$("#starttime").val();
+var dateend=$("[name=endtime]").val();
+var stname=$("[name=catid]").val();
+var status=$("[name=status]").val();
+	var listVm = new Vue({
+		el: "#listVm1",
+		data: {
+			//预约信息
+			membersPageInfo: {},
+			//金币
+			jinbi: "",
+			//订单
+			dingdan:"",
+			selType:[]
+			
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				$.ajax({
+					url : "/c/cmservice/queryallorder",
+					type : "get",
+					dataType : "json",
+					data:{
+						stname:"不限",
+						PageNum:n,
+            			PageSize:s
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+					}
+				})
+			},
+			//搜索
+			search:function(n,s){
+				var san=$("#title").val();
+				var datestart=$("#starttime").val();
+				var dateend=$("[name=endtime]").val();
+				var stname=$("[name=catid]").val();
+				var status=$("[name=status]").val();
+				
+				$.ajax({
+            		url : "/c/cmservice/queryallorder",
+            		type : "get",
+            		dataType : "json",
+            		data:{
+            			san:san,
+            			datestart:datestart,
+            			dateend:dateend,
+            			stname:stname,
+            			status:status,
+            			PageNum:n,
+            			PageSize:s
+            		},
+            		success : function(data){
+            			listVm.membersPageInfo = data;
+            			
+            		}
+            	});
+				this.sum(san,datestart,dateend,stname,status);
+			},
+			//查看
+			memberShow:function(orderid){
+				window.sessionStorage.setItem("orderid", orderid);
+				window.location.href="serviceOrderDetail.html";
+			},
+			sum:function(san,datestart,dateend,stname,status){
+				
+				$.ajax({
+            		url : "/c/cmservice/countMoney",
+            		type : "get",
+            		dataType : "json",
+            		data:{
+            			san:san,
+            			datestart:datestart,
+            			dateend:dateend,
+            			stname:stname,
+            			status:status
+            		},
+            		success : function(data){
+            			listVm.dingdan = data.dingdan;
+            			listVm.jinbi=data.jinbi;
+            		}
+				});
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+			//加载金币数和积分
+			 this.sum(san,datestart,dateend,stname,status);
+			 $.ajax({
+					url : "/c/cmservice/selType",
+					type : "get",
+					dataType : "json",
+					success : function(data){
+						listVm.selType=data;
+					}
+				})
+		}
+	});
+</script>
 </html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>会员管理--商家管理模块</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				width: 1366px;
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="" id="shopManangeContent">
+			<blockquote class="back">
+			  <p style="font-weight: bold;padding-top: 10px;">商家管理</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户昵称：<input type="text" value="" placeholder="" name="userName">
+					&nbsp;
+					店铺名称：<input type="text" value="" placeholder="" name="shopName">
+					&nbsp;
+					会员组：
+					<select name="merchantType" style="height:2rem;">
+			    		<option value="-1">所有</option>
+	                    <option value="1">大陆商家用户</option>
+	                    <option value="2">海外商家用户</option>   
+		    		</select>
+		    		&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search('1','15')">
+						查询</button>
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;">导出</button>
+
+			    </div>
+			</blockquote>
+			
+			<div>
+				<table class="table table-bordered" style="width:1366px;">
+					<thead style="background-color:#f2f2f2;">
+  						<tr>
+							<th style="width: 5rem;">序号</th>
+		                    <TH style="width: 7rem;">用户昵称</TH>
+							<TH>商铺名称</TH>                    
+							<TH>会员组</TH>
+		                    <TH>邮箱</TH>
+		                    <TH>积分</TH>
+		                    <TH>金币</TH>
+		                    <TH style="width: 8rem;" >邮箱验证</TH>
+		                    <TH>审核</TH>
+		                    <TH>状态</TH>
+		                    <TH style="width: 8rem;">电话</TH>
+		                  	<TH >最后登录时间</TH>
+		                  <!--   <TH>浏览量</TH> -->
+		                  	<TH style="width: 25rem;">操作</TH>
+						</tr> 
+  					</thead>
+  					<tbody v-if="membersPageInfo.list != null">
+  						  <tr v-for="(temp,index) in membersPageInfo.list">
+						<!--
+                        <td align="center"><input  value="487" type="checkbox" name="userid[]"></td>
+						-->
+                        <td align="center" bgcolor="#ffffff" v-text="(index+1)"></td>
+                        <td align="center" nowrap v-text="temp.userName">巨蟹boy4650</td>
+						<td align="center" nowrap v-text="temp.shopName">나는 너를 사랑해.</td>                       
+						<td align="center" nowrap >
+						<span v-if="temp.merchantType==0">普通会员</span>
+						<span v-if="temp.merchantType==1">大陆商家用户</span> 
+						<span v-if="temp.merchantType==2">海外商家用户</span></td>
+                        <td align="center" nowrap v-text="temp.merchantEmail">12390718111@qq.com</td>
+                        <td align="center" nowrap v-text="temp.userIntegral">50</td>
+                        <td align="center" nowrap v-text="temp.userMoney">4999.80</td>
+                        <td align="center" nowrap>
+                       			 <span v-if="temp.mailboxVerification==true" style="color:green">已验证</span>
+								<span v-if="temp.mailboxVerification==false">未验证</span>
+						</td>
+                        <td align="center" nowrap >
+	                        <span v-if="temp.auditStatus==1" style="color:red">待审核</span>
+							<span v-if="temp.auditStatus==2" style="color:green">已通过</span> 
+							<span v-if="temp.auditStatus==3" >未通过</span>
+						</td>
+                        <td align="center" nowrap >
+                           <span v-if="temp.businessState==1" style="color:green">营业</span>
+								<span v-if="temp.businessState==2">暂停</span> 
+								<span v-if="temp.businessState==3" style="color:red">关闭</span>                        </td>
+                        <td align="center" nowrap v-text="temp.userPhone">17603093935</td>
+                        <td align="center" nowrap v-text="temp.recentEntry">2019-03-05 16:35</td>
+                       <!--  <td align="center" nowrap v-text="temp.">0</td> -->
+                        <td >
+	                        <a class="btn btn-default btn-xs  memberCheck_edit" @click="memberEdit(temp.userID)"><span class="glyphicon glyphicon-edit"></span> 编辑</a>
+								<a class="btn btn-primary btn-xs  score_record" @click="scorerecord()"><span class="glyphicon glyphicon-inbox"></span> 积分记录</a>
+							    <a class="btn btn-default btn-xs  recommend" @click="command(temp.userid)"><span class=""></span> 评论</a>　
+                        </td>
+                    </tr>
+  					</tbody>
+  					<tbody v-if="membersPageInfo.list == null">
+  						<tr><td colspan="15">暂无数据</td></tr>
+  					</tbody>
+  					<tfoot>
+  						<tr>
+  							<td colspan="15">
+  								合计  金币 <span v-text="sjinbi">111111</span> 个，积分 <span v-text="sjifen"> 4889943213</span>
+  							</td>
+  						</tr>
+						<tr>
+							<td colspan="15">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+								      <a href="javascript:void(0)" @click="goToPage(1,membersPageInfo.pageSize)">
+								        	首页
+								      </a>
+								    </li>
+						    		<li v-if="membersPageInfo.hasPreviousPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+								        	上一页
+								      </a>
+								    </li>
+								    <li v-if="membersPageInfo.hasNextPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+								        	下一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+								       		 尾页
+								      </a>
+								    </li>
+								    <li>
+										第<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pageNum">1</span>页，
+										共<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pages">5</span>页
+									</li>
+								</ul>
+							</td>
+						</tr>				
+  					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+     <script type="text/javascript" src="../../layui/lay/modules/layer.js"></script>
+     <script type="text/javascript" src="../../js/jquery-2.1.4.js"></script>
+	<script type="text/javascript" src="../../vue/vue.js"></script>
+	<script type="text/javascript">
+	
+	var listVm = new Vue({
+		el: "#shopManangeContent",
+		data: {
+			//商家信息
+			membersPageInfo: {},
+			//金币
+			sjinbi: "",
+			//积分
+			sjifen: ""
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				$.ajax({
+					url : "/c/cmmember/queryShop",
+					type : "get",
+					dataType : "json",
+					data:{
+						"userName":'0',
+						"shopName":'0',
+						"merchantType":'-1',
+						"num":n,
+						"size":s
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						console.log(data);
+					}
+				});
+			},
+			//搜索
+			search:function(n,s){
+				var userName=$("[name=userName]").val();
+				var shopName=$("[name=shopName]").val();
+				var merchantType=$("[name=merchantType]").val();
+				$.ajax({
+					url : "/c/cmmember/queryShop",
+					type : "get",
+					dataType : "json",
+					data:{
+						"userName":userName,
+						"shopName":shopName,
+						"merchantType":merchantType,
+						"num":n,
+						"size":s
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+					}
+				});
+				this.sum(userName,shopName,merchantType);
+			},
+			//编辑
+			memberEdit:function(userID){
+				window.sessionStorage.setItem("userID", userID);
+				window.location.href="shopperManage_update.html";
+			},
+			//积分记录
+			scorerecord:function(){
+				window.location.href="../service/serviceOrder.html";
+			},
+			command:function(userid){
+				//进入肖自成的论坛模块
+				window.sessionStorage.setItem("userID", userID);
+				window.location.href="memberCheck_commend.html";
+			},
+			sum:function(userName,shopName,merchantType){
+				$.ajax("/c/cmmember/sumShopmoney", {
+					type: "get",
+					dataType: "json",
+					data:{
+						"userName":userName,
+						"shopName":shopName,
+						"merchantType":merchantType
+					},
+					success: function(data) {
+						listVm.sjinbi=data.sjinbi;
+						listVm.sjifen=data.sjifen;
+					}
+				});
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 5);
+			//加载金币数和积分
+			this.sum(0,0,'-1');
+		}
+	});
+</script>
+</html>

@@ -24,14 +24,14 @@
 		{
 			"title" : "帖子版块管理",
 			"icon" : "&#xe609;",
-			"href" : "page/news/tiezibankuai.html",
+			"href" : "page/news/newsList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "论坛投诉管理",
 			"icon" : "&#xe609;",
-			"href" : "page/news/luntantousu.html",
+			"href" : "page/news/newsList.html",
 			"spread" : false
 			
 		}
@@ -130,9 +130,17 @@
 			
 		},
 		{
+			"title" : "商家管理",
+			"icon" : "&#xe609;",
+			"href" : "page/links/linksList.html",
+			"spread" : false
+			
+		}
+		,
+		{
 			"title" : "商家入驻",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shopAllCheckUpdate.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 		
 		},
@@ -246,7 +254,13 @@
 		{
 			"title" : "广告位排版",
 			"icon" : "&#xe609;",
-			"href" : "page/links/linksList.html",
+			"href" : "page/advertisement/adList.html",
+			"spread" : false
+		},
+		{
+			"title" : "添加广告",
+			"icon" : "&#xe609;",
+			"href" : "page/advertisement/insertAd.html",
 			"spread" : false
 		}
 	]

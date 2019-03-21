@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>提现管理</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				width: 1150px;
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="" id="tixian">
+			<blockquote class="back">
+			  <p style="font-weight: bold;padding-top: 10px;">提现管理</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户名：<input type="text"  placeholder="" name="userName">
+					&nbsp;
+					状态：<select name="tixianStatus" style="height:2rem">
+					<option value="0">全部</option>
+					<option value="1">待审核</option>
+					<option value="2">审核成功</option>
+					<option value="3">未通过</option>
+				</select> &nbsp;
+					<button type="button" class="btn btn-default btn-sm" @click="search('1','10')" style="background-color:rgb(25,159,147);color: white;" @click="search()">
+						查询</button>
+			    </div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<THEAD style="background-color:#f2f2f2;">
+		                <TR>
+		                    <th>序号</th>
+		                    <TH>用户</TH>
+		                    <TH>类型</TH>
+		                    <TH>获取方式</TH>
+		                    <TH>消费</TH>
+		                    <th>获得</th>
+		                    <TH>状态</TH>
+		                    <TH>备注</TH>
+		                    <TH>消费时间</TH>
+		                    <TH></TH>
+		                </TR>
+                	</THEAD>
+					 <tbody>
+                    <tr v-for="(temp,index) in membersPageInfo.list">
+                        <td align="center" v-text="(index+1)">
+                        1                         
+                        </td>
+                        <td align="center">
+                        	<a href="javascript:void(0)" v-text="temp.userName" onclick="location.href='shopperManage_update.html'">瓶</a>
+                        </td>
+                        <td align="center" v-text="">金币</td>
+                        <td align="center" v-text="">提现</td>
+                        <td align="center">-
+                        <span v-text="temp.money" v-if="temp.auditStatus==2||temp.auditStatus==1"></span>
+                        </td>
+                        	<td>+
+                        	<span v-text="temp.money" v-if="temp.auditStatus==3"></span>
+                        	</td>
+						<td align="center" v-if="temp.auditStatus==1" style="color:red">待审核</td>
+                        <td align="center" v-if="temp.auditStatus==2">审核成功</td>
+                        <td align="center" v-if="temp.auditStatus==3">未通过</td>
+                        <td align="center" v-text="temp.adminOpinion">申请提现</td>
+                        <td v-text="temp.submitTime">2019-02-22 13:12</td>
+                        <td>
+						<a href="javascript:void(0)" @click="showTiXian(temp.userID,temp.submitTime)">查看</a>
+                        </td>						
+                    </tr>
+
+                    </tbody>
+                    <tfoot>
+						<tr>
+							<td colspan="10">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+								      <a href="javascript:void(0)" @click="goToPage(1,membersPageInfo.pageSize)">
+								        	首页
+								      </a>
+								    </li>
+						    		<li v-if="membersPageInfo.hasPreviousPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+								        	上一页
+								      </a>
+								    </li>
+								    <li v-if="membersPageInfo.hasNextPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+								        	下一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+								       		 尾页
+								      </a>
+								    </li>
+								    <li>
+										第<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pageNum">1</span>页，
+										共<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pages">5</span>页
+									</li>
+								</ul>
+							</td>
+						</tr>				
+  					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	
+	var listVm = new Vue({
+		el: "#tixian",
+		data: {
+			//提现信息
+			membersPageInfo: {},
+			
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				$.ajax({
+					url : "/c/cmmember/querytixian",
+					type : "get",
+					dataType : "json",
+					data:{
+						"userName":"",
+						"auditStatus":0,
+						"num":n,
+            			"size":s
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						console.log(data);
+					}
+				})
+			},
+			//搜索
+			search:function(n,s){
+				var userName=$("[name=userName]").val();
+				var auditStatus=$("[name=tixianStatus]").val();
+				$.ajax({
+					url : "/c/cmmember/querytixian",
+					type : "get",
+					dataType : "json",
+					data:{
+						"userName":userName,
+						"auditStatus":auditStatus,
+						"num":n,
+            			"size":s
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						$("[name=userName]").val('');
+					}
+				})
+			},
+			showTiXian:function(userID,submitTime){
+				var userID=window.sessionStorage.setItem("userID", userID);
+				var submitTime=window.sessionStorage.setItem("submitTime", submitTime);
+				location.href="tixian_detail.html";
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+		}
+	});
+	</script>
+</html>

@@ -9,11 +9,11 @@ layui.config({
 	//加载页面数据
 	var linksData = '';
 	$.ajax({
-		url : "../../json2/serviceType.json",
+		url : "/c/cmservice/queryaudit",
 		type : "get",
 		dataType : "json",
 		success : function(data){
-			linksData = data;
+			linksData = data.list;
 			if(window.sessionStorage.getItem("addLinks")){
 				var addLinks = window.sessionStorage.getItem("addLinks");
 				linksData = JSON.parse(addLinks).concat(linksData);
@@ -24,88 +24,8 @@ layui.config({
 	})
 
 	//查询
-	$(".search_btn").click(function(){
-		var newArray = [];
-		if($(".search_input").val() != ''){
-			var index = layer.msg('更新中，请稍候',{icon: 16,time:false,shade:0.8});
-            setTimeout(function(){
-            	$.ajax({
-					url : "../../json2/serviceType.json",
-					type : "get",
-					dataType : "json",
-					success : function(data){
-						if(window.sessionStorage.getItem("addLinks")){
-							var addLinks = window.sessionStorage.getItem("addLinks");
-							linksData = JSON.parse(addLinks).concat(data);
-						}else{
-							linksData = data;
-						}
-						for(var i=0;i<linksData.length;i++){
-							var linksStr = linksData[i];
-							var selectStr = $(".search_input").val();
-		            		function changeStr(data){
-		            			var dataStr = '';
-		            			var showNum = data.split(eval("/"+selectStr+"/ig")).length - 1;
-		            			if(showNum > 1){
-									for (var j=0;j<showNum;j++) {
-		            					dataStr += data.split(eval("/"+selectStr+"/ig"))[j] + "<i style='color:#03c339;font-weight:bold;'>" + selectStr + "</i>";
-		            				}
-		            				dataStr += data.split(eval("/"+selectStr+"/ig"))[showNum];
-		            				return dataStr;
-		            			}else{
-		            				dataStr = data.split(eval("/"+selectStr+"/ig"))[0] + "<i style='color:#03c339;font-weight:bold;'>" + selectStr + "</i>" + data.split(eval("/"+selectStr+"/ig"))[1];
-		            				return dataStr;
-		            			}
-		            		}
-		            		//网站名称
-		            		if(linksStr.linksName.indexOf(selectStr) > -1){
-			            		linksStr["linksName"] = changeStr(linksStr.linksName);
-		            		}
-		            		//网站地址
-		            		if(linksStr.linksUrl.indexOf(selectStr) > -1){
-			            		linksStr["linksUrl"] = changeStr(linksStr.linksUrl);
-		            		}
-		            		//
-		            		if(linksStr.showAddress.indexOf(selectStr) > -1){
-			            		linksStr["showAddress"] = changeStr(linksStr.showAddress);
-		            		}
-		            		if(linksStr.linksName.indexOf(selectStr)>-1 || linksStr.linksUrl.indexOf(selectStr)>-1 || linksStr.showAddress.indexOf(selectStr)>-1){
-		            			newArray.push(linksStr);
-		            		}
-		            	}
-		            	linksData = newArray;
-		            	linksList(linksData);
-					}
-				})
-            	
-                layer.close(index);
-            },2000);
-		}else{
-			layer.msg("请输入需要查询的内容");
-		}
-	})
-
-	//添加友情链接
-	$(".linksAdd_btn").click(function(){
-		var index = layui.layer.open({
-			title : "添加友情链接",
-			type : 2,
-			content : "linksAdd.html",
-			success : function(layero, index){
-				setTimeout(function(){
-					layui.layer.tips('点击此处返回友链列表', '.layui-layer-setwin .layui-layer-close', {
-						tips: 3
-					});
-				},500)
-			}
-		})
-		//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
-		$(window).resize(function(){
-			layui.layer.full(index);
-		})
-		layui.layer.full(index);
-	})
-
+	
+	
 	//批量删除
 	$(".batchDel").click(function(){
 		var $checkbox = $('.links_list tbody input[type="checkbox"][name="checked"]');
@@ -189,17 +109,20 @@ layui.config({
 				for(var i=0;i<currData.length;i++){
 					dataHtml += '<tr>'
 					+'<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>'
-			    	+'<td>'+currData[i].linksId+'</td>'
-			    	+'<td>'+currData[i].linksName+'</td>'
-			    	+'<td><input type="text" name="<input name="nocz_time[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="nocz_time4" value="1" size="2" />天</td>'
-			    	+'<td><input name="confirm_time[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="confirm_time4" value="1" size="2" />小时</td>'
-			    	+'<td><input name="services_days[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="services_days4" value="1" size="2" />天</td>'
-			    	+'<td><input name="services_money[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="services_money42" value="10" size="2" />%</td>'
-			    	+'<td>'
-			    	+	'<label>需要 </label>'
-					/*+   '<label>不需要 </label>'*/
-					+'</td>'
-					+'<td><img src="/Uploads/desc/2017-01/20170125010031-42965.jpg" width="200"/></td>'
+			    	+'<td>'+currData[i].stid+'</td>'
+			    	+'<td>'+currData[i].stname+'</td>'
+			    	+'<td><input type="text" name="<input name="nocz_time[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="nocz_time4" value="'+currData[i].operationtime+'" size="2" />天</td>'
+			    	+'<td><input name="confirm_time[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="confirm_time4" value="'+currData[i].confirmtime+'" size="2" />小时</td>'
+			    	+'<td><input name="services_days[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="services_days4" value="'+currData[i].violatednumber+'" size="2" />天</td>'
+			    	+'<td><input name="services_money[4]" type="text" class="validate[required,custom[integer],min[0],max[255]]" id="services_money42" value="'+currData[i].proportion+'" size="2" />%</td>';
+					if(currData[i].display == "true"){
+			    		dataHtml += '<td><input type="radio" value="true" title="需要"/> </td>';
+			    	}else{
+			    		dataHtml += '<td><input type="radio" value="true" title="不需要"/></td>';
+			    	}
+			    	dataHtml += '<td>'
+			    	
+					+'<img src="/Uploads/desc/2017-01/20170125010031-42965.jpg" width="200"/></td>'
 			    	+'<td>'
 					+  '<a class="layui-btn layui-btn-mini links_edit"><i class="iconfont icon-edit"></i> 编辑</a>'
 			        +'</td>'

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>鉴定申请查看</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.back{
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			.tdd>select{
+				width: 12.5%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="" id="listVm">
+			<div class="col-lg-12 col-xs-12 back" style="background-color: #f2f2f2;">
+			  <p style="font-weight: bold;padding-top: 10px;">鉴定信息</p>
+			</div>
+			<div class="col-xs-12" style="margin-bottom: 5px;"></div>
+			<form class="form-inline">
+				<table class="table table-hover table-condensed table-bordered">
+					<TBODY>
+			          <TR>
+			            <TD width="89" align=right ><strong>会员:</strong></TD>
+			            <TD v-text="user.username">qwqw</TD>
+			            <TD align=right><strong>类型：</strong></TD>
+			            <TD width="169" >自驾游</TD>
+			          </TR>
+			          <TR>
+			            <TD width="89" align=right >&nbsp;</TD>
+			            <TD width="234" >&nbsp;</TD>
+			            <TD width="88" align=right>&nbsp;</TD>
+			            <TD >&nbsp;</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right >姓名：</TD>
+			            <TD  v-text="user.name">郭生强</TD>
+			            <TD align=right>性别：</TD>
+			            <TD v-if="user.sex==1" >男</TD>
+			            <TD v-if="user.sex==2" >女</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>身高：</TD>
+			            <TD v-text="user.height" >0</TD>
+			            <TD align=right>星座：</TD>
+			            <TD v-text="user.constellation" >白羊座</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right >年龄：</TD>
+			            <TD  v-text="user.age">23</TD>
+			            <TD align=right>&nbsp;</TD>
+			            <TD >&nbsp;</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>签证类型：</TD>
+			            <TD  v-text="user.visatype">D-3产业研修</TD>
+			            <TD align=right>证件号码：</TD>
+			            <TD  v-text="user.certificates">身份证号码 430221199908297128</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right >导游经验：</TD>
+			            <TD  v-text="user.experience">1～2年</TD>
+			            <TD align=right>是否有车：</TD>
+			            <TD v-if="user.vehicle==true" >有</TD>
+			             <TD v-if="user.vehicle==false" >无</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>导游证：</TD>
+			            <TD v-if="user.guidecard==true" >有</TD>
+			            <TD v-if="user.guidecard==false" >无</TD>
+			            <TD align=right>在韩工作/学习时间：</TD>
+			            <TD v-text="user.inkorea" ></TD>
+			          </TR>
+			          <TR>
+			            <TD align=right >联系电话：</TD>
+			            <TD v-text="user.phone" >156415156156</TD>
+			            <TD align=right>邮箱：</TD>
+			            <TD  v-text="user.email">781265993@qq.com</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>在韩住址：</TD>
+			            <TD colspan="3"><span v-text="user.country"></span><span v-text="user.provincialID"></span><span v-text="user.cityID"></span></TD>
+			          </TR>
+			          <TR>
+			            <TD align=right >能力展示：</TD>
+			            <TD colspan="3"  v-text="user.strength">&nbsp; dd</TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>相关证明文件：</TD>
+			            <TD colspan="3" v-text="user.translate	" ><a href="/Uploads/file/2019-03/20190302033443-97422.gif" target="_blank">查看</a></TD>
+			          </TR>
+			                    <TR>
+			            <TD align=right>状态：</TD>
+			            <TD colspan="3" v-if="user.auditStatus==1" >
+			            	<label>
+			            		<!--v-if 针对状态进行radio 的判断-->
+			                <input type="radio" name="status" value="1" id="status_1">
+			                待审核</label>
+			                <label style="width: 10px;"></label>
+			                <label>
+			                <input  type="radio" name="status" value="2" id="status_2">
+			                审核不通过</label>
+			                 <label style="width: 10px;"></label>
+			                  <label style="width: 10px;"></label>
+			                <label>
+			                <input checked type="radio" name="status" value="3" id="status_3">
+			                审核通过
+			                </label>            </TD>
+			          </TR>
+			          <TR>
+			            <TD align=right>管理员理由：</TD>
+			            <TD colspan="3" >
+			            <textarea name="admin_reason" id="admin_reason" cols="45" rows="5"></textarea></TD>
+			          </TR>
+			          
+			          <tr>
+			            <TD><input type="hidden" name="userid" value="490"></TD>
+			            <td colspan="1"></td>
+			            <TD colspan="1" style="text-align: right;">
+			            	<button type="button"  class="btn btn-success">设置状态</button>
+			            </TD>
+			            <TD colspan="1" >
+			            	<button type="button"  class="btn btn-default" onClick="history.go(-1)">返回</button>
+			            </TD>
+			          </tr>
+			        </tbody>
+				</table>
+			</form>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	var listVm = new Vue({
+		el: "#listVm",
+		data: {
+			//会员信息
+			user: {},
+		},
+
+		//方法
+		methods: {
+			goToPage: function() {
+				var userid=window.sessionStorage.getItem("userid");
+				$.getJSON("/sj/jdc/"+userid, function(pageData) {
+					listVm.user = pageData;
+					console.log(pageData)
+				}); 
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+			//加载金币数和积分
+		}
+	});
+	</script>
+</html>

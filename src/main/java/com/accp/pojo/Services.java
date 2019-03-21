@@ -76,6 +76,19 @@ public class Services {
     private Integer auditstatus;//审核状态(1待审核2审核成功3未通过)
 
     private String adminopinion;
+    
+    private Integer orderByNum;//排序（0 1 2）
+    
+    
+
+
+    public Integer getOrderByNum() {
+		return orderByNum;
+	}
+
+	public void setOrderByNum(Integer orderByNum) {
+		this.orderByNum = orderByNum;
+	}
 
     private Integer merchantLevel;
     

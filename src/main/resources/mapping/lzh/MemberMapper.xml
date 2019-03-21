@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.accp.dao.lzh.IMemberDao">
+	<select id="queryUser" resultType="User">
+		select * from user
+		<where>
+			<if test="userName!=null">
+				 userName like '%${userName}%' and
+			</if>
+			merchantType=0
+		</where>
+	</select>
+	
+	<select id="queryShop" resultType="com.accp.vo.lzh.UserVo">
+		SELECT u.`userID`,u.`userName`,u.`mailboxVerification`,u.`userIntegral`,u.`userMoney`,l.`loginType`,
+		u.`auditStatus`,u.`userPhone`,u.`merchantType`,u.`recentEntry`,u.`shopName`,u.merchantEmail,u.businessState 
+		FROM `user` AS u
+		JOIN login AS l ON u.`userID`=l.`userID`
+		<where>
+			<if test="userName!=null">
+				 u.`userName` like '%${userName}%' and
+			</if>
+			<if test="shopName!=null">
+				 u.`shopName` like '%${shopName}%'  and
+			</if>
+			<if test="merchantType!=null">
+				 u.`merchantType` like '%${merchantType}%' and
+			</if>
+				u.`merchantType`!=0
+		</where>
+	</select>
+</mapper>

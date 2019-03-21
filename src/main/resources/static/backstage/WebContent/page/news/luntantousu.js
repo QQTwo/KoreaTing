@@ -6,98 +6,36 @@ layui.config({
 		laypage = layui.laypage,
 		$ = layui.jquery;
 
+
 	//加载页面数据
 	var newsData = '';
-	$.get("../../json/newsList.json", function(data){
-		var newArray = [];
-		//单击首页“待审核文章”加载的信息
-		if($(".top_tab li.layui-this cite",parent.document).text() == "待审核文章"){
-			if(window.sessionStorage.getItem("addNews")){
-				var addNews = window.sessionStorage.getItem("addNews");
-				newsData = JSON.parse(addNews).concat(data);
-			}else{
-				newsData = data;
-			}
-			for(var i=0;i<newsData.length;i++){
-        		if(newsData[i].newsStatus == "待审核"){
-					newArray.push(newsData[i]);
-        		}
-        	}
-        	newsData = newArray;
-        	newsList(newsData);
-		}else{    //正常加载信息
-			newsData = data;
-			if(window.sessionStorage.getItem("addNews")){
-				var addNews = window.sessionStorage.getItem("addNews");
-				newsData = JSON.parse(addNews).concat(newsData);
-			}
-			//执行加载数据的方法
-			newsList();
+	$.ajax({
+		url : "/tz/gettslist",
+		type : "get",
+		dataType : "json",
+		success:function(data){
+			console.log(data.list)
+			newsData = newsList(data);
+			$("#li").append(newsData);
 		}
-	})
-
+	});
 	//查询
-	$(".search_btn").click(function(){
-		var newArray = [];
-		if($(".search_input").val() != ''){
+	$("body").on("click",".links_ss",function(){
+		if($(".ss_input").val() != ''){
 			var index = layer.msg('查询中，请稍候',{icon: 16,time:false,shade:0.8});
+			var title = $(".ss_input").val();
             setTimeout(function(){
             	$.ajax({
-					url : "../../json/newsList.json",
-					type : "get",
-					dataType : "json",
-					success : function(data){
-						if(window.sessionStorage.getItem("addNews")){
-							var addNews = window.sessionStorage.getItem("addNews");
-							newsData = JSON.parse(addNews).concat(data);
-						}else{
-							newsData = data;
-						}
-						for(var i=0;i<newsData.length;i++){
-							var newsStr = newsData[i];
-							var selectStr = $(".search_input").val();
-		            		function changeStr(data){
-		            			var dataStr = '';
-		            			var showNum = data.split(eval("/"+selectStr+"/ig")).length - 1;
-		            			if(showNum > 1){
-									for (var j=0;j<showNum;j++) {
-		            					dataStr += data.split(eval("/"+selectStr+"/ig"))[j] + "<i style='color:#03c339;font-weight:bold;'>" + selectStr + "</i>";
-		            				}
-		            				dataStr += data.split(eval("/"+selectStr+"/ig"))[showNum];
-		            				return dataStr;
-		            			}else{
-		            				dataStr = data.split(eval("/"+selectStr+"/ig"))[0] + "<i style='color:#03c339;font-weight:bold;'>" + selectStr + "</i>" + data.split(eval("/"+selectStr+"/ig"))[1];
-		            				return dataStr;
-		            			}
-		            		}
-		            		//文章标题
-		            		if(newsStr.newsName.indexOf(selectStr) > -1){
-			            		newsStr["newsName"] = changeStr(newsStr.newsName);
-		            		}
-		            		//发布人
-		            		if(newsStr.newsAuthor.indexOf(selectStr) > -1){
-			            		newsStr["newsAuthor"] = changeStr(newsStr.newsAuthor);
-		            		}
-		            		//审核状态
-		            		if(newsStr.newsStatus.indexOf(selectStr) > -1){
-			            		newsStr["newsStatus"] = changeStr(newsStr.newsStatus);
-		            		}
-		            		//浏览权限
-		            		if(newsStr.newsLook.indexOf(selectStr) > -1){
-			            		newsStr["newsLook"] = changeStr(newsStr.newsLook);
-		            		}
-		            		//发布时间
-		            		if(newsStr.newsTime.indexOf(selectStr) > -1){
-			            		newsStr["newsTime"] = changeStr(newsStr.newsTime);
-		            		}
-		            		if(newsStr.newsName.indexOf(selectStr)>-1 || newsStr.newsAuthor.indexOf(selectStr)>-1 || newsStr.newsStatus.indexOf(selectStr)>-1 || newsStr.newsLook.indexOf(selectStr)>-1 || newsStr.newsTime.indexOf(selectStr)>-1){
-		            			newArray.push(newsStr);
-		            		}
-		            	}
-		            	newsData = newArray;
-		            	newsList(newsData);
-					}
-				})
+            		url : "/tz/gettslist",
+            		type : "get",
+            		data:{title:title},
+            		dataType : "json",
+            		success:function(data){
+            			$("#li").html("");
+            			newsData = newsList(data);
+            			$("#li").append(newsData);
+            		}
+            	});
             	
                 layer.close(index);
             },2000);
@@ -253,41 +191,37 @@ layui.config({
 		});
 	})
 
-	function newsList(that){
+	
+	function newsList(data){
 		//渲染数据
-		function renderDate(data,curr){
+		
 			var dataHtml = '';
-			if(!that){
-				currData = newsData.concat().splice(curr*nums-nums, nums);
-			}else{
-				currData = that.concat().splice(curr*nums-nums, nums);
-			}
-			if(currData.length != 0){
-				for(var i=0;i<currData.length;i++){
+			if(data.length != 0){
+				for(var i=0;i<data.list.length;i++){
 					dataHtml += '<tr>'
-			    	+'<td>'+currData[i].newsAuthor+'</td>';
-			    	if(currData[i].newsStatus == "待审核"){
-			    		dataHtml += '<td style="color:#f00">'+currData[i].newsStatus+'</td>';
+			    	+'<td>'+data.list[i].postid+'</td>'
+			    	+'<td>'+"帖子"+'</td>'
+			    	+'<td>'+data.list[i].title+'</td>'
+			    	+'<td>'+data.list[i].userrealname+'</td>'
+			    	+'<td>'+data.list[i].ctname+'</td>';
+			    	if(data.list[i].auditstatus == 1){
+			    		dataHtml += '<td>'+"未审核"+'</td>';
+			    	}else if(data.list[i].auditstatus == 2){
+			    		dataHtml += '<td>'+"已审核"+'</td>';
 			    	}else{
-			    		dataHtml += '<td>'+currData[i].newsStatus+'</td>';
+			    		dataHtml += '<td style="color:#f00">'+"未通过"+'</td>';	
 			    	}
-			    	dataHtml += '<td>'+currData[i].newsLook+'</td>'
-			    	+'<td><input type="checkbox" name="show" lay-skin="switch" lay-text="是|否" lay-filter="isShow"'+currData[i].isShow+'></td>'
-			    	+'<td>'+currData[i].newsTime+'</td>'
-			    	+'<td>'
-					+  '<a class="layui-btn layui-btn-mini news_edit"><i class="iconfont icon-edit"></i>修 改</a>'
-			        +'</td>'
-			         	+'<td>'+currData[i].newsTime+'</td>'
+			    	dataHtml += '<td>'+data.list[i].timeofcomplaint+'</td>'
 			    	+'</tr>';
 				}
 			}else{
 				dataHtml = '<tr><td colspan="8">暂无数据</td></tr>';
 			}
 		    return dataHtml;
-		}
+		
 
 		//分页
-		var nums = 13; //每页出现的数据量
+		/*var nums = 13; //每页出现的数据量
 		if(that){
 			newsData = that;
 		}
@@ -299,6 +233,6 @@ layui.config({
 				$('.news_list thead input[type="checkbox"]').prop("checked",false);
 		    	form.render();
 			}
-		})
+		})*/
 	}
 })

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>金币充值管理</title>
+<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.container {
+	font-size: 14px;
+}
+
+.back {
+	width: 1386px;
+	font-size: 14px;
+	border-radius: 0 2px 2px 0;
+	background-color: #f2f2f2;
+	padding: 2px 10px;
+	border-left: 5px solid rgb(25, 159, 147);
+}
+
+table thead tr>th, tr>td {
+	text-align: center;
+}
+</style>
+</head>
+<body>
+	<div class="" id="addVm">
+		<blockquote class="back">
+			<p style="font-weight: bold; padding-top: 10px;">金币充值管理</p>
+			<div style="padding: 0px 0px 12px 15px; font-size: 14px;">
+				用户名：<input type="text" value="" placeholder="" name="username">
+				&nbsp; 充值来源: <select name="payment_type" style="height:2rem">
+					<option value="0">全部</option>
+					<option value="1">预定服务</option>
+					<option value="2">服务收益</option>
+					<option value="3">取消物流订单</option>
+					<option value="4">其他</option>
+					<option value="5">充值</option>
+					<option value="6">线下充值</option>
+					<option value="7">退款</option>
+					<option value="8">提现</option>
+				</select> &nbsp;
+				状态：<select name="status" style="height:2rem">
+					<option value="0">全部</option>
+					<option value="1">待审核</option>
+					<option value="2">审核成功</option>
+					<option value="3">未通过</option>
+					<option value="4">交易成功</option>
+					<option value="5">交易失败</option>
+					<option value="6">充值失败</option>
+				</select> &nbsp;
+				<button type="button" class="btn btn-default btn-sm"
+					style="background-color: rgb(25, 159, 147); color: white;"
+					@click="search('1','15')">查询</button>
+			</div>
+		</blockquote>
+		<div class="col-md-12 col-xs-12"></div>
+		<div>
+			<table class="table table-bordered">
+				<THEAD style="background-color: #f2f2f2;">
+					<TR>
+						<th>序号</th>
+						<TH>用户</TH>
+						<TH>类型</TH>
+						<TH>获取方式</TH>
+						<TH>消费</TH>
+						<TH>获得</TH>
+						<TH>状态</TH>
+						<TH>备注</TH>
+						<TH>消费时间</TH>
+					</TR>
+				</THEAD>
+				<tbody>
+					<tr v-for="(temp,index) in membersPageInfo.list">
+						<td align="center" v-text="(index+1)">1
+						</td>
+						<!-- 此处根据 用户id 链接到商家管理中的修改会员信息-->
+						<td align="center" nowrap><a href="javascript:void(0)"
+							onclick="location.href='shopperManage_update.html'" v-text="temp.userName">成_C</a></td>
+						<td align="center" >金币</td>
+						<td align="center" v-if="temp.acquisitionMode==1">预定服务</td>
+						<td align="center" v-if="temp.acquisitionMode==2">服务收益</td>
+						<td align="center" v-if="temp.acquisitionMode==3">取消物流订单</td>
+						<td align="center" v-if="temp.acquisitionMode==4 || temp.acquisitionMode==0">其他</td>
+						<td align="center" v-if="temp.acquisitionMode==5">充值</td>
+						<td align="center" v-if="temp.acquisitionMode==6">线下充值</td>
+						<td align="center" v-if="temp.acquisitionMode==7">退款</td>
+						<td align="center" v-if="temp.acquisitionMode==8">提现</td>
+						<td align="center" nowrap>-</td>
+						<td align="center">+ <span v-text="temp.recordInAndOut"></span> </td>
+						<td align="center" >
+	                        <span v-if="temp.auditStatus==1" style="color:red">待审核</span>  
+	                        <span v-if="temp.auditStatus==2">审核成功</span> 
+	                        <span v-if="temp.auditStatus==3">未通过</span>
+	                        <span v-if="temp.auditStatus==4">交易成功</span>  
+	                        <span v-if="temp.auditStatus==5">交易失败</span> 
+	                        <span v-if="temp.auditStatus==6">充值失败</span>
+                         </td>
+						<td align="center" v-text="temp.recordDescribe">线下充值</td>
+						<td v-text="temp.recordDate">2019-01-18 13:38</td>
+
+						<!-- 当支付方式为线下支付时，才有“查看” 选项【注意做判断】-->
+						<td v-if="temp.acquisitionMode==6"><a href="javascript:void(0)"
+							onclick="location.href='addMoney_detail.html'">查看</a></td>
+					</tr>
+
+					<!-- <tr>
+						<td align="center">2 <input value="" type="checkbox"
+							name="favid[]" style="display: none;">
+						</td>
+						<td align="center" nowrap><a href="javascript:void(0)"
+							onclick="location.href='shopperManage_update.html'">成_C</a></td>
+						<td align="center" nowrap>金币</td>
+						<td align="center" nowrap>充值</td>
+						<td align="center" nowrap>-</td>
+						<td align="center" nowrap>+80888.00</td>
+						<td align="center" nowrap><font color="red">待审核</font></td>
+						<td align="center" nowrap>充值金币</td>
+						<td nowrap>2019-01-18 13:37</td>
+
+						<td nowrap>
+					</tr>
+
+					<tr>
+						<td align="center">3 <input value="" type="checkbox"
+							name="favid[]" style="display: none;">
+						</td>
+						<td align="center" nowrap><a href="javascript:void(0)"
+							onclick="location.href='shopperManage_update.html'">时♂钟✓©©</a></td>
+						<td align="center" nowrap>金币</td>
+						<td align="center" nowrap>充值</td>
+						<td align="center" nowrap>-</td>
+						<td align="center" nowrap>+1000000000.00</td>
+						<td align="center" nowrap><font color="red">待审核</font></td>
+						<td align="center" nowrap>充值金币</td>
+						<td nowrap>2019-01-18 11:18</td>
+
+						<td nowrap></td>
+					</tr>
+					<tr>
+						<td align="center">4 <input value="" type="checkbox"
+							name="favid[]" style="display: none;">
+						</td>
+						<td align="center" nowrap><a href="javascript:void(0)"
+							onclick="location.href='shopperManage_update.html'">时♂钟✓©©</a></td>
+						<td align="center" nowrap>金币</td>
+						<td align="center" nowrap>充值</td>
+						<td align="center" nowrap>-</td>
+						<td align="center" nowrap>+567890.00</td>
+						<td align="center" nowrap><font color="red">待审核</font></td>
+						<td align="center" nowrap>充值金币</td>
+						<td nowrap>2019-01-18 11:18</td>
+
+						<td nowrap></td>
+					</tr>
+					<tr>
+						<td align="center">5 <input value="" type="checkbox"
+							name="favid[]" style="display: none;">
+						</td>
+						<td align="center" nowrap><a href="javascript:void(0)"
+							onclick="location.href='shopperManage_update.html'">一叶知秋</a></td>
+						<td align="center" nowrap>金币</td>
+						<td align="center" nowrap>充值</td>
+						<td align="center" nowrap>-</td>
+						<td align="center" nowrap>+0.00</td>
+						<td align="center" nowrap><font color="red">待审核</font></td>
+						<td align="center" nowrap>充值金币</td>
+						<td nowrap>2019-01-18 10:38</td>
+
+						<td nowrap>
+					</tr>
+					<tr>
+						<td align="center">6<input value="" type="checkbox"
+							name="favid[]" style="display: none;">
+						</td>
+						<td align="center" nowrap><a href="javascript:void(0)"
+							onclick="location.href='shopperManage_update.html'">好饿</a></td>
+						<td align="center" nowrap>金币</td>
+						<td align="center" nowrap>线下充值</td>
+						<td align="center" nowrap>-</td>
+						<td align="center" nowrap>+100.00</td>
+						<td align="center" nowrap>完成</td>
+						<td align="center" nowrap>线下充值</td>
+						<td nowrap>2019-01-18 09:03</td>
+
+						<td><a href="javascript:void(0)"
+							onclick="location.href='addMoney_detail.html'">查看</a></td>
+					</tr>
+					<tr>
+						<td align="center">7 <input value="" type="checkbox"
+							name="favid[]" style="display: none;">
+						</td>
+						<td align="center" nowrap><a href="javascript:void(0)"
+							onclick="location.href='shopperManage_update.html'">惜忆</a></td>
+						<td align="center" nowrap>金币</td>
+						<td align="center" nowrap>线下充值</td>
+						<td align="center" nowrap>-</td>
+						<td align="center" nowrap>+5000.00</td>
+						<td align="center" nowrap><font color="red">待审核</font></td>
+						<td align="center" nowrap>线下充值</td>
+						<td nowrap>2019-01-17 16:40</td>
+
+						<td><a href="javascript:void(0)"
+							onclick="location.href='addMoney_detail.html'">查看</a></td>
+					</tr> -->
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="10">
+							<ul class="pager">
+								<li>
+									<!--@click="goToPage(1,emailsPageInfo.pageSize)"--> <a
+									href="javascript:void(0)"
+									@click="goToPage(1,membersPageInfo.pageSize)"> 首页 </a>
+								</li>
+								<li v-if="membersPageInfo.hasPreviousPage==true"><a
+									href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+										上一页 </a></li>
+								<li v-if="membersPageInfo.hasNextPage==true"><a
+									href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+										下一页 </a></li>
+								<li><a href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+										尾页 </a></li>
+								<li>第<span style="border: none; padding: 0 2px;"
+									v-text="membersPageInfo.pageNum">1</span>页， 共<span
+									style="border: none; padding: 0 2px;"
+									v-text="membersPageInfo.pages">5</span>页
+								</li>
+							</ul>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</body>
+<script src="../../js/jquery-1.12.4.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/vue.js"></script>
+<script type="text/javascript">
+	
+	var listVm = new Vue({
+		el: "#addVm",
+		data: {
+			//积分对象信息
+			membersPageInfo: {}
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				$.ajax({
+					url : "/c/cmmember/queryRecharge",
+					type : "get",
+					dataType : "json",
+					data:{
+						"num":n,
+            			"size":s,
+						"userName":"0",
+						"acquisitionMode":"0",
+						"auditStatus":"0"
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						console.log(listVm.membersPageInfo);
+					}
+				})
+			},
+			//搜索
+			search:function(n,s){
+				var username=$("[name=username]").val();
+				var acquisitionMode=$("[name=payment_type]").val();
+				var auditStatus=$("[name=status]").val();
+				$.ajax({
+					url : "/c/cmmember/queryRecharge",
+					type : "get",
+					dataType : "json",
+					data:{
+						"num":n,
+            			"size":s,
+						"userName":username,
+						"acquisitionMode":acquisitionMode,
+						"auditStatus":auditStatus
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						$("[name=username]").val('');
+						$("name=payment_type]").val('0');
+						console.log(listVm.membersPageInfo);
+					}
+				})
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+		}
+	});
+</script>
+</html>

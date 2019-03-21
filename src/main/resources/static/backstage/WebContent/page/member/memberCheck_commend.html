@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>会员管理---评论</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="" id="contentVm">
+			<blockquote class="back">
+			  <p style="font-weight: bold;padding-top: 10px;">评论管理</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户名：<input type="text" value="" placeholder="" name="username">
+			    	<!-- Standard button -->
+					&nbsp;
+					文章标题：<input type="text" value="" placeholder="" name="title">
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search()">
+						查询</button>
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" onclick="history.go(-1)">
+						返回</button>
+			    </div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<thead style="background-color:#f2f2f2;">
+  						<TR>
+		                    <th><input type="checkbox" v-model="allData.parCheck"  @change="allSelect()"/></th>
+		                    <th>序号</th>
+		                    <th>用户</th>
+		                    <th>文章</th>
+		                    <th>评论内容</th>
+		                    <th>评论时间</th>
+		                    <th>操作</th>
+		                  </TR>
+  					</thead>
+  					<!--注意判别id循环tbody 根据id查询出来的评论-->
+  					<!--<tbody v-if="">
+  					</tbody>-->
+  					<tbody>
+	                    <tr v-for="(temp,index) in commentsPageInfo.list">
+	                        <td align="center"><input type="checkbox" @change="singleSelect()" v-model="temp.isCheck"></td>
+	                        <td align="center">1</td>
+	                        <td align="center" nowrap><a href="#" target="_blank">醉雯晚风</a></td>
+	                        <td align="center" nowrap>666666</td>
+	                        <td >32</td>
+	                        <td align="center" nowrap>2019-03-05 08:53</td>
+	                        <td>
+								<a @click="remove(index,2)">删除</a>
+							</td>
+	                      </tr>
+                    </tbody>
+                    <tbody>
+	                    <tr>
+	                        <td align="center"><input type="checkbox" @change="singleSelect()"></td>
+	                        <td align="center">
+	                        2                        
+	                        </td>
+	                        <td align="center" nowrap><a href="#" target="_blank">@Mr. Li</a></td>
+	                        <td align="center" nowrap>1</td>
+	                        <td >3</td>
+	                        <td align="center" nowrap>2019-03-04 21:52</td>
+	                        <td>
+								<a @click="remove(index,temp.esid)">删除</a>
+							</td>
+	                      </tr>
+                    </tbody>
+                    <tbody>
+                    <tr>
+                        <td align="center"><input type="checkbox" @change="singleSelect()"></td>
+                        <td align="center">
+                        3                        </td>
+                        <td align="center" nowrap><a href="/index.php/Admincp/user/edit/id/356.html" target="_blank">官方</a></td>
+                        <td align="center" nowrap>过来瞧一瞧</td>
+                        <td >额额为无</td>
+                        <td align="center" nowrap>2019-03-02 15:07</td>
+                        <td>
+								<a @click="remove(index,temp.esid)">删除</a>
+							</td>
+                      </tr>
+                    </tbody>
+                    <tbody>
+                    <tr>
+                        <td align="center"><input type="checkbox" @change="singleSelect()"></td>
+                        <td align="center">
+                        4                        </td>
+                        <td align="center" nowrap><a href="/index.php/Admincp/user/edit/id/356.html" target="_blank">方法i</a></td>
+                        <td align="center" nowrap>过来瞧一瞧</td>
+                        <td >垃圾东西</td>
+                        <td align="center" nowrap>2019-03-02 14:39</td>
+                        <td>
+								<a @click="remove(index,temp.esid)">删除</a>
+							</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+						<tr>
+							<td colspan="14">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+								      <a href="javascript:void(0)" @click="goToPage(1,commentsPageInfo.pageSize)">
+								        	首页
+								      </a>
+								    </li>
+						    		<li>
+								      <a href="javascript:void(0)"  @click="goToPage(commentsPageInfo.prePage, commentsPageInfo.pageSize)">
+								        	上一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)"  @click="goToPage(commentsPageInfo.nextPage, commentsPageInfo.pageSize)">
+								        	下一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)"  @click="goToPage(commentsPageInfo.lastPage,commentsPageInfo.pageSize)">
+								       		 尾页
+								      </a>
+								    </li>
+								</ul>
+							</td>
+						</tr>
+  					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+<script src="../../js/jquery-1.12.4.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/vue.js"></script>
+<script type="text/javascript">
+	var contentVm = new Vue({
+		el: "#contentVm",
+		data: {
+			allData: {
+				text: '全选',
+				parCheck: false
+			},
+			//email信息
+			commentsPageInfo: {},
+
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				
+			},
+			remove: function(index, esid) {
+				//多少个选中
+				var num = 0;
+
+				this.commentsPageInfo.list.forEach(function(item) {
+					//判断是否选中
+					if(item.isCheck) {
+						num++;
+					}
+				});
+
+				//判断是否选中
+				if(num > 0) {
+					if(confirm("确认要删除吗这【" + num + "】条评论吗？")) {
+						$.ajax("" + esid, {
+							type: "put",
+							dataType: "json",
+							success: function(json) {
+								if(json.code == 200) {
+									
+									contentVm.commentsPageInfo.list.splice(index, 1);
+									//listVm.goToIndex();
+								} else {
+									
+								}
+							}
+						});
+
+					}
+				} else {
+					alert("请选中你要删除的评论！");
+				}
+
+			},
+
+			//全选
+			allSelect: function() {
+				var vm1 = this;
+				vm1.commentsPageInfo.list.forEach(function(item) {
+					item.isCheck = vm1.allData.parCheck;
+				})
+
+			},
+			//单选
+			singleSelect: function() {
+				var vm1 = this;
+				var selectData = vm1.commentsPageInfo.list.filter(function(item) {
+					return item.isCheck == true;
+				})
+				selectData.length == vm1.commentsPageInfo.list.length ? vm1.allData.parCheck = true : vm1.allData.parCheck = false;
+			}
+
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 2);
+		}
+
+	});
+</script>
+</html>

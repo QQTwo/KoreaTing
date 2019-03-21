@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>积分记录</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				width: 1386px;
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="" id="scoreVm">
+			<blockquote class="back">
+			  <p style="font-weight: bold;padding-top: 10px;">积分管理</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户名：<input type="text" value="" placeholder="" name="username">
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search('1','10')">
+						查询</button>
+			    </div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<THEAD style="background-color:#f2f2f2;">
+		                <TR>
+		                    <th>序号</th>
+		                    <TH>用户</TH>
+		                    <TH>类型</TH>
+		                    <TH>获取方式</TH>
+		                    <TH>消费</TH>
+		                    <TH>获得</TH>
+		                   	<th>状态</th>
+		                    <!-- <TH>备注</TH> -->
+		                    <TH>消费时间</TH>
+		                </TR>
+		            </THEAD>
+					 <tbody>
+                    <tr v-for="(temp,index) in membersPageInfo.list">
+                        <td align="center" v-text="(index+1)">
+                        	        1                
+                        </td>
+                        <td align="center">
+                        	<a href="javascript:void(0)" v-text="temp.userName" onclick="location.href='shopperManage_update.html'">茹泚倔强つ6988</a>
+                        </td>
+                        <td align="center">积分</td>
+                        <td align="center" v-text="temp.irDescribe">每天签到赠送</td>
+                        <td align="center" > -</td>
+                                               
+                        <td align="center">+ <span v-text="temp.recordInAndOut"></span>
+                        </td>
+                        
+						<td>
+							<span v-if="temp.auditStatus==1">待审核</span>
+							<span v-if="temp.auditStatus==2">审核成功</span>
+							<span v-if="temp.auditStatus==3">审核失败</span>
+							<span v-if="temp.auditStatus==4">交易成功</span>
+							<span v-if="temp.auditStatus==5">交易失败</span>
+						</td>
+                       <!--  <td align="center" v-text="temp.irDescribe">签到</td> -->
+                        <td v-text="temp.irDate">2019-03-09 14:30</td>
+                         
+					</tr>
+                    <!-- <tr>
+                        <td align="center">
+                        2  <input value="" type="checkbox" name="favid[]" style="display:none;">                        
+                        </td>
+                        <td align="center" >
+                        	<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">三部2</a>
+                        </td>
+                         <td align="center" >金币</td>
+                        <td align="center" >预定服务</td>
+                        <td align="center" >
+                        -1.00 </td>
+                        <td align="center" >
+                          -</td>
+						<td align="center" >
+                       	 完成   </td>
+                        <td align="center" >支付订单，订单号：15464087542835</td>
+                        <td  nowrap>2019-03-09 12:07</td>
+
+                        <td nowrap >
+												</tr>
+                    <tr>
+                        <td align="center">
+                        3 <input value="" type="checkbox" name="favid[]" style="display:none;">                        
+                        </td>
+                        <td align="center" >
+                        	<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">666</a>
+                        </td>
+                         <td align="center" >金币</td>
+                        <td align="center" >预定服务</td>
+                        <td align="center" >
+                        -100.00 </td>
+                        <td align="center" >
+                          - </td>
+						<td align="center" >
+                        	完成    </td>
+                        <td align="center" >支付订单，订单号：15521037767752</td>
+                        <td>2019-03-09 11:56</td>
+
+                        <td>
+					</tr>
+                    <tr>
+                        <td align="center">
+                        4 <input value="" type="checkbox" name="favid[]" style="display:none;">                        
+                        </td>
+                        <td align="center" >
+                        	<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">魅力。解释一切♀</a>
+                        </td>
+                                                <td align="center" nowrap>金币</td>
+                        <td align="center" >保证金</td>
+                        <td align="center" >  -  </td>
+                        <td align="center" >
+                        +500.00                                                </td>
+						<td align="center" >
+                        完成                        </td>
+                        <td align="center" >退保证金</td>
+                        <td>2019-03-09 11:23</td>
+
+                        <td>
+						<a href="javascript:void(0)" onclick="location.href='baozhengjin_detail.html'">查看</a></td>						</tr>
+                    <tr>
+                        <td align="center">
+                        5  <input value="" type="checkbox" name="favid[]" style="display:none;">                        
+                        </td>
+                        <td align="center" >
+                        	<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">666</a>
+                        </td>
+                                                <td align="center" nowrap>金币</td>
+                        <td align="center" >保证金</td>
+                        <td align="center" >
+                        -500.00</td>
+                        <td align="center" >
+                         	- </td>
+						<td align="center" >
+                        完成                        </td>
+                        <td align="center" >提交保证金</td>
+                        <td>2019-03-09 10:57</td>
+
+                        <td>
+						</tr>
+                    <tr>
+                        <td align="center">
+                        6<input value="" type="checkbox" name="favid[]" style="display:none;">                        
+                        </td>
+                        <td align="center" >
+                        	此处根据 用户id 链接到商家管理中的修改会员信息
+                        	<a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">Faker</a>
+                        </td>
+                        <td align="center" >金币</td>
+                        <td align="center" >充值</td>
+                        <td align="center" >
+                          -</td>
+                        <td align="center" >
+                        +100.00</td>
+						<td align="center" >
+                        <font color="red">待审核</font> </td>
+                        <td align="center" >充值金币</td>
+                        <td>2019-03-09 10:21</td>
+                        <td></td>
+					</tr> -->
+                    </tbody>
+                    <tfoot>
+						<tr>
+							<td colspan="9">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+								      <a href="javascript:void(0)" @click="goToPage(1,membersPageInfo.pageSize)">
+								        	首页
+								      </a>
+								    </li>
+						    		<li v-if="membersPageInfo.hasPreviousPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+								        	上一页
+								      </a>
+								    </li>
+								    <li v-if="membersPageInfo.hasNextPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+								        	下一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+								       		 尾页
+								      </a>
+								    </li>
+								    <li>
+										第<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pageNum">1</span>页，
+										共<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pages">5</span>页
+									</li>
+								</ul>
+							</td>
+						</tr>				
+  					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	
+	var listVm = new Vue({
+		el: "#scoreVm",
+		data: {
+			//积分对象信息
+			membersPageInfo: {}
+			
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				$.ajax({
+					url : "/c/cmmember/queryIntegral",
+					type : "get",
+					dataType : "json",
+					data:{
+						"num":n,
+            			"size":s,
+						"userName":"0"
+						
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						console.log(listVm.membersPageInfo);
+					}
+				})
+			},
+			//搜索
+			search:function(n,s){
+				var username=$("[name=username]").val();
+				$.ajax({
+					url : "/c/cmmember/queryIntegral",
+					type : "get",
+					dataType : "json",
+					data:{
+						"num":n,
+            			"size":s,
+						"userName":username,
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						console.log(listVm.membersPageInfo);
+					}
+				})
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+			
+		}
+	});
+</script>
+</html>

@@ -68,7 +68,7 @@
 					<li><a href=""><span class="msp2 pre_c1"></span>我预订的服务</a>
 					</li>
 					<li><a href=""><span
-							class="msp2 pre_c2"></span>我的下载</a></li>
+							class="msp2 pre_c2"></span>积分抽奖</a></li>
 					<li><a href=""><span class="msp2 community_sp csp7"></span>我的帖子</a>
 					</li>
 
@@ -139,6 +139,7 @@
 								<td th:if="${temp.auditstatus==3}">审核失败</td>
 								<td th:if="${temp.auditstatus==4}">交易成功</td>
 								<td th:if="${temp.auditstatus==5}">交易失败</td>
+								<td th:if="${temp.auditstatus==6}">充值失败</td>
 							</tr>
 							
 						</tbody>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商家推荐</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container{
+				font-size: 14px;
+			}
+			.back{
+				width: 1386px;
+				font-size: 14px;
+				border-radius:0 2px 2px 0;
+				background-color:#f2f2f2;
+				padding:2px 10px;
+				border-left: 5px solid rgb(25,159,147);
+			}
+			table thead tr>th,tr>td{
+				text-align: center;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="" id="shopRecommentVm">
+			<blockquote class="back" style="width:1366px">
+			  <p style="font-weight: bold;padding-top: 10px;">商家推荐</p>
+			    <div style="padding:0px 0px 12px 15px;font-size: 14px;">
+			    	用户昵称：<input type="text" value="" placeholder="" name="userName">
+					&nbsp;
+					店铺名称：<input type="text" value="" placeholder="" name="shopName">
+					&nbsp;
+					会员组：
+					<select name="merchantType" style="height:2rem">
+			    		<option value="-1">所有</option>
+	                    <option value="1">大陆商家用户</option>
+	                    <option value="2">海外商家用户</option>   
+		    		</select>
+		    		&nbsp;
+		    		是否推荐：
+		    		<select name="is_recommend" id="is_recommend" style="height:2rem">
+	                    <option value="-1">所有</option>
+	                    <option value="1">推荐</option>
+	                    <option value="0">不推荐</option>
+               		</select>
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search('1','10')">
+						查询</button>
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;">导出</button>
+			    </div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered" style="width:1366px">
+					<THEAD style="background-color:#f2f2f2;">
+	                <TR>
+	                    <th>序号</th>
+	                    <TH>用户昵称</TH>
+						<TH>商铺名称</TH>                    
+						<TH>服务类别</TH>
+	                    <TH>会员组</TH>
+	                    <TH>电话</TH>
+	                    <TH>店铺状态</TH>
+	                    <TH>是否推荐</TH>
+	                  	<TH>操作</TH>
+	                </TR>
+                	</THEAD>
+					 <tbody>
+                <tr v-for="(temp,index) in membersPageInfo.list">
+                        <td v-text="(index+1)">
+                            1                        
+                        </td>
+                        <td v-text="temp.userName">qwqw</td>
+						<td v-text="temp.shopName">仙女聚集之地</td>
+                        <td v-text="temp.stName">自驾游</td>
+                        <td v-if="temp.merchantType==1">
+                        	大陆商家用户
+                        </td>
+						<td v-if="temp.merchantType==2">
+                        	海外商家用户
+                        </td>
+                        <td v-text="temp.merchantPhone">18574787115</td>
+                        <td>
+                        	<span v-if="temp.businessState==1" style="color:green">营业</span>
+                            <span v-if="temp.businessState==2" style="color:color;">暂停</span>
+                            <span v-if="temp.businessState==3">关闭</span>                       
+                          </td>
+                        <td>
+                            <span v-if="temp.recommendBool==1" style="color:red;">是</span>                       
+                             <span v-if="temp.recommendBool==0">否</span>
+                             </td>
+                        <td>
+                        <a href="javascript:void(0)" @click="updateInfo(temp.serviceID)">修改</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+						<tr>
+							<td colspan="9">
+								<ul class="pager">
+									<li>
+										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
+								      <a href="javascript:void(0)" @click="goToPage(1,membersPageInfo.pageSize)">
+								        	首页
+								      </a>
+								    </li>
+						    		<li v-if="membersPageInfo.hasPreviousPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+								        	上一页
+								      </a>
+								    </li>
+								    <li v-if="membersPageInfo.hasNextPage==true">
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+								        	下一页
+								      </a>
+								    </li>
+								    <li>
+								      <a href="javascript:void(0)"  @click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+								       		 尾页
+								      </a>
+								    </li>
+								    <li>
+										第<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pageNum">1</span>页，
+										共<span style="border: none;padding: 0 2px;" v-text="membersPageInfo.pages">5</span>页
+									</li>
+								</ul>
+							</td>
+						</tr>				
+  					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script type="text/javascript">
+	
+	var listVm = new Vue({
+		el: "#shopRecommentVm",
+		data: {
+			//商家推荐信息
+			membersPageInfo: {}
+			
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				$.ajax({
+					url : "/c/cmmember/shopRecomment",
+					type : "get",
+					dataType : "json",
+					data:{
+						"userName":"",
+						"merchantType":"-1",
+						"shopName":"",
+						"recommendbool":"-1",
+            			"num":n,
+            			"size":s
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						console.log(data);
+					}
+				})
+			},
+			//搜索
+			search:function(n,s){
+				var userName=$("[name=userName]").val();
+				var merchantType=$("[name=merchantType]").val();
+				var shopName=$("[name=shopName]").val();
+				var is_recommend=$("[name=is_recommend]").val();
+				$.ajax({
+					url : "/c/cmmember/shopRecomment",
+					type : "get",
+					dataType : "json",
+					data:{
+						"userName":userName,
+						"merchantType":merchantType,
+						"shopName":shopName,
+						"recommendbool":is_recommend,
+            			"num":n,
+            			"size":s
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+						$("[name=userName]").val('');
+						$("[name=merchantType]").val('-1');
+						$("[name=shopName]").val('');
+						$("[name=is_recommend]").val('-1');
+					}
+				})
+			},
+			//编辑
+			updateInfo:function(serviceID){
+				window.sessionStorage.setItem("serviceID", serviceID);
+				window.location.href="shopperRecomend_update.html";
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+			
+		}
+	});
+</script>
+</html>

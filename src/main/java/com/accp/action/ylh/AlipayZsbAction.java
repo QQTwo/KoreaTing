@@ -40,8 +40,8 @@ public class AlipayZsbAction {// response
 	 * 
 	 * @throws AlipayApiException
 	 * @throws IOException
-	 */
-	/*@RequestMapping("viewOrder")
+	 *//*
+	@RequestMapping("viewOrder")
 	public void viewOrder(HttpServletRequest req, Model mod, HttpServletResponse rep,
 			@RequestParam(value = "goodId", required = true) Integer goodId) throws AlipayApiException, IOException {
 
@@ -87,17 +87,17 @@ public class AlipayZsbAction {// response
 		rep.getWriter().write(result);// 直接将完整的表单html输出到页面
 		rep.getWriter().flush();
 		rep.getWriter().close();
-	}*/
+	}
 
-	/**
+	*//**
 	 * 回调路径return_url
 	 * 
 	 * @param request
 	 * @param response
 	 * @throws AlipayApiException
 	 * @throws UnsupportedEncodingException
-	 */
-	/*@RequestMapping("return_url.view")
+	 *//*
+	@RequestMapping("return_url.view")
 	public String returnUrl(HttpServletRequest request, HttpServletResponse response)
 			throws AlipayApiException, UnsupportedEncodingException {
 		// 获取支付宝POST过来反馈信息
@@ -176,8 +176,8 @@ public class AlipayZsbAction {// response
 		//获得初始化的AlipayClient
 		goldnotes.setUserid(userId);
 		goldnotes.setRecorddate(new Date());
-		goldnotes.setAuditstatus(5);
-		goldnotes.setRecorddescribe("充值金币");
+		goldnotes.setAuditstatus(6);
+		goldnotes.setRecorddescribe("充值 "+goldnotes.getRecordinandout()+" 金币");
 		AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
 		biz.addGoldnotes(goldnotes);
 		

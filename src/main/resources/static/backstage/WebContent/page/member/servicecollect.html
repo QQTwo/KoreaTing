@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>服务收藏</title>
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.container {
+				font-size: 14px;
+			}
+			
+			.back {
+				width: 1386px;
+				font-size: 14px;
+				border-radius: 0 2px 2px 0;
+				background-color: #f2f2f2;
+				padding: 2px 10px;
+				border-left: 5px solid rgb(25, 159, 147);
+			}
+			
+			table thead tr>th,
+			tr>td {
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="" id="servicecollect">
+			<blockquote class="back">
+				<p style="font-weight: bold;padding-top: 10px;">服务收藏</p>
+				<div style="padding:0px 0px 12px 15px;font-size: 14px;">
+					用户名：<input type="text"  placeholder="" name="userName">
+					&nbsp;
+					标题：<input type="text"  placeholder="" name="serviceTitle">
+					&nbsp;
+					服务类别:
+					<select name="stname" style="height:2rem">
+						<option value="不限">不限</option>
+						<option v-for="temp in selType" v-bind:value="temp.stname">
+						{{temp.stname}}</option>
+					</select>
+					&nbsp;
+					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search('1','10')">
+						查询</button>
+				</div>
+			</blockquote>
+			<div class="col-md-12 col-xs-12"> </div>
+			<div>
+				<table class="table table-bordered">
+					<thead style="background-color:#f2f2f2;">
+						<th>序号</th>
+						<TH>类别</TH>
+						<TH>用户</TH>
+						<TH>服务名称</TH>
+						<TH>收藏时间</TH>
+					</thead>
+					<tbody>
+						<tr v-for="(temp,index) in membersPageInfo.list">
+							<td align="center" v-text="(index+1)">
+								1 </td>
+							<td align="center" v-text="temp.stName">商家</td>
+							<td align="center" v-text="temp.userName">10</td>
+							<td align="center" v-text="temp.serviceTitle"></td>
+							<td v-text="temp.collectionTime">■ˉ苏〃筱萌◇◆ </td>
+						</tr>
+						<!-- <tr>
+							<td align="center">
+								2 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>10</td>
+							<td nowrap>北村韩屋村</td>
+							<td>2018-08-18 15:20:00</td>
+							
+						</tr>
+						<tr>
+							<td align="center">
+								3 </td>
+							<td align="center" nowrap>商家</td>
+							<td align="center" nowrap>7</td>
+							<td nowrap>姬菇凉的店铺</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								4 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>5</td>
+							<td nowrap>泰迪熊珍藏馆/테디베어팜</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								5 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>5</td>
+							<td nowrap>首尔釜山自驾游</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								6 </td>
+							<td align="center" nowrap>帖子</td>
+							<td align="center" nowrap>5</td>
+							<td nowrap>和韩国哈哈</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								7 </td>
+							<td align="center" nowrap>商家</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>暖暖哒</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								8 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>爱爱爱</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								9 </td>
+							<td align="center" nowrap>商家</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>校园资源共享</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								10 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>吃货一日游</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								11 </td>
+							<td align="center" nowrap>服务</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>镇海军港祭 ——伴随春风，踏上樱花之旅</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								12 </td>
+							<td align="center" nowrap>商家</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>紫陌″de店铺</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr>
+						<tr>
+							<td align="center">
+								13 </td>
+							<td align="center" nowrap>帖子</td>
+							<td align="center" nowrap>4</td>
+							<td nowrap>SWEET &amp; ELEGANT PROM MAKEUP</td>
+							<td>2018-08-18 15:20:00</td>
+						</tr> -->
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="5">
+							<ul class="pager">
+								<li>
+									<!--@click="goToPage(1,emailsPageInfo.pageSize)"--> <a
+									href="javascript:void(0)"
+									@click="goToPage(1,membersPageInfo.pageSize)"> 首页 </a>
+								</li>
+								<li v-if="membersPageInfo.hasPreviousPage==true"><a
+									href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+										上一页 </a></li>
+								<li v-if="membersPageInfo.hasNextPage==true"><a
+									href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+										下一页 </a></li>
+								<li><a href="javascript:void(0)"
+									@click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+										尾页 </a></li>
+								<li>第<span style="border: none; padding: 0 2px;"
+									v-text="membersPageInfo.pageNum">1</span>页， 共<span
+									style="border: none; padding: 0 2px;"
+									v-text="membersPageInfo.pages">5</span>页
+								</li>
+							</ul>
+						</td>
+						</tr>				
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.12.4.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/vue.js"></script>
+<script type="text/javascript">
+var userName=$("[name=userName]").val();
+var serviceTitle=$("[name=serviceTitle]").val();
+var stname=$("[name=stname]").val();
+	var listVm = new Vue({
+		el: "#servicecollect",
+		data: {
+			//预约信息
+			membersPageInfo: {},
+			
+			selType:[]
+			
+		},
+
+		//方法
+		methods: {
+			goToPage: function(n, s) {
+				$.ajax({
+					url : "/c/cmmember/serviceCollect",
+					type : "get",
+					dataType : "json",
+					data:{
+						userName:userName,
+						serviceTitle:serviceTitle,
+						stname:"不限",
+						num:n,
+            			size:s
+					},
+					success : function(data){
+						listVm.membersPageInfo = data;
+					}
+				})
+			},
+			//搜索
+			search:function(n,s){
+				var userName=$("[name=userName]").val();
+				var serviceTitle=$("[name=serviceTitle]").val();
+				var stname=$("[name=stname]").val();
+				
+				$.ajax({
+            		url : "/c/cmmember/serviceCollect",
+            		type : "get",
+            		dataType : "json",
+            		data:{
+            			userName:userName,
+						serviceTitle:serviceTitle,
+						stname:stname,
+            			num:n,
+            			size:s
+            		},
+            		success : function(data){
+            			listVm.membersPageInfo = data;
+            			$("[name=userName]").val('');
+            			$("[name=serviceTitle]").val('');
+            			$("[name=stname]").val('不限')
+            		}
+            	});
+			}
+		},
+
+		//组件创建
+		created: function() {
+			this.goToPage(1, 10);
+			 $.ajax({
+					url : "/c/cmservice/selType",
+					type : "get",
+					dataType : "json",
+					success : function(data){
+						listVm.selType=data;
+					}
+				})
+		}
+	});
+</script>
+</html>

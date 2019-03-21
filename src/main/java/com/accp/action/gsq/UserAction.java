@@ -12,9 +12,11 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.accp.biz.cn.OrdersBiz;
 import com.accp.biz.gsq.UserBiz;
 import com.accp.pojo.News;
+import com.accp.pojo.Services;
 import com.accp.pojo.Sharea;
 import com.accp.pojo.User;
 import com.accp.util.code.VerifyCode;
@@ -31,6 +34,7 @@ import com.accp.util.email.Email;
 import com.accp.util.email.EmailBoard;
 import com.accp.util.file.Upload;
 import com.accp.util.rsaKey.RSAUtils;
+import com.accp.vo.cn.ServicesVO;
 import com.accp.vo.gsq.ListVo;
 import com.accp.vo.gsq.NewsVo;
 import com.accp.vo.gsq.TimeOutEmailDateVo;
@@ -91,7 +95,9 @@ public class UserAction {
 			e.printStackTrace();
 			System.out.println("====================\n发送失败\n====================\n");
 		}
-		return "redirect:/szy-login.html";
+		String tl =  email.substring(email.indexOf("@")+1);
+		model.addAttribute("url", tl);
+		return "/gsq-goEamil";
 	}
 	/**
 	 * 激活邮箱
@@ -121,6 +127,7 @@ public class UserAction {
 	 */
 	@RequestMapping(value="/user/saveEmail",method=RequestMethod.POST)
 	public String saveEmail(TimeOutEmailDateVo tqedv) {
+		tqedv.setPassword(DigestUtils.md5Hex(tqedv.getPassword()));
 		if(biz.saveEmailUser(tqedv)) {
 			return "redirect:/szy-login.html";
 		}else{
@@ -172,7 +179,7 @@ public class UserAction {
 	        	System.out.println(password);
 	            String decryptByPrivateKey = RSAUtils.decryptByPrivateKey(password, (RSAPrivateKey) object);
 	            System.out.println(decryptByPrivateKey);
-	            User u = biz.login(email, decryptByPrivateKey);
+	            User u = biz.login(email, DigestUtils.md5Hex(decryptByPrivateKey));
 	    		if(u!=null) {
 	    			session.setAttribute("USER", u);
 	    			session.setAttribute("Email", email);
@@ -199,7 +206,7 @@ public class UserAction {
 			String pwd=VerifyCode.createVerifyCode(6);
 			Email.sendSimpleMail(email, "重置密码", EmailBoard.verifyCode(email, "您的密码已重置,新密码为:", pwd));
 			System.out.println("====================\n修改密码发送成功\n====================\n");
-			if(biz.updatePwd(email, pwd)) {
+			if(biz.updatePwd(email, DigestUtils.md5Hex(pwd))) {
 				map.put("code", "200");
 			}else {
 				map.put("code", "500");
@@ -294,15 +301,18 @@ public class UserAction {
 	 * @return
 	 */
 	@RequestMapping(value="/user/updateEmailPwd",method=RequestMethod.POST)
-	public String updateEmailPwd(HttpSession session,String pastpassword,String password) {
+	public String updateEmailPwd(HttpSession session,String pastpassword,String password,Model model) {
 		String email=session.getAttribute("Email").toString();
+		pastpassword =  DigestUtils.md5Hex(pastpassword);
 		if(biz.login(email, pastpassword)!=null) {
-			biz.updatePwd(email, password);
+			biz.updatePwd(email, DigestUtils.md5Hex(password));
 			session.removeAttribute("USER");
 			session.removeAttribute("Email");
+			model.addAttribute("gaimima", "Yes");
 			return "szy-login.html";
 		} else {
-			return "redirect:c/gsq/user/queryGrzxInfo?jiumima="+pastpassword+"";
+			model.addAttribute("jiumima", pastpassword);
+			return "zhsz-xgmm.html";
 		}
 	}
 	/**
@@ -622,5 +632,22 @@ public class UserAction {
 		}
 		return map;
 	}
-	
+	/**
+	 * 
+	    * @Title: queryHabit
+	    * @Description: 猜你喜欢
+	    * @param session
+	    * @return List<Services>    返回类型
+	    * @throws
+	 */
+	@GetMapping("api/queryHabit")
+	@ResponseBody
+	public List<ServicesVO> queryHabit(HttpSession session){
+		Integer uid = null;
+		User loginUser = (User)session.getAttribute("USER");
+		if(loginUser!=null) {
+			uid = loginUser.getUserid();
+		}
+		return biz.queryUserHabit(uid);
+	}
 }

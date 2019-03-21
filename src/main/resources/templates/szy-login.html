@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html  xmlns:th="http://www.thymeleaf.org">
+=======
+<html xmlns:th="http://www.thymeleaf.org">
+>>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
 <head>
 <meta charset="UTF-8">
 <title>登陆_韩汀社区</title>
@@ -125,7 +129,14 @@
 <script type="text/javascript" src="/Public/js/layer/layer.js"></script>
 <script type="text/javascript" src="/Public/js/security.js"></script>
 <script type="text/javascript">
+<<<<<<< HEAD
 
+=======
+		if('[[${gaimima}]]'=="Yes"){
+			layer.msg("修改成功，重新登陆!");
+		}
+		
+>>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
 		create_code();
 		function submit1(){
 			var email=$("[name=email]").val();
@@ -146,6 +157,8 @@
 				}
 			}
 		}
+		
+		
 		$("[name=login]").click(function(){
 			if(!submit1()){
 				return;
@@ -160,14 +173,24 @@
 				   var pwdKey = new RSAUtils.getKeyPair(data.exponent,"",data.modulus);
 	               var reversedPwd = password.split("").reverse().join("");
 	               var encrypedPwd = RSAUtils.encryptedString(pwdKey,reversedPwd);
+<<<<<<< HEAD
 	           		$.getJSON("/c/gsq/user/checkRSAKey",{"email":email,"password":encrypedPwd},function(result){
 
+=======
+	           		$.getJSON("/c/gsq/user/checkRSAKey",{"email":email,"password":encrypedPwd},function(result){
+>>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
 	           			if(result.code=="200"){
 	           				layer.msg("登陆成功！");
+<<<<<<< HEAD
 	           				/* location.href="/c/cn/merchantEnterUrl"; */
        					location.href="/c/gsq/center/home"; 
 
 	           			
+=======
+	           				setTimeout(function(){
+	       						location.href="/c/gsq/center/home"; 
+	           				},2000)
+>>>>>>> branch 'master' of https://github.com/QQTwo/KoreaTing.git
 	           			}else if(result.code=="500"){
 	           				layer.msg("登陆失败！账户或密码错误", {
 		           				  icon: 2,

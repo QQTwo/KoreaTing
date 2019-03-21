@@ -1,6 +1,5 @@
 package com.accp.cfg;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -8,10 +7,12 @@ import java.util.Properties;
 import javax.servlet.MultipartConfigElement;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.quartz.ee.servlet.QuartzInitializerListener;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -19,6 +20,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.github.pagehelper.PageHelper;
+
+
+import java.io.File;
+import java.io.IOException;
+
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+
 import com.accp.util.file.Upload;
 
 @Configuration
@@ -63,4 +71,5 @@ public class BeansConfig {
 		factory.setLocation(location);
 		return factory.createMultipartConfig();
 	}
+	
 }
