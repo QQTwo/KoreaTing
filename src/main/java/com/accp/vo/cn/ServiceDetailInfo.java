@@ -8,6 +8,7 @@ import com.accp.pojo.Servicedes;
 public class ServiceDetailInfo {
 	private Integer serviceID;	//服务编号
 	private Integer userID;	//用户编号
+	private Integer stid;//服务编号
 	private String serviceTitle;	//服务标题
 	private String serviceFuTitle;	//服务副标题
 	private String stName;	//服务类别名称
@@ -34,6 +35,14 @@ public class ServiceDetailInfo {
 	private String serviceImgUrlThree;	//细节图三
 	private String serviceImgUrlFour;	//细节图四
 	private List<Servicedes> serDesList;	//服务描述集合
+	
+	
+	public Integer getStid() {
+		return stid;
+	}
+	public void setStid(Integer stid) {
+		this.stid = stid;
+	}
 	public Integer getServiceID() {
 		return serviceID;
 	}

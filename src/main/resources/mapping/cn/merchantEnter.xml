@@ -218,6 +218,8 @@
 				FROM `user` AS A
 				WHERE A.`userID` = ser.`userID`) BETWEEN #{obj.transactionValueMin} AND #{obj.transactionValueMax}
 			</if>
+		</trim>	
+		
 			<!-- 综合排序 -->
 			<if test="obj.orderByPop==null and obj.orderByPrice==null">
 				ORDER BY ser.`serviceID` DESC
@@ -238,7 +240,6 @@
 			<if test="obj.orderByPop==null and obj.orderByPrice==2">
 				ORDER BY ser.`servicePrice` DESC
 			</if>
-		</trim>	
 	</select>
 	<!-- 查询服务的商家信息 -->
 	<select id="queryServiceMerchantInfo" resultType="com.accp.vo.cn.ServiceMerchantInfo">
@@ -255,7 +256,7 @@
 	</select>
 	<!-- 查询服务详情 -->
 	<select id="queryServiceDetailInfo" resultType="com.accp.vo.cn.ServiceDetailInfo">
-		SELECT u.`userID`,ser.`serviceID`,ser.`serviceTitle`,st.`stName`,ser.`serviceFuTitle`,ser.`servicePrice`,ser.`serviceHour`,ser.`serviceCostInclude`,ser.`serviceStartDate`,ser.`serviceEndDate`,ser.`serviceIntro`,ser.`serviceCity`,u.`height`,u.`age`,u.`constellation`,u.`profession`,ser.`serviceCostTypeID`,ser.`schoolRegion`,ser.`schoolNameByCN`,ser.`schoolNameByROK`,ser.`majoyNameByCN`,ser.`majoyNameByROK`,ser.`serviceCoverImg`,ser.`serviceImgUrlOne`,ser.`serviceImgUrlTwo`,ser.`serviceImgUrlThree`,ser.`serviceImgUrlFour`
+		SELECT u.`userID`,ser.`serviceID`,ser.`stid`,ser.`serviceTitle`,st.`stName`,ser.`serviceFuTitle`,ser.`servicePrice`,ser.`serviceHour`,ser.`serviceCostInclude`,ser.`serviceStartDate`,ser.`serviceEndDate`,ser.`serviceIntro`,ser.`serviceCity`,u.`height`,u.`age`,u.`constellation`,u.`profession`,ser.`serviceCostTypeID`,ser.`schoolRegion`,ser.`schoolNameByCN`,ser.`schoolNameByROK`,ser.`majoyNameByCN`,ser.`majoyNameByROK`,ser.`serviceCoverImg`,ser.`serviceImgUrlOne`,ser.`serviceImgUrlTwo`,ser.`serviceImgUrlThree`,ser.`serviceImgUrlFour`
 		FROM `services` AS ser
 		INNER JOIN `user` AS u
 		ON u.`userID` = ser.`userID`

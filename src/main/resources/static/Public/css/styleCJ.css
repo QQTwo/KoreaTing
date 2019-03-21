@@ -27,18 +27,24 @@
 	}
 
 	#luck .active{
-		background: url(/Public/images/proBj1.png) no-repeat;
+		background: #752e99;
 		opacity:1;
-   		background-size:contain;
 	}
 	.shanDeng td{
 		text-align: center;
-		background: url(/Public/images/proBj1.png) no-repeat;
-		width: 190px;
+		background: #752e99;
+		width: 186px;
    		height: 189px;
-   		background-size:contain;
-		opacity:0.6;
-		margin: 2px;
+   		margin:10px;
+		opacity:0.5;
+	}
+	.shanDeng td img{
+		width: 170px;
+		height: 145px;
+	}
+	.shanDeng td div{
+		font-size: 18px;
+		padding: 5px;
 	}
 	.shanDeng table{
 		margin-left: 3%;

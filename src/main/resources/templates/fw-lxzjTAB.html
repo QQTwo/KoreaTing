@@ -111,7 +111,7 @@
 		        <div class="rank_box">
 		        	<ul class="rank_list_ul">
 						<li v-for="(temp,index) in pageInfo.list">
-		                	<a :href="'/c/cn/serviceDetailUrl?htmlUrl=fw-lxzjXQ&sid='+temp.serviceID+'&uid='+temp.userID" class="rank_one_a">
+		                	<a :href="'/c/cn/serviceDetailUrl?htmlUrl=fw-lxzjXQ&sid='+temp.serviceID+'&uid='+temp.userID+'&stid=3'" class="rank_one_a">
 			                    <div class="star_img">
 			                    	<img v-if="temp.recommendBool==true" style="z-index:3;position: absolute;" src="/Public/images/tj.png" width="50" height="50"> 
 			                    	<img :src="temp.serviceCoverImg" :alt="temp.serviceTitle" width="380" height="254">
@@ -154,7 +154,42 @@
 		            </div>
 		            <!--page end-->
 		        </div>
-				
+				<dl class="community_dl">
+					<dt style="color:#FF3030;font-weight: bold;font-size: 24px">猜你喜欢</dt>
+				</dl>
+		        <div class="rank_box">
+		        	<ul class="rank_list_ul">
+						<li v-for="(temp,index) in Habit">
+		                	<a :href="'/c/cn/serviceDetailUrl?htmlUrl=fw-hyfyXQ&sid='+temp.serviceID+'&uid='+temp.userID+'&stid=4'" class="rank_one_a">
+			                    <div class="star_img">
+			                    	<img v-if="temp.recommendBool==true" style="z-index:3;position: absolute;" src="/Public/images/tj.png" width="50" height="50"> 
+			                    	<img :src="temp.serviceCoverImg" :alt="temp.serviceTitle" width="380" height="254">
+			                    </div>
+			                    <dl class="rank_text_dl">
+			                    	<dt v-text="temp.serviceTitle">测试资源主标题</dt>
+			                        <dd>
+			                        	<div class="i_3" v-text="temp.servicePrice">100</div>
+			                        	<div class="star_pl"><span class="star_pl_sp" style="width:60%;"></span></div>
+			                        </dd>
+			                    </dl>
+							</a>
+							<a href="javascript:void(0);" class="rank_sec_a">
+			                    <dl class="star_user_dl">
+			                        <dt>
+			                        	<img :src="temp.shopImg" :alt="temp.shopName" class="star_user_photo">
+		                        		<img src="/Public/images/hg_i.png" alt="" class="hg_i l_hi">   
+			                        </dt>
+			                        <dd>
+			                            <div class="star_user_name_s">
+			                            	<h3 class="star_user_name" v-text="temp.shopName">小明同学</h3>
+			                            </div>
+			                            <p class="star_user_text"></p>
+			                        </dd>
+			                    </dl>
+		                    </a>
+		                </li>
+		            </ul>
+		        </div>
 					<!--ad-->
 				<div class="ad_box2">
 				<a href=""><img src="/Uploads/adv/2018-04/20180414123932-28064.jpg" alt="底部广告 说吧"></a>	</div>
@@ -196,6 +231,7 @@
 	<script type="text/javascript" th:src="@{/Public/js/vue.js}"></script>
 	<script type="text/javascript" th:src="@{/Public/js/sessionHeader.js}"></script>
 	<script type="text/javascript" th:src="@{/Public/js/headLeftNav.js}"></script>
+	<script type="text/javascript" src="/Public/js/Websocket/ajaxlunxun.js"></script>
 	<script th:inline="javascript">
 		var vm = new Vue({
 			el:"#vmCnt",
@@ -204,7 +240,8 @@
 					list:[]
 				},
 				serviceTypeChild:[],
-				cityList:[]
+				cityList:[],
+				Habit:[]
 			},
 			created:function(){
 				var vm = this;
@@ -263,6 +300,10 @@
 					}
 					jQuery.getJSON("/c/cn/api/queryServices",{"objJSON":JSON.stringify(obj),"num":num,"size":6},function(data){
 						vm.pageInfo = data;
+						console.info(data);
+					})
+					jQuery.getJSON("/c/gsq/api/queryHabit",{},function(data){
+						vm.Habit = data;
 						console.info(data);
 					})
 				},
