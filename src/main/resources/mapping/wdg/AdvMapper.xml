@@ -19,6 +19,7 @@
 				advertisement.atid=#{atid}
 			</if>
 		</where>
+		order by  advertisement.startTime desc
 	</select>
 	<update id="updateAdv">
 		UPDATE `advertisement` SET
@@ -27,8 +28,8 @@
 		WHERE aid=#{a.aid}
 	</update>
 	<insert id="addAdv">
-		INSERT INTO `advertisement`(`atid`,`atitle`,`aorder`,`aimgPath`,`apcUrl`,`aappUrl`,`adescribe`)
-		VALUES(#{a.atid},#{a.atitle},#{a.aorder},#{a.aimgpath},#{a.apcurl},#{a.aappurl},#{a.adescribe});
+		INSERT INTO `advertisement`(`atid`,`atitle`,`aorder`,`aimgPath`,`apcUrl`,`aappUrl`,`adescribe`,rentAMonth,price,startTime)
+		VALUES(#{a.atid},#{a.atitle},#{a.aorder},#{a.aimgpath},#{a.apcurl},#{a.aappurl},#{a.adescribe},#{a.rentamonth},#{a.price},now());
 	</insert>
 	<select id="queryObjAdv" resultType="com.accp.pojo.Advertisement">
 		select *from advertisement where aid=#{aid}

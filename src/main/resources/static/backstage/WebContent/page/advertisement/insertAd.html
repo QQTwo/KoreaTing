@@ -47,9 +47,9 @@
 				id="upload_img" width="200px" />
 		</div>
 		<div class="layui-form-item">
-			<label class="layui-form-label">选择框</label>
-			<div class="layui-input-block">
-				<select name="city" lay-verify="required"   id="types_select">
+			<label class="layui-form-label">广告位置</label>
+			<div class="layui-input-inline">
+				<select name="types"  lay-verify="required"   lay-filter="types"  id="types_select">
 					<option value=""></option>
 					<option value="0">北京</option>
 					<option value="1">上海</option>
@@ -58,6 +58,19 @@
 					<option value="4">杭州</option>
 				</select>
 			</div>
+			<div class="layui-form-mid layui-word-aux" id="types_price">选择广告位置</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">租赁月数</label>
+			<div class="layui-input-inline">
+				<select name="rentAMonth" lay-verify="required"  lay-filter="price" >
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+				</select>
+			</div>
+			 <div class="layui-form-mid layui-word-aux" id="sumPrice">总计: 9999元</div>
 		</div>
 		<div class="layui-form-item">
 			<label class="layui-form-label">PC端网址</label>

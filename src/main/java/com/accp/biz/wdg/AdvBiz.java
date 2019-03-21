@@ -21,9 +21,8 @@ public class AdvBiz {
 			return dao.queryAllAdv();
 		}
 		
-		public PageInfo<AdvertisementVo> queryAllAdvVo(Integer atid,Integer p,Integer s){
-			PageHelper.startPage(p, s);
-			return new PageInfo<AdvertisementVo>(dao.queryAllAdvVo(atid));
+		public List<AdvertisementVo> queryAllAdvVo(Integer atid){
+			return dao.queryAllAdvVo(atid);
 		}
 		public boolean addAdv(Advertisement a) {
 			return dao.addAdv(a)>0;
