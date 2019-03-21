@@ -24,14 +24,14 @@
 		{
 			"title" : "帖子版块管理",
 			"icon" : "&#xe609;",
-			"href" : "page/news/tiezibankuai.html",
+			"href" : "page/news/newsList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "论坛投诉管理",
 			"icon" : "&#xe609;",
-			"href" : "page/news/luntantousu.html",
+			"href" : "page/news/newsList.html",
 			"spread" : false
 			
 		}
@@ -119,120 +119,128 @@
 		{
 			"title" : "会员审核",
 			"icon" : "&#xe609;",
-			"href" : "page/member/memberCheck.html",
+			"href" : "page/404.html",
 			"spread" : false
 		},
 		{
 			"title" : "商家管理",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shopperManagement.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
+			"title" : "商家管理",
+			"icon" : "&#xe609;",
+			"href" : "page/links/linksList.html",
+			"spread" : false
+			
+		}
+		,
+		{
 			"title" : "商家入驻",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shopperRuzhu.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 		
 		},
 		{
 			"title" : "鉴定审核",
 			"icon" : "&#xe609;",
-			"href" : "page/member/jiandingApply.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "商家推荐",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shopperRecomend.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "商家托管",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shopperTuoguan.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "评价管理",
 			"icon" : "&#xe609;",
-			"href" : "page/member/memberCheck_commend.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "金币记录",
 			"icon" : "&#xe609;",
-			"href" : "page/member/jinbiRecord.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "积分记录",
 			"icon" : "&#xe609;",
-			"href" : "page/member/scoreRecord.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "充值记录",
 			"icon" : "&#xe609;",
-			"href" : "page/member/addMoney.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "提现记录",
 			"icon" : "&#xe609;",
-			"href" : "page/member/tixianManagement.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "保证金详情",
 			"icon" : "&#xe609;",
-			"href" : "page/member/baozhengjinManagement.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		},
 		{
 			"title" : "收藏排行",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shoucangOrder.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 		},
 		{
 			"title" : "服务收藏",
 			"icon" : "&#xe609;",
-			"href" : "page/member/servicecollect.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 		},
 		{
 			"title" : "BBS收藏",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shoucangOrder.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 		},
 		{
 			"title" : "店铺收藏",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shoucangOrder.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 		},
 		{
 			"title" : "会员站内信",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shoucangOrder.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 		},
 		{
 			"title" : "留言反馈",
 			"icon" : "&#xe609;",
-			"href" : "page/member/shoucangOrder.html",
+			"href" : "page/links/linksList.html",
 			"spread" : false
 			
 		}
@@ -246,7 +254,13 @@
 		{
 			"title" : "广告位排版",
 			"icon" : "&#xe609;",
-			"href" : "page/member/linksList.html",
+			"href" : "page/advertisement/adList.html",
+			"spread" : false
+		},
+		{
+			"title" : "添加广告",
+			"icon" : "&#xe609;",
+			"href" : "page/advertisement/insertAd.html",
 			"spread" : false
 		}
 	]

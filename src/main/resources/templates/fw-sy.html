@@ -57,18 +57,16 @@
 		<div id="index_banner" class="owl-carousel owl-theme" style="opacity: 1; display: block;">
 			<div class="owl-wrapper-outer">
 				<div class="owl-wrapper" style=" left: 0px; display: block; transition: all 0ms ease 0s; transform: translate3d(0px, 0px, 0px);">
-					<div class="owl-item" th:each="temp,iter : ${homeSlideshowList}" style="width:1519px;height: 332px" >
+					<div class="owl-item" th:each="temp,iter : ${homeSlideshowList}" style="width:1919px;height: 332px" >
 						<div class="item">
 							<a th:href="${temp.apcurl}"><img th:src="${temp.aimgpath}" th:alt="${temp.atitle}" class="w100"></a>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="owl-controls clickable">
-				<div class="owl-pagination">
-					<div class="owl-page active"><span class=""></span></div>
-					<div class="owl-page"><span class=""></span></div>
-					<div class="owl-page"><span class=""></span></div>
+			<div class="owl-controls clickable" id="lunbodian">
+				<div class="owl-pagination" >
+					<div th:each="temp,iter : ${homeSlideshowList}"   th:class="${iter.index==0?'active owl-page':' owl-page'}"><span class=""></span></div>
 				</div>
 				<div class="owl-buttons">
 					<div class="owl-prev">prev</div>

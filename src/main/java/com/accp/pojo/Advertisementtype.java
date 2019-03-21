@@ -6,6 +6,8 @@ public class Advertisementtype {
     private String atname;
 
     private String atpx;
+    
+    private float aprice;
 
     public Integer getAtid() {
         return atid;
@@ -30,4 +32,12 @@ public class Advertisementtype {
     public void setAtpx(String atpx) {
         this.atpx = atpx == null ? null : atpx.trim();
     }
+
+	public float getAprice() {
+		return aprice;
+	}
+
+	public void setAprice(float aprice) {
+		this.aprice = aprice;
+	}
 }
