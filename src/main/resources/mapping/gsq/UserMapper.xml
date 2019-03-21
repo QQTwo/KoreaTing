@@ -262,4 +262,29 @@
 			</if>
 		</where>
 	</update>
+	<!-- 第二开发追加：记录用户习惯 -->
+	<insert id="saveUserHabit" >
+		INSERT INTO `userhabit` (
+		  `userid`,
+		  `stid`,
+		  `stPid`,
+		  `sPrice`
+		) 
+		VALUES
+		  (
+		    #{habit.userid},
+		    #{habit.stid},
+		    #{habit.stPid},
+		    #{habit.sPrice}
+		  ) ;
+	</insert>
+	<!-- 第二开发追加：查询用户习惯 点击最多的前三个，并算取用户平均查看服务价格 -->
+	<select id="queryUserHabit" resultType="UserHabit"> 
+		SELECT DISTINCT stid,stPid,AVG(sPrice) AS sPrice
+		FROM `userhabit`
+		WHERE `userid` = #{userid}
+		GROUP BY stid
+		ORDER BY COUNT( * ) DESC
+		LIMIT 3
+	</select>
 </mapper>

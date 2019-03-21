@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.accp.pojo.News;
 import com.accp.pojo.Sharea;
 import com.accp.pojo.User;
+import com.accp.pojo.UserHabit;
 import com.accp.vo.gsq.NewsVo;
 import com.accp.vo.gsq.TimeOutEmailDateVo;
 
@@ -165,5 +166,25 @@ public interface IUserDao {
 	    * @return int  返回类型
 	    * @throws
 	 */
-	public int updateUserSign(@Param("userid")Integer userID,@Param("signNum")Integer signNum,@Param("signType")Integer signType);
+	int updateUserSign(@Param("userid")Integer userID,@Param("signNum")Integer signNum,@Param("signType")Integer signType);
+	/**
+	 * 
+	    * @Title: saveUserHabit
+	    * @Description: 用户习惯查看服务
+	    * @param @param habit    参数
+	    * @return void    返回类型
+	    * @throws
+	 */
+	void saveUserHabit(@Param("habit")UserHabit habit);
+	/**
+	 * 
+	    * @Title: queryUserHabit
+	    * @Description: 查看用户习惯
+	    * @param @param userID
+	    * @param @return    参数
+	    * @return List<UserHabit>    返回类型
+	    * @throws
+	 */
+	List<UserHabit> queryUserHabit(@Param("userid")Integer userID);
+	
 }

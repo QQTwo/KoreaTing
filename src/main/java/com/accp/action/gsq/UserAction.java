@@ -16,6 +16,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.accp.biz.cn.OrdersBiz;
 import com.accp.biz.gsq.UserBiz;
 import com.accp.pojo.News;
+import com.accp.pojo.Services;
 import com.accp.pojo.Sharea;
 import com.accp.pojo.User;
 import com.accp.util.code.VerifyCode;
@@ -32,6 +34,7 @@ import com.accp.util.email.Email;
 import com.accp.util.email.EmailBoard;
 import com.accp.util.file.Upload;
 import com.accp.util.rsaKey.RSAUtils;
+import com.accp.vo.cn.ServicesVO;
 import com.accp.vo.gsq.ListVo;
 import com.accp.vo.gsq.NewsVo;
 import com.accp.vo.gsq.TimeOutEmailDateVo;
@@ -589,5 +592,22 @@ public class UserAction {
 		}
 		return map;
 	}
-	
+	/**
+	 * 
+	    * @Title: queryHabit
+	    * @Description: 猜你喜欢
+	    * @param session
+	    * @return List<Services>    返回类型
+	    * @throws
+	 */
+	@GetMapping("api/queryHabit")
+	@ResponseBody
+	public List<ServicesVO> queryHabit(HttpSession session){
+		Integer uid = null;
+		User loginUser = (User)session.getAttribute("USER");
+		if(loginUser!=null) {
+			uid = loginUser.getUserid();
+		}
+		return biz.queryUserHabit(uid);
+	}
 }
