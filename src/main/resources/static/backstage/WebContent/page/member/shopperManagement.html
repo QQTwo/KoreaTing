@@ -71,7 +71,7 @@
 						<!--
                         <td align="center"><input  value="487" type="checkbox" name="userid[]"></td>
 						-->
-                        <td align="center" bgcolor="#ffffff" v-text="index"></td>
+                        <td align="center" bgcolor="#ffffff" v-text="index+1"></td>
                         <td align="center" nowrap v-text="temp.userName">巨蟹boy4650</td>
 						<td align="center" nowrap v-text="temp.shopName">나는 너를 사랑해.</td>                       
 						<td align="center" nowrap >
@@ -98,7 +98,7 @@
                         <td align="center" nowrap v-text="temp.recentEntry">2019-03-05 16:35</td>
                        <!--  <td align="center" nowrap v-text="temp.">0</td> -->
                         <td >
-	                        <a href="javascript:void(0)" onclick="location.href='shopperManage_update.html'">修改</a>　
+	                        <a href="javascript:void(0)" @click="xiugai(temp.userID)">修改</a>　
 	                        <a href="javascript:void(0)" onclick="location.href='../service/serviceOrder.html'">积分记录</a>　
 	                        <a href="javascript:void(0)" onclick="location.href='jiandingApply.html'">鉴定申请</a>　
 	                        <a href="javascript:void(0)" onclick="location.href='memberCheck_commend.html'">评论</a>　　
@@ -148,6 +148,7 @@
 	</body>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
      <script type="text/javascript" src="../../layui/lay/modules/layer.js"></script>
+     <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
      <script type="text/javascript" src="../../js/jquery-2.1.4.js"></script>
 	<script type="text/javascript" src="../../vue/vue.js"></script>
 	<script type="text/javascript">
@@ -175,9 +176,29 @@
 						url:"/c/lzh/member/userShop/"+userName+"/"+shopName+"/"+merchantType+"/"+index,
 						type:"get",
 						success:function(data){
+							console.log(data.list)
 							vMshopM.pageInfo = data;
 						}
 					})
+				},
+				search:function(userName,shopName,merchantType,index){
+					alert(1)
+					/* if(userName == null || userName=='') userName = '@*';
+					if(shopName == null || shopName=='') shopName = '@*';
+					if(merchantType == null || merchantType=='') merchantType = '@*';
+					if(index == null || index=='') index = 1;
+					$.ajax({
+						url:"/c/lzh/member/userShop/"+userName+"/"+shopName+"/"+merchantType+"/"+index,
+						type:"get",
+						success:function(data){
+							console.log(data)
+							vMshopM.pageInfo = data;
+						}
+					}) */
+				},
+				xiugai:function(userid){
+					window.sessionStorage.setItem("userid", userid);
+					window.location.href="shopperManage_update.html";
 				}
 			},
 			created:function(){
