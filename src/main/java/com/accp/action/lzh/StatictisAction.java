@@ -18,8 +18,8 @@ public class StatictisAction {
 	@Autowired
 	private StatisticsBiz  biz;
 	
-	@GetMapping("/StatisticsInfo/{year}/{state}/{pagenum}")
-	public PageInfo<StatisticsVo> findStatisticsVo(@PathVariable int year,@PathVariable int state,@PathVariable int pagenum){
-		return biz.findStatisticsVo(year, state, pagenum);
+	@GetMapping("/StatisticsInfo/{year}/{state}/{pagenum}/{month}")
+	public PageInfo<StatisticsVo> findStatisticsVo(@PathVariable int year,@PathVariable int state,@PathVariable int pagenum,@PathVariable int month){
+		return biz.findStatisticsVo(year, state, pagenum,month);
 	}
 }

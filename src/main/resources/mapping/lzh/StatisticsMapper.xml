@@ -21,12 +21,16 @@
 	</insert>
 	
 	<select id="findStatistics" resultType="com.accp.vo.lzh.StatisticsVo">
-		SELECT (`rechargeCash`-`withdrawCash`) as sum,`statisticsId`,`year`,`month`,SUM(`withdrawCash`) as withdrawCash,SUM(`rechargeCash`) as rechargeCash,SUM(`serviceMoney`) as serviceMoney,SUM(`advertisementMoney`) as advertisementMoney,SUM(`businessCount`) as businessCount FROM `statistics`
+		SELECT (`rechargeCash`-`withdrawCash`+SUM(`serviceMoney`)) as sum,`statisticsId`,`year`,`month`,SUM(`withdrawCash`) as withdrawCash,SUM(`rechargeCash`) as rechargeCash,SUM(`serviceMoney`) as serviceMoney,SUM(`advertisementMoney`) as advertisementMoney,SUM(`businessCount`) as businessCount FROM `statistics`
 		<where>
 			<if test="year != 0">
 				and `year` = #{year}
 			</if>
+			<if test="month != 0">
+				and `month` = #{month}
+			</if>
 		</where>
+		
 		GROUP BY	
 			<if test="state == 1">
 				year
@@ -34,6 +38,12 @@
 			<if test="state == 2">
 				month
 			</if>
-		ORDER BY `statisticsId` 
+		ORDER BY 
+		<if test="state == 1">
+				year
+			</if>
+			<if test="state == 2">
+				month
+			</if> 
 	</select>
 </mapper>

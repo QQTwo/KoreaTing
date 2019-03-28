@@ -22,8 +22,8 @@ public class StatisticsBiz {
 		dao.insertStatistics();
 	}
 
-	public PageInfo<StatisticsVo> findStatisticsVo(int year,int state,int pagenum){
+	public PageInfo<StatisticsVo> findStatisticsVo(int year,int state,int pagenum,int month){
 		PageHelper.startPage(pagenum, 20);
-		return new PageInfo<StatisticsVo>(dao.findStatistics(year, state));
+		return new PageInfo<StatisticsVo>(dao.findStatistics(year, state,month));
 	}
 }

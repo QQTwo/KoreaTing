@@ -15,7 +15,7 @@
 			
 			body {
 				padding: 10px;
-				width: 1180px;
+				width: 99rem;
 				/*background: #f2edf3;*/
 			}
 			
@@ -30,7 +30,7 @@
 	</head>
 
 	<body>
-		<div>
+		<div  id="statisContent">
 			<blockquote class="back">
 				<p style="font-weight: bold;padding-top: 10px;">统计</p>
 				<div style="padding:0px 0px 12px 15px;font-size: 14px;">
@@ -43,12 +43,30 @@
 					<span id="name">年份:</span>
 					
 					<select id="year" style="font-size: 14px;padding: 1px; height: 22px;">
-						<option value="0">不限</option>
+						<option value="0"  selected>不限</option>
 						<option value="2018">2018</option>
 						<option value="2019">2019</option>
 					</select>
 					
-					详细:
+					<span id="name1">月份:</span>
+					
+					<select id="month" style="font-size: 14px;padding: 1px; height: 22px;">
+						<option value="0" selected>不限</option>
+						<option value="1">1月</option>
+						<option value="2">2月</option>
+						<option value="3">3月</option>
+						<option value="4">4月</option>
+						<option value="5">5月</option>
+						<option value="6">6月</option>
+						<option value="7">7月</option>
+						<option value="8">8月</option>
+						<option value="9">9月</option>
+						<option value="10">10月</option>
+						<option value="11">11月</option>
+						<option value="12">12月</option>
+					</select>
+					
+					<!-- 详细:
 					<select id="conditions" style="font-size: 14px;padding: 1px; height: 22px;">
 						<option>请选择</option>
 						<option>总利润 </option>
@@ -56,20 +74,20 @@
 						<option>提现</option>
 						<option>商家入驻</option>
 						<option>服务费</option>
-					</select>
+					</select> -->
 					<!-- Standard button -->
 					&nbsp;
-					<button type="button" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;" @click="search()">
+					<button type="button" @click="getInfo(1)" class="btn btn-default btn-sm" style="background-color:rgb(25,159,147);color: white;">
 						查询</button>
 				</div>
 			</blockquote>
 			<div class="col-md-12 col-xs-12"> </div>
-			<div class="" id="statisContent">
+			<div class="" >
 				<table class="table table-bordered" style="text-align: center;">
 					<thead style="background-color:#f2f2f2;text-align: center;">
 						<tr style="background-color:#f2f2f2;text-align: center;">
 							<th>编号</th>
-							<th>总计（元）</th>
+							<th>利润（元）</th> 
 							<th>提现（元）</th> 	
 							<th>充值（元）</th>
 							<th>服务费（元）</th>
@@ -105,22 +123,22 @@
 								<ul class="pager">
 									<li>
 										<!--@click="goToPage(1,emailsPageInfo.pageSize)"-->
-										<a href="javascript:void(0)" @click="goToPage(1,membersPageInfo.pageSize)">
+										<a href="javascript:void(0)" @click="getFirst">
 											首页
 										</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)" @click="goToPage(membersPageInfo.prePage, membersPageInfo.pageSize)">
+										<a href="javascript:void(0)" @click="prePage">
 											上一页
 										</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)" @click="goToPage(membersPageInfo.nextPage, membersPageInfo.pageSize)">
+										<a href="javascript:void(0)" @click="nextPage">
 											下一页
 										</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)" @click="goToPage(membersPageInfo.lastPage,membersPageInfo.pageSize)">
+										<a href="javascript:void(0)" @click="getLast">
 											尾页
 										</a>
 									</li>
@@ -136,11 +154,11 @@
 				</table>
 
 			</div>
-			<!-- <h4 style="text-align: center;">
-                 	<a href=""><button type="button" class="btn btn-gradient-primary mr-2">查看柱状图</button></a>
-                   <a href=""><button type="button" class="btn btn-gradient-info mr-2">查看饼状图</button></a>
-                   <a href=""><button type="button" class="btn btn-gradient-dark mr-2">查看曲线图</button></a>
-			</h4> -->
+			 <h4 style="text-align: center;">
+                 	<!-- <a href=""><button type="button" class="btn btn-gradient-primary mr-2">查看趋势</button></a>
+                   <a href=""><button type="button" class="btn btn-gradient-info mr-2">查看统计</button></a> -->
+                   <!-- <a href=""><button type="button" class="btn btn-gradient-dark mr-2">查看曲线图</button></a> -->
+			</h4> 
 
 		</div>
 
@@ -157,130 +175,244 @@
 		</div> -->
 		<!-- container-scroller -->
 		<!-- plugins:js -->
-		<script type="text/javascript" src="../../js/echarts/echarts.min.js"></script>
+		<script type="text/javascript" src="../../layui/layui.js"></script>
 		<script src="../../js/jquery-2.1.4.js"></script>
 		<script src="../../js/bootstrap.min.js"></script>
 		<!-- <script src="../../js/vue.js"></script> -->
+		<script type="text/javascript" src="../../js/echarts/echarts.min.js"></script>
 		 <script src="../../js/echarts/ichart.1.2.1.min.js"></script>
 		 <script src="../../js/vue.js"></script>
 		<!-- endinject -->
 		<script type="text/javascript">
+		layui.config({
+			base : "js/"
+		}).use(['form','layer','jquery','laypage','laydate'],function(){
+			var form = layui.form(),
+			layer = parent.layer === undefined ? layui.layer : parent.layer,
+			laypage = layui.laypage,
+			laydate = layui.laydate,
+			$ = layui.jquery;
+			
+			//x数据
+			var arrX =[];
+			//y数据
+			var arrY = [];
+			//统计数据
+			var arrStatistics = [];
+			//充值数据
+			var arrRecharge = [];
+			//提现数据
+			var arrWithdraw = [];
+			//商家入驻数据
+			var arrEnter=[];
+			//服务数据
+			var arrSerivice=[];
+			//折线图 y轴最大值
+			var ymax;
+			
+			//清空数据
+			function clearArr(){
+				arrX =[];
+				arrY = [];
+				arrStatistics = [];
+				arrRecharge = [];
+				arrWithdraw = [];
+				arrEnter=[];
+				arrSerivice=[];
+				ymax = 0;
+			}
+			
 			var pageList;
+			
+			var checkState = true;
+			
 			var vmStatic = new  Vue({
 				el:"#statisContent",
 				data:{
 					pageInfo:{},
 					info:{sum:0}
-					
 				},
 				methods:{
 					getInfo:function(index){
 						this.info.sum = 0;
 						var state = $("#state").val();
 						var year = $("#year").val();
+						var month = $("#month").val();
 						$.ajax({
-							url:"/c/lzh/statistics/StatisticsInfo/"+year+"/"+state+"/"+index,
+							url:"/c/lzh/statistics/StatisticsInfo/"+year+"/"+state+"/"+index+"/"+month,
 							type:"get",
 							success:function(json){
+								clearArr();
+								pageList = null;
 								vmStatic.pageInfo = json;
 								pageList = json.list;
-								for (var i = 0; i < json.list.length; i++) {
+								for (var i = 0; i < pageList.length; i++) {
 									vmStatic.info.sum += json.list[i].sum;
 								}
+								loadData(pageList);
+								console.debug("结束");
 							}
 						});
+					},
+					getFirst:function(){
+						if(this.pageInfo.isFirstPage){
+							layer.msg("已经第一页咯");
+						}else{
+							this.getInfo(1);
+						}
+					},
+					getLast:function(){
+						if(this.pageInfo.isLastPage){
+							layer.msg("已经最后一页咯");
+						}else{
+							this.getInfo(this.pageInfo.lastPage);
+						}
+					},
+					nextPage:function(){
+						if(!this.pageInfo.hasNextPage){
+							layer.msg("没有更多了");
+						}else{
+							this.getInfo(this.pageInfo.nextPage);
+						}
+					},
+					prePage:function(){
+						if(!this.pageInfo.hasPreviousPage){
+							layer.msg("已经是第一页咯");
+						}else{
+							this.getInfo(this.pageInfo.firstPage);
+						}
 					}
 				},
 				created:function(){
 					this.getInfo(1);
 				}
 			})
-		
 			
-			
-			
-			if($("#state").val()==2){
+			if($("#state").val()==1){
 				$("#year").show();
 				$("#name").show();
+				$("#month").hide();
+				$("#name1").hide();
+				$("#month").val('0');
+				
 			}else{
-				$("#year").hide();
-				$("#name").hide();
+				$("#year").show();
+				$("#name").show();
+				$("#month").hide();
+				$("#name1").hide();
+				$("#month").val('0');
+				
 			}
+			
 			$("#state").change(function(){
-				if($("#state").val()==2){
-					$("#year").show();
-					$("#name").show();
+				if($(this).val()==1){
+					$("#year").hide();
+					$("#name").hide();
+					$("#month").show();
+					$("#name1").show();
+					$("#year").val('0');
+					
 				}else{
 					$("#year").hide();
 					$("#name").hide();
+					$("#month").show();
+					$("#name1").show();
+					$("#year").val('0');
+					
 				}
 			})
+
+			var myChart = echarts.init(document.getElementById("Chartjs"));
+			// myChart.showLoading();  myChart.hideLoading();
 			
-			var myChart = echarts.init(document.getElementById('Chartjs'));
+			function loadData(list){
+				
+				//checkState==true?统计:折线图 
+				//数据数组 x：arrX y:arry 充：arrRecharge 提：arrWithdraw 入驻：arrEnter 服务:arrSerivice
+				if(list == null){
+					return;
+				}else{
+				
+				arrX.push("'充值'");
+				arrX.push("'服务费'");
+				arrX.push("'提现'");
+				
+				for (var i = 0; i < arrX.length; i++) {
+					
+						if(list[i].rechargeCash > 0){
+							arrRecharge.push(list[i].rechargeCash);
+						}else{
+							arrRecharge.push(0);
+						}
+						if(list[i].withdrawCash > 0){
+							arrWithdraw.push(list[i].withdrawCash);
+						}else{
+							arrWithdraw.push(0);
+						}
+						if(list[i].businessCount > 0){
+							arrEnter.push(list[i].businessCount);
+						}else{
+							arrEnter.push(0);
+						}
+						if(list[i].serviceMoney > 0){
+							arrSerivice.push(list[i].serviceMoney);
+						}else{
+							arrSerivice.push(0);
+						}
+						if(list[i].sum > 0){
+							arrStatistics.push(list[i].sum);
+						}else{
+							arrStatistics.push(0);
+						}
+					
+				}
+				
+				
+				
+				
+				var source = [];
+				
+				
+				for (var i = 0; i < arrX.length; i++) {
+					var s = ["'" +(2017+i)+"'" ];
+					s.push(arrRecharge[i]);
+					s.push(arrWithdraw[i]);
+					s.push(arrSerivice[i]);
+					source.push(s);
+				}
+				arrX.unshift("'year'");
+				source.unshift(arrX);
+				
+				arrStatistics.sort(function (a, b) {
+				  return a-b;
+				});
+
+
+				ymax = arrStatistics[arrStatistics.length - 1] + 10000;  
+				//渲染数据
+				option = { 
+					    legend: {},
+					    tooltip: {},
+					    dataset: {
+					    	source
+					    },
+					    xAxis: {type: 'category'},
+					    yAxis: {max:ymax},
+					    // Declare several bar series, each will be mapped
+					    // to a column of dataset.source by default.
+					    series: [
+					        {type: 'bar'},
+					        {type: 'bar'},
+					        {type: 'bar'}
+					    ]
+					};
+					
+					myChart.setOption(option);
+			}
+				
+			}
 			
-			option = {
-				    title: {
-				        text: '折线图'
-				    },
-				    tooltip: {
-				        trigger: 'axis'
-				    },
-				    legend: {
-				        data:['统计','提现','充值','服务','商家入驻']
-				    },
-				    grid: {
-				        left: '3%',
-				        right: '4%',
-				        bottom: '3%',
-				        containLabel: true
-				    },
-				    toolbox: {
-				        feature: {
-				            saveAsImage: {}
-				        }
-				    },
-				    xAxis: {
-				        type: 'category',
-				        boundaryGap: false,
-				        data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-				    },
-				    yAxis: {
-				        type: 'value'
-				    },
-				    series: [
-				        {
-				            name:'统计',
-				            type:'line',
-				            stack: '总量',
-				            data:[0,0,0,0,0,0,0,0,14680,4100,0]
-				        },
-				        {
-				            name:'提现',
-				            type:'line',
-				            stack: '总量',
-				            data:[0,0,0,0,0,0,0,0,10,5080,0]
-				        },
-				        {
-				            name:'充值',
-				            type:'line',
-				            stack: '总量',
-				            data:[0,0,0,0,0,0,0,0,14690,9180,0]
-				        },
-				        {
-				            name:'服务',
-				            type:'line',
-				            stack: '总量',
-				            data:[0,0,0,0,0,0,0,0,1770,600,0]
-				        },
-				        {
-				            name:'商家入驻',
-				            type:'line',
-				            stack: '总量',
-				            data:[0,0,0,0,0,0,0,0,0,0,0]
-				        }
-				    ]
-				};
-			 myChart.setOption(option);
+		});	
 		</script>
 	</body>
 

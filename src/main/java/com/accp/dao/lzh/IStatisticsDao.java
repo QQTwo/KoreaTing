@@ -14,5 +14,5 @@ public interface IStatisticsDao {
 	 */
 	public void insertStatistics();
 	
-	public List<StatisticsVo> findStatistics(@Param("year") int year,@Param("state")int state);
+	public List<StatisticsVo> findStatistics(@Param("year") int year,@Param("state")int state,@Param("month") int month);
 }
